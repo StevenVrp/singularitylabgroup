@@ -391,14 +391,14 @@
             }
         });
     
-        // --- Sign Up Logic (FIXED: Detect existing email properly) ---
+        // --- Sign Up Logic (FIXED: Properly handle custom gender and existing email) ---
         signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('signup-btn');
             const spinner = document.getElementById('signup-spinner');
             btn.disabled = true;
             spinner.classList.remove('hidden');
-    
+        
             // reCAPTCHA Check
             if (typeof grecaptcha !== 'undefined') {
                 const recaptchaResponse = grecaptcha.getResponse(signupRecaptchaWidgetId);
@@ -409,23 +409,39 @@
                     return;
                 }
             }
-    
+        
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
-    
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const genderSelect = document.getElementById('gender');
+            let genderValue = genderSelect.value;
+            const customGenderInput = document.getElementById('custom-gender');
+        
+            // ✅ FIX: Handle custom gender properly
+            if (genderValue === 'others') {
+                if (!customGenderInput.value.trim()) {
+                    showMessage('Please specify your gender when selecting "Others".');
+                    btn.disabled = false;
+                    spinner.classList.add('hidden');
+                    return;
+                }
+                genderValue = customGenderInput.value.trim(); // Use the custom gender value
+            }
+        
             const { data, error } = await supabaseClient.auth.signUp({
                 email: email,
                 password: password,
                 options: {
                     emailRedirectTo: `${window.location.origin}/welcome/`,
                     data: {
-                        first_name: document.getElementById('first-name').value,
-                        last_name: document.getElementById('last-name').value,
-                        gender: document.getElementById('gender').value
+                        first_name: firstName,
+                        last_name: lastName,
+                        gender: genderValue // ✅ Now stores the actual custom gender, not "others"
                     }
                 }
             });
-    
+        
             btn.disabled = false;
             spinner.classList.add('hidden');
             
@@ -435,7 +451,7 @@
                 if (typeof grecaptcha !== 'undefined') grecaptcha.reset(signupRecaptchaWidgetId);
                 return;
             }
-    
+        
             if (error) {
                 showMessage(error.message);
             } else {
