@@ -996,5 +996,44 @@
             });
         });
     </script>
+    <!-- 在 index.html 的 <head> 或 <body> 底部添加 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 初始化 Supabase（确保这段代码在其他脚本之前执行）
+        const SUPABASE_URL = 'https://wtfmsmibjktgajegflwp.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+    
+    <script>
+        // 使用 ID 选择器（更可靠）
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginIcon = document.getElementById('loginIcon');
+            if (loginIcon) {
+                loginIcon.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    
+                    // 检查 supabaseClient 是否存在
+                    if (!supabaseClient) {
+                        console.error('Supabase client not initialized');
+                        window.location.href = '/login/'; // 兜底跳转
+                        return;
+                    }
+                    
+                    try {
+                        const { data: { session } } = await supabaseClient.auth.getSession();
+                        if (session) {
+                            window.location.href = '/welcome/';
+                        } else {
+                            window.location.href = '/login/';
+                        }
+                    } catch (error) {
+                        console.error('Session check failed:', error);
+                        window.location.href = '/login/'; // 出错时兜底跳转
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
