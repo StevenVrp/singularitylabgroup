@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Singularity Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'singularity-gray': '#1a1a1a',
+                        'singularity-light-gray': '#f5f5f7',
+                        'singularity-blue': '#0066cc',
+                        'singularity-dark': '#000000',
+                        'pro-gradient': 'linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3)',
+                    },
+                    fontFamily: {
+                        'singularity': ['SF Pro Display', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+            }
+            .pro-badge {
+                background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 700;
+            }
+        }
+        
+        /* 全局样式 */
+        body {
+            font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* 导航栏样式 - 始终黑色背景和白色文字 */
+        #navbar {
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .nav-link {
+            color: white;
+        }
+        
+        .logo-white {
+            display: block;
+        }
+        
+        .logo-black {
+            display: none;
+        }
+        
+        /* 头像上传样式 */
+        .avatar-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .avatar-upload input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .avatar-edit {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            background: white;
+            border-radius: 50%;
+            padding: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        
+        /* 表单输入样式 */
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+        
+        /* 保存按钮样式 */
+        .save-btn {
+            background: linear-gradient(90deg, #0066cc, #004499);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
+        }
+        
+        /* 加载动画 */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-white text-singularity-gray">
+    <!-- 导航栏 - 始终黑色背景和白色文字 -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-6 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold">
+                    <!-- 白色Logo (始终显示) -->
+                    <img src="/Images/Logo1.png" alt="Singularity Lab Logo" class="logo-white h-10">
+                </a>
+            </div>
+            
+            <!-- 桌面端导航菜单 -->
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html#partners" class="nav-link text-white hover:text-gray-300 transition-colors">Partners</a>
+                <a href="index.html#lessons" class="nav-link text-white hover:text-gray-300 transition-colors">Singularity Lessons</a>
+                <a href="index.html#study-assistant" class="nav-link text-white hover:text-gray-300 transition-colors">Study Assistant <span class="pro-badge">Pro</span></a>
+                <a href="index.html#community" class="nav-link text-white hover:text-gray-300 transition-colors">Community</a>
+                <a href="index.html#about" class="nav-link text-white hover:text-gray-300 transition-colors">About Us</a>
+                <a href="index.html#members" class="nav-link text-white hover:text-gray-300 transition-colors">Meet the Team</a>
+                <a href="index.html#join" class="nav-link text-white hover:text-gray-300 transition-colors">Join Us</a>
+                <a href="/legal/index.html" class="nav-link text-white hover:text-gray-300 transition-colors">Legal</a>
+            </div>
+            
+            <!-- 用户图标 -->
+            <div class="flex items-center space-x-6">
+                <a href="#" class="nav-link text-white hover:text-gray-300 transition-colors">
+                    <i class="fa fa-search"></i>
+                </a>
+                <a href="#" class="nav-link text-white hover:text-gray-300 transition-colors">
+                    <i class="fa fa-bookmark"></i>
+                </a>
+                <a href="login.html" class="nav-link text-white hover:text-gray-300 transition-colors">
+                    <i class="fa fa-sign-out-alt"></i>
+                </a>
+                <!-- 移动端菜单按钮 -->
+                <button id="mobile-menu-button" class="md:hidden nav-link text-white hover:text-gray-300 transition-colors">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="md:hidden hidden bg-black absolute top-full left-0 w-full shadow-lg">
+            <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
+                <a href="index.html#partners" class="text-white hover:text-gray-300 transition-colors py-2">Partners</a>
+                <a href="index.html#lessons" class="text-white hover:text-gray-300 transition-colors py-2">Singularity Lessons</a>
+                <a href="index.html#study-assistant" class="text-white hover:text-gray-300 transition-colors py-2">Study Assistant <span class="pro-badge">Pro</span></a>
+                <a href="index.html#community" class="text-white hover:text-gray-300 transition-colors py-2">Community</a>
+                <a href="index.html#about" class="text-white hover:text-gray-300 transition-colors py-2">About Us</a>
+                <a href="index.html#members" class="text-white hover:text-gray-300 transition-colors py-2">Meet the Team</a>
+                <a href="index.html#join" class="text-white hover:text-gray-300 transition-colors py-2">Join Us</a>
+                <a href="/legal/index.html" class="text-white hover:text-gray-300 transition-colors py-2">Legal</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <section class="pt-32 pb-20 bg-singularity-light-gray min-h-screen">
+        <div class="container mx-auto px-6">
+            <!-- 欢迎标题 -->
+            <div class="text-center mb-12">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-4">Welcome to Singularity Lab!</h1>
+                <p class="text-gray-600 text-lg">Complete your profile to get started</p>
+            </div>
+            
+            <!-- 用户信息表单 -->
+            <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+                <!-- 头像部分 -->
+                <div class="bg-gradient-to-r from-singularity-blue to-blue-600 p-8 text-center">
+                    <div class="avatar-upload mb-6">
+                        <div class="relative inline-block">
+                            <img id="avatar-preview" src="/Images/default-avatar.png" alt="Avatar" class="w-32 h-32 rounded-full border-4 border-white object-cover">
+                            <div class="avatar-edit">
+                                <i class="fa fa-camera text-gray-700"></i>
+                            </div>
+                            <input type="file" id="avatar-upload" accept="image/*">
+                        </div>
+                    </div>
+                    <h2 id="user-name" class="text-2xl font-bold text-white mb-2">Loading...</h2>
+                    <p id="user-email" class="text-blue-100">Loading...</p>
+                </div>
+                
+                <!-- 表单部分 -->
+                <div class="p-8">
+                    <form id="profile-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <!-- 名字 -->
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">First Name</label>
+                                <input type="text" id="first-name" class="form-input" placeholder="Enter your first name" required>
+                            </div>
+                            
+                            <!-- 姓氏 -->
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Last Name</label>
+                                <input type="text" id="last-name" class="form-input" placeholder="Enter your last name" required>
+                            </div>
+                            
+                            <!-- 电子邮件 -->
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Email</label>
+                                <input type="email" id="email" class="form-input" placeholder="Enter your email" readonly>
+                            </div>
+                            
+                            <!-- 性别 -->
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Gender</label>
+                                <select id="gender" class="form-input">
+                                    <option value="">Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+                            
+                            <!-- 密码 -->
+                            <div class="md:col-span-2">
+                                <label class="block text-gray-700 font-medium mb-2">Change Password (optional)</label>
+                                <input type="password" id="new-password" class="form-input" placeholder="Enter new password">
+                            </div>
+                        </div>
+                        
+                        <!-- 保存按钮 -->
+                        <div class="flex justify-end">
+                            <button type="submit" id="save-btn" class="save-btn flex items-center justify-center">
+                                <span id="save-text">Save Profile</span>
+                                <div id="save-loading" class="loading-spinner ml-2 hidden"></div>
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- 成功消息 -->
+                    <div id="success-message" class="hidden mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
+                        <div class="flex items-center">
+                            <i class="fa fa-check-circle text-green-500 text-xl mr-3"></i>
+                            <div>
+                                <h3 class="text-green-800 font-medium">Profile Updated!</h3>
+                                <p class="text-green-600 text-sm">Your information has been saved successfully.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 错误消息 -->
+                    <div id="error-message" class="hidden mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                        <div class="flex items-center">
+                            <i class="fa fa-exclamation-circle text-red-500 text-xl mr-3"></i>
+                            <div>
+                                <h3 class="text-red-800 font-medium">Error Saving Profile</h3>
+                                <p id="error-text" class="text-red-600 text-sm">Something went wrong. Please try again.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-black text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Resources -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#lessons" class="text-gray-400 hover:text-white transition-colors">Singularity Lessons</a></li>
+                        <li><a href="index.html#study-assistant" class="text-gray-400 hover:text-white transition-colors">Study Assistant Pro</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Community -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Community</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#community" class="text-gray-400 hover:text-white transition-colors">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Discussion Forum</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Events</a></li>
+                    </ul>
+                </div>
+                
+                <!-- About -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">About</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#partners" class="text-gray-400 hover:text-white transition-colors">Partners</a></li>
+                        <li><a href="index.html#about" class="text-gray-400 hover:text-white transition-colors">Our Mission</a></li>
+                        <li><a href="index.html#members" class="text-gray-400 hover:text-white transition-colors">Meet the Team</a></li>
+                        <li><a href="index.html#join" class="text-gray-400 hover:text-white transition-colors">Join Us</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Follow Us -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4 mb-6">
+                        <a href="https://space.bilibili.com/1372845857" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xl">
+                            <i class="fab fa-bilibili"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@SingularityLab123" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xl">
+                            <i class="fab fa-youtube-play"></i>
+                        </a>
+                        <a href="mailto:singularitylabgroup@outlook.com" class="text-gray-400 hover:text-white transition-colors text-xl">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                    <h4 class="text-lg font-bold mb-4">Language</h4>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">English</a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0"><i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70 hover:opacity-100 transition-opacity"></i> 2026 Singularity Lab. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="/legal/index.html#privacy-policy" class="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="/legal/index.html#terms-of-use" class="text-gray-500 hover:text-white text-sm transition-colors">Terms of Use</a>
+                    <a href="/legal/index.html#license" class="text-gray-500 hover:text-white text-sm transition-colors">License</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase 配置
+        const SUPABASE_URL = 'https://wtfmsmibjktgajegflwp.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // DOM 元素
+        const avatarUpload = document.getElementById('avatar-upload');
+        const avatarPreview = document.getElementById('avatar-preview');
+        const profileForm = document.getElementById('profile-form');
+        const saveBtn = document.getElementById('save-btn');
+        const saveText = document.getElementById('save-text');
+        const saveLoading = document.getElementById('save-loading');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        
+        // 表单字段
+        const firstNameInput = document.getElementById('first-name');
+        const lastNameInput = document.getElementById('last-name');
+        const emailInput = document.getElementById('email');
+        const genderInput = document.getElementById('gender');
+        const newPasswordInput = document.getElementById('new-password');
+        const userNameDisplay = document.getElementById('user-name');
+        const userEmailDisplay = document.getElementById('user-email');
+        
+        // 移动端菜单切换
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+        
+        // 头像上传预览
+        avatarUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    avatarPreview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // 加载用户信息
+        async function loadUserProfile() {
+            try {
+                // 获取当前用户会话
+                const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+                
+                if (sessionError || !session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                const user = session.user;
+                
+                // 显示用户信息
+                emailInput.value = user.email;
+                userEmailDisplay.textContent = user.email;
+                
+                // 从用户元数据获取名字
+                if (user.user_metadata) {
+                    if (user.user_metadata.first_name) {
+                        firstNameInput.value = user.user_metadata.first_name;
+                    }
+                    if (user.user_metadata.last_name) {
+                        lastNameInput.value = user.user_metadata.last_name;
+                    }
+                    if (user.user_metadata.gender) {
+                        genderInput.value = user.user_metadata.gender;
+                    }
+                    
+                    // 显示全名
+                    const fullName = `${user.user_metadata.first_name || ''} ${user.user_metadata.last_name || ''}`.trim();
+                    userNameDisplay.textContent = fullName || 'Welcome User';
+                }
+                
+                // 尝试从 profiles 表获取更多信息
+                const { data: profile, error: profileError } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+                
+                if (profile) {
+                    if (profile.first_name) firstNameInput.value = profile.first_name;
+                    if (profile.last_name) lastNameInput.value = profile.last_name;
+                    if (profile.gender) genderInput.value = profile.gender;
+                    if (profile.avatar_url) avatarPreview.src = profile.avatar_url;
+                    
+                    const fullName = `${profile.first_name || ''} ${profile.last_name || ''}`.trim();
+                    userNameDisplay.textContent = fullName || 'Welcome User';
+                }
+                
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showError('Failed to load user profile');
+            }
+        }
+        
+        // 保存用户信息
+        async function saveUserProfile(formData) {
+            try {
+                const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+                
+                if (sessionError || !session) {
+                    throw new Error('No active session');
+                }
+                
+                const user = session.user;
+                
+                // 上传头像（如果有新上传的）
+                let avatarUrl = null;
+                if (avatarUpload.files.length > 0) {
+                    const file = avatarUpload.files[0];
+                    const fileName = `${user.id}-${Date.now()}.${file.name.split('.').pop()}`;
+                    
+                    const { data: uploadData, error: uploadError } = await supabaseClient.storage
+                        .from('avatars')
+                        .upload(fileName, file);
+                    
+                    if (uploadError) {
+                        console.error('Avatar upload error:', uploadError);
+                    } else {
+                        const { data: urlData } = supabaseClient.storage
+                            .from('avatars')
+                            .getPublicUrl(fileName);
+                        avatarUrl = urlData.publicUrl;
+                    }
+                }
+                
+                // 准备用户数据
+                const userData = {
+                    first_name: formData.get('firstName'),
+                    last_name: formData.get('lastName'),
+                    gender: formData.get('gender'),
+                    updated_at: new Date().toISOString()
+                };
+                
+                if (avatarUrl) {
+                    userData.avatar_url = avatarUrl;
+                }
+                
+                // 更新用户元数据
+                const { error: updateError } = await supabaseClient.auth.updateUser({
+                    data: userData
+                });
+                
+                if (updateError) {
+                    throw updateError;
+                }
+                
+                // 更新或创建 profiles 表记录
+                const { error: upsertError } = await supabaseClient
+                    .from('profiles')
+                    .upsert({
+                        id: user.id,
+                        ...userData,
+                        email: user.email
+                    });
+                
+                if (upsertError) {
+                    console.error('Profile upsert error:', upsertError);
+                }
+                
+                // 如果提供了新密码，更新密码
+                const newPassword = formData.get('newPassword');
+                if (newPassword && newPassword.trim() !== '') {
+                    const { error: passwordError } = await supabaseClient.auth.updateUser({
+                        password: newPassword
+                    });
+                    
+                    if (passwordError) {
+                        console.error('Password update error:', passwordError);
+                    }
+                }
+                
+                return true;
+                
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                throw error;
+            }
+        }
+        
+        // 表单提交处理
+        profileForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // 显示加载状态
+            saveText.textContent = 'Saving...';
+            saveLoading.classList.remove('hidden');
+            saveBtn.disabled = true;
+            
+            // 隐藏消息
+            successMessage.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            
+            // 收集表单数据
+            const formData = new FormData(profileForm);
+            
+            try {
+                await saveUserProfile(formData);
+                
+                // 显示成功消息
+                successMessage.classList.remove('hidden');
+                
+                // 更新显示的用户名
+                const fullName = `${formData.get('firstName')} ${formData.get('lastName')}`.trim();
+                userNameDisplay.textContent = fullName || 'Welcome User';
+                
+                // 重置按钮状态
+                saveText.textContent = 'Save Profile';
+                saveLoading.classList.add('hidden');
+                saveBtn.disabled = false;
+                
+                // 3秒后隐藏成功消息
+                setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                }, 3000);
+                
+            } catch (error) {
+                // 显示错误消息
+                errorText.textContent = error.message || 'Failed to save profile. Please try again.';
+                errorMessage.classList.remove('hidden');
+                
+                // 重置按钮状态
+                saveText.textContent = 'Save Profile';
+                saveLoading.classList.add('hidden');
+                saveBtn.disabled = false;
+            }
+        });
+        
+        // 显示错误消息
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.remove('hidden');
+            setTimeout(() => {
+                errorMessage.classList.add('hidden');
+            }, 5000);
+        }
+        
+        // 页面加载时获取用户信息
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserProfile();
+        });
+    </script>
+</body>
+</html>
