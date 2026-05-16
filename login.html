@@ -340,7 +340,7 @@
                 showMessage(error.message);
             } else {
                 showMessage('Login successful! Redirecting...', false);
-                setTimeout(() => window.location.href = 'welcome.html', 1500); 
+                setTimeout(() => window.location.href = '/welcome/', 1500); 
             }
         });
 
@@ -370,7 +370,7 @@
                 email: email,
                 password: password,
                 options: {
-                    emailRedirectTo: `${window.location.origin}/welcome.html`,
+                    emailRedirectTo: `${window.location.origin}/welcome/`,
                     data: {
                         first_name: document.getElementById('first-name').value,
                         last_name: document.getElementById('last-name').value,
