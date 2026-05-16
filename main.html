@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singularity Lab - Chemistry Education</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'singularity-gray': '#1a1a1a',
+                        'singularity-light-gray': '#f5f5f7',
+                        'singularity-blue': '#0066cc',
+                        'singularity-dark': '#000000',
+                        'pro-gradient': 'linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3)',
+                    },
+                    fontFamily: {
+                        'singularity': ['SF Pro Display', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+            }
+            .transition-transform-opacity {
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+            .pro-badge {
+                background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 700;
+            }
+        }
+        
+        /* 全局样式 */
+        body {
+            font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* 导航栏样式 */
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .nav-scrolled .nav-link {
+            color: #1a1a1a;
+        }
+        
+        .nav-scrolled .logo-white {
+            display: none;
+        }
+        
+        .nav-scrolled .logo-black {
+            display: block;
+        }
+        
+        /* 产品卡片悬停效果 */
+        .lesson-card:hover .lesson-image {
+            transform: scale(1.05);
+        }
+        
+        .lesson-card:hover .lesson-overlay {
+            opacity: 1;
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Logo carousel */
+        .logo-carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .logo-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .partner-logo {
+            flex-shrink: 0;
+        }
+        
+        .partner-logo:hover {
+            filter: grayscale(0%) brightness(1);
+        }
+        
+        /* Video background */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* 移动一半宽度（因为会克隆一次） */
+        }
+
+        .animate-scroll {
+            animation: scroll 40s linear infinite;
+            width: max-content;
+            will-change: transform;
+        }
+        .molecule-reveal { opacity: 0; transform: translateY(20px); animation: drift-in 0.8s ease forwards; }
+        @keyframes drift-in { to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-white text-singularity-gray">
+    <!-- 导航栏 -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-6 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="#" class="text-2xl font-bold">
+                    <!-- 白色Logo (默认显示) - 替换为您的实际JPG Logo -->
+                    <img src="Images/Logo1.png" alt="Singularity Lab Logo" class="logo-white h-10">
+                    <!-- 黑色Logo (滚动后显示) - 替换为您的实际JPG Logo -->
+                    <img src="Images/Logo2.png" alt="Singularity Lab Logo" class="logo-black h-10 hidden">
+                </a>
+            </div>
+            
+            <!-- 桌面端导航菜单 -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#partners" class="nav-link text-white hover:text-gray-300 transition-colors">Partners</a>
+                <a href="#lessons" class="nav-link text-white hover:text-gray-300 transition-colors">Singularity Lessons</a>
+                <a href="#study-assistant" class="nav-link text-white hover:text-gray-300 transition-colors">Study Assistant <span class="pro-badge">Pro</span></a>
+                <a href="#community" class="nav-link text-white hover:text-gray-300 transition-colors">Community</a>
+                <a href="#about" class="nav-link text-white hover:text-gray-300 transition-colors">About Us</a>
+                <a href="#members" class="nav-link text-white hover:text-gray-300 transition-colors">Meet the Team</a>
+                <a href="#join" class="nav-link text-white hover:text-gray-300 transition-colors">Join Us</a>
+                <a href="legal.html" class="nav-link text-white hover:text-gray-300 transition-colors">Legal</a>
+            </div>
+            
+            <!-- 用户图标 -->
+            <div class="flex items-center space-x-6">
+                <a href="#" class="nav-link text-white hover:text-gray-300 transition-colors">
+                    <i class="fa fa-search"></i>
+                </a>
+                <a href="#" class="nav-link text-white hover:text-gray-300 transition-colors">
+                    <i class="fa fa-bookmark"></i>
+                </a>
+                <a href="login.html" class="nav-link text-white hover:text-gray-300 transition-colors">
+                    <i class="fa fa-user"></i>
+                </a>
+                <!-- 移动端菜单按钮 -->
+                <button id="mobile-menu-button" class="md:hidden nav-link text-white hover:text-gray-300 transition-colors">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white absolute top-full left-0 w-full shadow-lg">
+            <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
+                <a href="#partners" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Partners</a>
+                <a href="#lessons" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Singularity Lessons</a>
+                <a href="#study-assistant" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Study Assistant <span class="pro-badge">Pro</span></a>
+                <a href="#community" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Community</a>
+                <a href="#about" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">About Us</a>
+                <a href="#members" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Meet the Team</a>
+                <a href="#join" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Join Us</a>
+                <a href="legal.html" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Legal</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 - 视频背景 -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- 视频背景 - 替换为您的实际服务学习小组介绍视频 -->
+        <video class="video-background" autoplay muted loop playsinline>
+            <source src="Images/Hero.mov" type="video/mp4">
+            <!-- 备用图片如果视频无法加载 -->
+            <img src="https://picsum.photos/id/1033/1920/1080" alt="Chemistry Lab Background" class="w-full h-full object-cover">
+        </video>
+        <div class="absolute inset-0 bg-black/50"></div>
+        
+        <!-- 英雄内容 -->
+        <div class="relative z-10 text-center text-white px-6">
+            
+            <!-- <p class="text-[clamp(2.2rem,5.5vw,3.5rem)] mb-10 max-w-3xl mx-auto font-light tracking-widest uppercase flex items-center justify-center gap-6">
+                <span>Endless</span>
+                
+                <span class="font-bold">Discovery</span>
+            </p> -->
+            <!-- HERO SLOGAN WITH PERFECT SCROLLING ANIMATION -->
+
+<!-- Increased height to h-[5rem] to accommodate larger text-6xl -->
+            <!-- Added overflow-y-hidden instead of overflow-hidden -->
+            <div class="relative w-full max-w-none h-[5rem] overflow-y-clip overflow-x-visible mb-10">
+                <!-- Added pr-8 for italic lean room and whitespace-nowrap -->
+                <div id="text-reel" class="absolute top-0 left-0 w-full pr-8 whitespace-nowrap transition-transform duration-700 ease-in-out text-6xl font-black italic tracking-tighter">
+                    <!-- Step 1: Singularity -->
+                    <div class="h-[5rem] flex items-center">
+                        <span>Singularity</span>
+                        <span class="mx-4 opacity-30">/</span>
+                        <span id="dynamic-lab" class="text-blue-600">Point</span>
+                    </div>
+
+                    <!-- Step 2: Steven -->
+                    <div class="h-[5rem] flex items-center">
+                        <span>Steven</span>
+                        <span class="mx-4 opacity-30">/</span>
+                        <span id="dynamic-vrp" class="text-green-600">Vrp</span>
+                    </div>
+
+                    <!-- Step 3: Endless -->
+                    <div class="h-[5rem] flex items-center -ml-15">
+                        <span>Endless</span>
+                        <span class="mx-4 opacity-30">/</span>
+                        <span class="text-blue-600">Discovery</span>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                const reel = document.getElementById('text-reel');
+                const labText = document.getElementById('dynamic-lab');
+                const vrpText = document.getElementById('dynamic-vrp');
+
+                // Added more words for a longer, more chaotic "flicker" effect
+                const labWords = ["Atom", "Core", "Data", "Flow", "Logic", "Neural", "Pulse", "Synthetix", "Lab"];
+                const vrpWords = ["Node", "Grid", "Matrix", "Nexus", "Vector", "System", "Vertex", "World"];
+
+                function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+                async function runCycle() {
+                    // Reset to top
+                    reel.style.transition = "none";
+                    reel.style.transform = "translateY(0)";
+                    await sleep(50);
+                    reel.style.transition = "transform 0.7s ease-in-out";
+
+                    // 1. Flicker Singularity words
+                    for (let word of labWords) {
+                        await sleep(80); // Slightly slower than 100ms for better visibility
+                        labText.innerText = word;
+                    }
+                    await sleep(1500); 
+
+                    // 2. Scroll to Steven
+                    reel.style.transform = "translateY(-5rem)";
+                    await sleep(800);
+
+                    // 3. Flicker Steven words
+                    for (let word of vrpWords) {
+                        await sleep(80);
+                        vrpText.innerText = word;
+                    }
+                    await sleep(1500); 
+
+                    // 4. Scroll to Endless
+                    reel.style.transform = "translateY(-10rem)";
+                    await sleep(2500); // Hold on the final discovery
+
+                    
+                }
+
+                // Initial Kickoff
+                setTimeout(runCycle, 1000);
+            </script>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#lessons" class="bg-white text-singularity-dark px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                    Explore Lessons
+                </a>
+                <a href="#study-assistant" class="bg-transparent border border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white/10 transition-colors">
+                    Try Study Assistant Pro
+                </a>
+            </div>
+        </div>
+        
+        <!-- 向下滚动提示 -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <i class="fa fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- 合作伙伴Logo轮播
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-6">
+            <p class="text-center text-gray-500 mb-8">Partners</p>
+            <div class="logo-carousel space-x-16 py-4">
+                <a href="https://example.com/partner1" class="partner-logo">
+                    <img src="Images/Logo2.png" alt="Partner 1" class="h-20">
+                </a>
+                <a href="https://example.com/partner2" class="partner-logo">
+                    <img src="Images/StevenVrp.png" alt="Partner 2" class="h-20">
+                </a>
+                <a href="https://example.com/partner3" class="partner-logo">
+                    <img src="Images/StevenWorld.png" alt="Partner 3" class="h-20">
+                </a>
+            </div>
+        </div>
+    </section> -->
+    <!-- ✅ FIXED PARTNERS SECTION: Clean, Centered, All 5 Icons Per Brand -->
+    <section id="partners" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto">Our Partners & Supporters</p>
+            
+            <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+
+                <!-- Singularity Lab -->
+                <div class="flex flex-col items-center text-center">
+                    <a class="mb-6 hover:opacity-80 transition-opacity">
+                        <img src="Images/Logo2.png" alt="Singularity Lab" class="h-20 object-contain">
+                    </a>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Singularity Lab</h3>
+                    <!-- Social Icons Row (Perfectly Aligned) -->
+                    <div class="flex items-center justify-center gap-4">
+                        <a href="https://space.bilibili.com/1372845857" target="_blank" class="text-gray-600 hover:text-gray-900 transition-colors">
+                            <i class="fab fa-bilibili text-xl"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@SingularityLab123" target="_blank" class="text-gray-600 hover:text-gray-900 transition-colors">
+                            <i class="fab fa-youtube-play text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- StevenVrp -->
+                <div class="flex flex-col items-center text-center">
+                    <a target="_blank" class="mb-6 hover:opacity-80 transition-opacity">
+                        <img src="Images/StevenVrp.png" alt="StevenVrp" class="h-20 object-contain">
+                    </a>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">StevenVrp</h3>
+                    <!-- All 5 Icons -->
+                    <div class="flex items-center justify-center gap-4">
+                        <a href="https://github.com/StevenVRP" target="_blank" class="text-gray-600 hover:text-gray-900 transition-colors"><i class="fab fa-github text-xl"></i></a>
+                    </div>
+                </div>
+
+                <!-- StevenWorld -->
+                <div class="flex flex-col items-center text-center">
+                    <a class="mb-6 hover:opacity-80 transition-opacity">
+                        <img src="Images/StevenWorld.png" alt="StevenWorld" class="h-20 object-contain">
+                    </a>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">StevenWorld</h3>
+                    <!-- All 5 Icons -->
+                    <div class="flex items-center justify-center gap-4">
+                        <a href="https://weixin.qq.com/" target="_blank" class="text-gray-600 hover:text-gray-900 transition-colors"><i class="fab fa-weixin text-xl"></i></a>
+                        <a href="https://www.xiaohongshu.com/user/profile/5f40e82800000000010038b0" target="_blank" class="text-gray-600 hover:text-gray-900 transition-colors"><img class="w-5 h-5 object-contain" src="data:image/png;base64,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"></a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- ✨ Premium Filler Content (仅登录页显示) -->
+            <div class="mt-10 pt-6" id="premium-filler">
+
+                <div class="overflow-hidden relative border-t border-gray-100">
+                    <!-- 单个轨道，用JS克隆 -->
+                    <div class="flex animate-scroll space-x-20 mt-12" id="logo-track">
+                        <!-- 所有logo（只写一次） -->
+                        <i class="fab fa-microsoft text-[4.0rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+                        <i class="fab fa-google text-[4.0rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+                        <i class="fab fa-google-plus-g text-[4.0rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+                        <i class="fab fa-google-drive text-[4.0rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+                        <i class="fab fa-github text-[4.0rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+                        <i class="fa-regular fa-closed-captioning text-[4.0rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+                        <i class="fab fa-bilibili text-[4.0rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+                        <img src="data:image/png;base64,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" alt="Xiaohongshu" class="h-30 opacity-70 hover:opacity-100 transition-opacity">
+                        <i class="fab fa-weixin text-[4.0rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+                        <i class="fab fa-youtube text-[4.0rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Singularity Lessons 区域 -->
+    <section id="lessons" class="py-20 bg-singularity-light-gray">
+        <div class="container mx-auto px-6">
+            <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-center mb-4">Singularity Lessons</h2>
+            <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto">Self-developed physical science curriculum with videos, PPTs, study guides, and more!</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 课程1 -->
+                <div class="lesson-card bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <div class="relative h-64 overflow-hidden">
+                        <!-- 替换为实际课程海报图片链接 -->
+                        <img src="Images/L1.png" alt="The Chemistry of Fireworks" class="lesson-image w-full h-full object-cover transition-transform duration-500">
+                        <div class="lesson-overlay absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300"></div>
+                        <div class="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            FREE
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Introduction to Periodic Table</h3>
+                        <p class="text-gray-600 mb-4">Periodic Table Basics</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500"><i class="fa fa-clock-o mr-1"></i> 30 minutes</span>
+                            <a href="lesson-fireworks.html" class="text-singularity-blue font-medium hover:underline">View Lesson <i class="fa fa-arrow-right ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 课程2 -->
+                <div class="lesson-card bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <div class="relative h-64 overflow-hidden">
+                        <!-- 替换为实际课程海报图片链接 -->
+                        <img src="Images/L2.png" alt="Why Onions Make You Cry" class="lesson-image w-full h-full object-cover transition-transform duration-500">
+                        <div class="lesson-overlay absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300"></div>
+                        <div class="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            FREE
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Effective Nuclear Charge</h3>
+                        <p class="text-gray-600 mb-4">Discover the nuclear charge and shielding effects related to the attraction and repulsion between different elements of an atom.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500"><i class="fa fa-clock-o mr-1"></i> 30 minutes</span>
+                            <a href="lesson-onions.html" class="text-singularity-blue font-medium hover:underline">View Lesson <i class="fa fa-arrow-right ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 课程2 -->
+                <div class="lesson-card bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                    <div class="relative h-64 overflow-hidden">
+                        <!-- 替换为实际课程海报图片链接 -->
+                        
+                        <div class="lesson-overlay absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">There is nothing here</h3>
+                        <p class="text-gray-600 mb-4">We have not yet uploaded files for this lesson because we are being lazy.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500"><i class="fa fa-clock-o mr-1"></i> 67 minutes</span>
+                            <a href="https://creations.mtdv.me/articles/there-is-nothing-here" target="_blank" class="text-singularity-blue font-medium hover:underline">View Nothing <i class="fa fa-arrow-right ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            
+            <div class="text-center mt-12">
+                <a href="all-lessons.html" class="inline-block border border-singularity-gray text-singularity-gray px-8 py-3 rounded-full font-medium hover:bg-singularity-gray hover:text-white transition-colors">
+                    View All Lessons
+                </a>
+            </div>
+        </div>
+    </section>
+<!-- Study Assistant Pro Section (FINAL CLEAN VERSION) -->
+    <!-- Study Assistant Pro Section (Final: >>> on Button Right Edge) -->
+    <section id="study-assistant" class="py-20 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[520px] items-stretch">
+
+                <!-- LEFT IMAGE: 50% width + ROUNDED LEFT ONLY + soft blurred edge -->
+                <div class="relative h-[400px] lg:h-full overflow-hidden rounded-l-3xl">
+                    <img 
+                    src="Images/SAP.png" 
+                    alt="Study Assistant Pro" 
+                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    >
+                    <!-- Natural blurred boundary between image and text -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent 65% to-white 95% backdrop-blur-sm z-10"></div>
+                </div>
+
+                <!-- RIGHT TEXT (unified styling) -->
+                <div class="flex flex-col justify-center px-6 lg:px-16 py-10 lg:py-0">
+                    
+                    <!-- PRO BADGE: Exact style from your main.html -->
+                    <div class="mb-5">
+                        <span class="text-xl font-semibold text-gray-800">Study Assistant</span>
+                        <span class="pro-badge text-xl">Pro</span>
+                    </div>
+
+                    <h2 class="text-[clamp(1.8rem,4vw,2.8rem)] font-bold mb-6 text-gray-800 leading-tight">
+                    All‑in‑One Student Productivity & Homework Tool
+                    </h2>
+
+                    <p class="text-gray-600 text-lg mb-4 leading-relaxed">
+                    A powerful, intuitive study companion designed to help you organize tasks, stay focused, 
+                    and build consistent study habits. Built for students who want to work smarter, not harder.
+                    </p>
+                    
+                    <p class="text-gray-600 text-lg mb-4 leading-relaxed">
+                    Enjoy seamless offline access, voice‑enabled task entry, and a distraction‑free workflow 
+                    that keeps your data private and stored locally. Simple, reliable, and tailored to fit 
+                    your daily study routine perfectly.
+                    </p>
+
+                    <!-- Feature list (unified alignment) -->
+                    <div class="space-y-3 mb-10">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Smart task management</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Voice control</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Pomodoro timer</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Gamification</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Offline support</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
+                            <span class="text-gray-700 font-medium">100% private local storage</span>
+                        </div>
+                    </div>
+
+                    <a href="#start" class="inline-flex items-center justify-between bg-blue-600 text-white px-8 py-3 rounded-full font-medium hover:bg-blue-700 transition-all duration-300 min-w-[200px] group">
+                        Get Started
+                        <i class="fas fa-chevron-right text-sm opacity-70 transition-opacity duration-300 group-hover:opacity-100"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community 区域 (FAQs) -->
+    <section id="community" class="py-20 bg-singularity-light-gray">
+        <div class="container mx-auto px-6">
+            <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-center mb-4">Community & FAQs</h2>
+            <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto">Find answers to common questions and connect with fellow physical science enthusiasts</p>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-4">
+                    <!-- FAQ 1 -->
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-toggle w-full text-left p-6 font-medium flex justify-between items-center">
+                            <span>Are all Singularity Lessons free?</span>
+                            <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                            <p>Our basic lessons are completely free for everyone to access, including in-depth content, downloadable worksheets, and additional resources.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ 2 -->
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-toggle w-full text-left p-6 font-medium flex justify-between items-center">
+                            <span>How can I request a specific physical science topic?</span>
+                            <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                            <p>We love hearing your topic suggestions! You can submit your ideas by emailing us at stevenhsiehvrp@outlook.com. We review all suggestions and prioritize topics that are most requested and have educational value.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ 3 -->
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-toggle w-full text-left p-6 font-medium flex justify-between items-center">
+                            <span>Is Study Assistant Pro free to use?</span>
+                            <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                            <p>Yes!</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ 4 -->
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-toggle w-full text-left p-6 font-medium flex justify-between items-center">
+                            <span>Can I use Singularity Lab content in my own teaching?</span>
+                            <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                            <p>Yes! Our free content is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. This means you can use, adapt, and share our materials for non-commercial educational purposes as long as you give appropriate credit to Singularity Lab.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ 5 -->
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-toggle w-full text-left p-6 font-medium flex justify-between items-center">
+                            <span>How can I contribute to Singularity Lab?</span>
+                            <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6 text-gray-600">
+                            <p>There are many ways to contribute! You can help by creating lesson content, designing posters, developing features for Study Assistant Pro on GitHub, sharing our videos on social media, or providing feedback on our materials. Visit the "Join Us" section to learn more about how you can get involved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <a href="all-lessons.html" class="inline-block border border-singularity-gray text-singularity-gray px-8 py-3 rounded-full font-medium hover:bg-singularity-gray hover:text-white transition-colors">
+                    View Full Community Page
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us 区域 -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-12 min-h-[500px]">
+                <div class="lg:w-1/2">
+                    <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">About Singularity Lab</h2>
+                    <p class="text-gray-600 mb-4 text-lg">Singularity Lab is a service learning group dedicated to making physical science accessible and exciting for everyone. We believe that science should be engaging, visual, and relevant to everyday life.</p>
+                    <p class="text-gray-600 mb-4 text-lg">Our mission is to spread physical science basics and spark people's interest in it through creating lectures, trivia, and videos posted on social media. We focus on exploring debated and visually appealing physical science topics that capture attention and inspire curiosity.</p>
+                    <p class="text-gray-600 mb-4 text-lg">Whether you're a student preparing for exams, someone writing an essay, or just a curious mind, our resources are designed to help you understand complex concepts in simple, enjoyable ways.</p>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-singularity-blue mb-2">10+</div>
+                            <p class="text-gray-600">Free Lessons</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-singularity-blue mb-2">150+</div>
+                            <p class="text-gray-600">Students Helped</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-singularity-blue mb-2">10+</div>
+                            <p class="text-gray-600">Video Tutorials</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-singularity-blue mb-2">15+</div>
+                            <p class="text-gray-600">Members</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 h-full">
+                    <!-- 替换为实际团队照片链接 -->
+                    <img src="Images/Logo.png" alt="Singularity Lab Team" class="rounded-2xl shadow-2xl w-full h-[600px] object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Team Members 区域 -->
+    <section id="members" class="py-20 bg-singularity-light-gray">
+    <div class="container mx-auto px-6">
+        
+        <!-- 标题 -->
+        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-center mb-4">
+        Meet the Team
+        </h2>
+        <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto">
+        Passionate students, educators, and creators working together to make physical science simple, visual, and inspiring.
+        </p>
+
+        <!-- 核心成员 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-20">
+        
+
+        <!-- Member 2 -->
+        <div class="group text-center">
+            <div class="relative w-40 h-40 mx-auto mb-6">
+            <img 
+                src="Images/Team2.jpg" 
+                alt="Team Member"
+                class="w-full h-full object-cover rounded-full shadow-lg"
+            >
+            </div>
+            <h3 class="text-xl font-bold mb-1">Bryce Lin</h3>
+            <p class="text-singularity-blue font-medium mb-3">Photography Lead</p>
+            <p class="text-gray-600 text-sm px-4">
+            Engineers experiments to produce visually captivating footage, framing each reaction for maximum impact. Also participates in video topic decisions and advertises for Singularity Lab's activities.
+            </p>
+        </div>
+        <div class="group text-center p-8 rounded-3xl bg-white 
+            shadow-md">
+  
+        <div class="relative w-40 h-40 mx-auto mb-6">
+            <img 
+            src="Images/StevenWorld.png" 
+            alt="Team Member"
+            class="w-full h-full object-cover rounded-full shadow-lg"
+            >
+        </div>
+
+        <h3 class="text-xl font-bold mb-1">Steven Hsieh</h3>
+        <p class="text-singularity-blue font-medium mb-3">
+            Founder & Lead Developer
+        </p>
+
+        <p class="text-gray-600 text-sm px-4">
+            Focuses on building Study Assistant Pro, managing the video production sector, and designing the lab's original curriculum to make physical science visual and intuitive. He is also the developer of various projects, including this website, with source code available on GitHub.
+        </p>
+
+        <div class="flex justify-center gap-4 mt-4">
+            <a href="https://weixin.qq.com/" target="_blank" class="text-gray-400 hover:text-singularity-blue"><i class="fab fa-wechat"></i></a>
+            <a href="https://github.com/StevenVRP" target="_blank" class="text-gray-400 hover:text-singularity-blue"><i class="fab fa-github"></i></a>
+            <a href="https://www.xiaohongshu.com/user/profile/5f40e82800000000010038b0" target="_blank" class="text-gray-600 hover:text-gray-900 transition-colors"><img class="w-5 h-5 object-contain" src="data:image/png;base64,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"></a>
+
+        </div>
+        </div>
+
+        <!-- Member 3 -->
+        <div class="group text-center">
+            <div class="relative w-40 h-40 mx-auto mb-6">
+            <img 
+                src="Images/Team3.jpg" 
+                alt="Team Member"
+                class="w-full h-full object-cover rounded-full shadow-lg"
+            >
+            </div>
+            <h3 class="text-xl font-bold mb-1">Charles Xu</h3>
+            <p class="text-singularity-blue font-medium mb-3">Lecture & Trivia Lead</p>
+            <p class="text-gray-600 text-sm px-4">
+            Organises lessons and trivias that take place every Thursday during self-study class. 
+            </p>
+            
+        </div>
+
+        </div>
+
+        <!-- 志愿者 / 贡献者 -->
+        <div class="text-center">
+        <h3 class="text-2xl font-bold mb-8">Other Contributors</h3>
+        <div class="flex flex-wrap justify-center gap-6">
+            <img src="Images/Avatar1.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+            <img src="Images/Avatar2.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+            <img src="Images/Avatar3.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+            <img src="Images/Avatar4.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+            <img src="Images/Avatar5.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+            <img src="Images/Avatar6.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+        </div>
+        <p class="text-gray-500 mt-6 text-sm">
+            15+ members across curriculum, design, development, and outreach.
+        </p>
+        </div>
+
+    </div>
+    </section>
+
+    <!-- Join Us 区域 -->
+    <section id="join" class="py-20 bg-singularity-gray text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">Join Singularity Lab</h2>
+            <p class="text-gray-300 mb-12 max-w-2xl mx-auto">Help us spread the love of physical science! There are many ways you can support our mission and contribute to our community.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <!-- GitHub 贡献 -->
+                <div class="bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
+                    <div class="text-4xl mb-4">
+                        <a href="https://github.com/StevenVRP" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Contribute on GitHub</h3>
+                    <p class="text-gray-300 mb-6">Help develop Study Assistant Pro, fix bugs, or add new features. Our codebase is open source and welcomes contributions from developers of all skill levels.</p>
+                    <a href="https://github.com/StevenVRP" target="_blank" class="inline-block bg-white text-singularity-dark px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                        Visit Our GitHub
+                    </a>
+                </div>
+                
+                <!-- 订阅视频 -->
+                <div class="bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
+                    <div class="text-4xl mb-4">
+                        <a href="https://space.bilibili.com/1372845857?spm_id_from=333.1007.0.0" target="_blank"
+                            style="display: flex; justify-content: center;">
+                            <img src="Images/Bilibili.svg" alt="Bilibili" class="h-6" >
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Subscribe to Our Videos</h3>
+                    <p class="text-gray-300 mb-6">Watch and share our physical science videos on social media. Your views, likes, and shares help us reach more people and create more content.</p>
+                    <a href="https://space.bilibili.com/1372845857?spm_id_from=333.1007.0.0" target="_blank" class="inline-block bg-white text-singularity-dark px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                        Subscribe Now
+                    </a>
+                </div>
+                
+                <!-- 联系我们 -->
+                <div class="bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
+                    <div class="text-4xl mb-4">
+                        <a href="mailto:singularitylabgroup@outlook.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Contact Us</h3>
+                    <p class="text-gray-300 mb-6">Have ideas for new lessons? Want to collaborate? Or just want to say hello? Send us an email and we'll get back to you!</p>
+                    <a href="mailto:singularitylabgroup@outlook.com" class="inline-block bg-white text-singularity-dark px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                        Send Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 订阅区域
+    <section class="py-16 bg-singularity-dark text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold mb-4">Stay Updated</h2>
+            <p class="text-gray-300 mb-8 max-w-2xl mx-auto">Subscribe to our newsletter to receive the latest lessons, video releases, and chemistry news directly in your inbox.</p>
+            
+            <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+                <input type="email" placeholder="Enter your email address" class="flex-1 px-4 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50">
+                <button type="submit" class="bg-white text-singularity-dark px-6 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </section> -->
+
+    <!-- 页脚 -->
+    <footer class="bg-black text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Resources -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#lessons" class="text-gray-400 hover:text-white transition-colors">Singularity Lessons</a></li>
+                        <li><a href="#study-assistant" class="text-gray-400 hover:text-white transition-colors">Study Assistant Pro</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Community -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Community</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#community" class="text-gray-400 hover:text-white transition-colors">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Discussion Forum</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Events</a></li>
+                    </ul>
+                </div>
+                
+                <!-- About -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">About</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#partners" class="text-gray-400 hover:text-white transition-colors">Partners</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">Our Mission</a></li>
+                        <li><a href="#members" class="text-gray-400 hover:text-white transition-colors">Meet the Team</a></li>
+                        <li><a href="#join" class="text-gray-400 hover:text-white transition-colors">Join Us</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Follow Us -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4 mb-6">
+                        <a href="https://space.bilibili.com/1372845857" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xl">
+                            <i class="fab fa-bilibili"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@SingularityLab123" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xl">
+                            <i class="fab fa-youtube-play"></i>
+                        </a>
+                        </a>
+                        <a href="mailto:singularitylabgroup@outlook.com" class="text-gray-400 hover:text-white transition-colors text-xl">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                    <h4 class="text-lg font-bold mb-4">Language</h4>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">English</a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0"><i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70 hover:opacity-100 transition-opacity"></i> 2026 Singularity Lab. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="legal.html#privacy-policy" class="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="legal.html#terms-of-use" class="text-gray-500 hover:text-white text-sm transition-colors">Terms of Use</a>
+                    <a href="legal.html#license" class="text-gray-500 hover:text-white text-sm transition-colors">License</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const track = document.getElementById('logo-track');
+            if (track) {
+                // 克隆一次，创建无缝循环
+                track.innerHTML += track.innerHTML;
+                
+                // 可选：如果仍然有跳跃感，可以添加这个
+                track.style.animationTimingFunction = 'linear';
+            }
+        });
+        
+        // 移动端菜单切换
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 点击移动端菜单链接后关闭菜单
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 图片懒加载
+        document.addEventListener("DOMContentLoaded", function() {
+            const lazyImages = document.querySelectorAll("img");
+            
+            if ("IntersectionObserver" in window) {
+                const imageObserver = new IntersectionObserver(function(entries, observer) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            const image = entry.target;
+                            image.classList.add('opacity-100');
+                            image.classList.remove('opacity-0');
+                            imageObserver.unobserve(image);
+                        }
+                    });
+                });
+                
+                lazyImages.forEach(function(image) {
+                    image.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                    imageObserver.observe(image);
+                });
+            }
+        });
+        
+        // FAQ 折叠功能
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                // 切换当前FAQ的显示状态
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+                
+                // 关闭其他所有FAQ
+                faqToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        const otherContent = otherToggle.nextElementSibling;
+                        const otherIcon = otherToggle.querySelector('i');
+                        
+                        if (!otherContent.classList.contains('hidden')) {
+                            otherContent.classList.add('hidden');
+                            otherIcon.classList.remove('rotate-180');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
