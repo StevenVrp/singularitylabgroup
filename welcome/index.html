@@ -284,14 +284,35 @@
             loadUser(session.user);
         });
 
-        // 加载用户信息
         function loadUser(user) {
             document.getElementById('user-email').textContent = user.email;
             const fullName = `${user.user_metadata?.first_name || ''} ${user.user_metadata?.last_name || ''}`.trim();
             document.getElementById('user-name').textContent = fullName || 'Welcome User';
+            
+            // 填充基础信息
             document.getElementById('first-name').value = user.user_metadata?.first_name || '';
             document.getElementById('last-name').value = user.user_metadata?.last_name || '';
-            document.getElementById('gender').value = user.user_metadata?.gender || '';
+            
+            // 关键修复：处理性别显示
+            const gender = user.user_metadata?.gender || '';
+            const genderSelect = document.getElementById('gender');
+            const customContainer = document.getElementById('custom-gender-container');
+            const customInput = document.getElementById('custom-gender');
+            
+            // 预设性别（male/female/others）
+            if (['male', 'female', 'others'].includes(gender)) {
+                genderSelect.value = gender;
+                customContainer.classList.add('hidden');
+                customInput.required = false;
+            } else {
+                // 非预设性别：显示自定义输入框并填充值
+                genderSelect.value = 'others';
+                customContainer.classList.remove('hidden');
+                customInput.value = gender;
+                customInput.required = true;
+            }
+            
+            // 头像显示
             if (user.user_metadata?.avatar_url) {
                 document.getElementById('avatar-preview').src = user.user_metadata.avatar_url;
             }
