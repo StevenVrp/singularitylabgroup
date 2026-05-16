@@ -369,7 +369,7 @@
             if (!session) return;
 
             const { error } = await supabaseClient.auth.resetPasswordForEmail(session.user.email, {
-                redirectTo: window.location.origin + '/reset-password.html'
+                redirectTo: window.location.origin + '/resetpassword/'
             });
 
             if (error) {
