@@ -67,15 +67,13 @@
 </head>
 <body class="bg-white text-singularity-gray">
     <!-- 导航栏（完全复制你的原始顶栏） -->
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4">
+    <!-- 修改 welcome.html 的导航栏样式 -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 bg-white shadow-sm">
         <div class="container mx-auto px-6 flex items-center justify-between">
             <!-- Logo -->
             <div class="flex items-center">
                 <a href="/" class="text-2xl font-bold">
-                    <!-- 白色Logo (默认显示) -->
-                    <img src="/Images/Logo1.png" alt="Singularity Lab Logo" class="logo-white h-10">
-                    <!-- 黑色Logo (滚动后显示) -->
-                    <img src="/Images/Logo2.png" alt="Singularity Lab Logo" class="logo-black h-10 hidden">
+                    <img src="/Images/Logo2.png" alt="Singularity Lab Logo" class="h-10">
                 </a>
             </div>
             
@@ -99,7 +97,7 @@
                 <a href="#" class="nav-link text-white hover:text-gray-300 transition-colors">
                     <i class="fa fa-bookmark"></i>
                 </a>
-                <a href="/login/" class="nav-link text-white hover:text-gray-300 transition-colors">
+                <a href="/welcome/" class="nav-link text-white hover:text-gray-300 transition-colors">
                     <i class="fa fa-user"></i>
                 </a>
                 <!-- 移动端菜单按钮 -->
@@ -299,68 +297,124 @@
             }
         }
 
-        // 2. 修复：照片上传到 Supabase
+        // 在 welcome.html 中修复头像上传
         document.getElementById('avatar-upload').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
+            
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) return;
-
-            const fileName = `${session.user.id}-${Date.now()}.${file.name.split('.').pop()}`;
-            const { data: uploadData, error } = await supabaseClient.storage
+        
+            // 生成唯一文件名，包含用户ID
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${session.user.id}/${Date.now()}.${fileExt}`;
+            
+            // 上传到 Supabase Storage
+            const { data: uploadData, error: uploadError } = await supabaseClient.storage
                 .from('avatars')
-                .upload(fileName, file);
-
-            if (error) {
-                showMessage('Upload failed: ' + error.message, 'error');
+                .upload(fileName, file, {
+                    cacheControl: '3600',
+                    upsert: true
+                });
+        
+            if (uploadError) {
+                showMessage('Upload failed: ' + uploadError.message, 'error');
                 return;
             }
-
+        
+            // 获取公共URL
             const { data: urlData } = supabaseClient.storage
                 .from('avatars')
                 .getPublicUrl(fileName);
-
-            document.getElementById('avatar-preview').src = urlData.publicUrl;
-            showMessage('Avatar uploaded!', 'success');
+        
+            // 更新用户 metadata
+            const { error: updateError } = await supabaseClient.auth.updateUser({
+                data: { avatar_url: urlData.publicUrl }
+            });
+        
+            if (updateError) {
+                showMessage('Failed to update profile: ' + updateError.message, 'error');
+            } else {
+                document.getElementById('avatar-preview').src = urlData.publicUrl;
+                showMessage('Avatar uploaded successfully!', 'success');
+            }
         });
 
-        // 3. 修复：保存信息（停止加载动画）
+       // 在 welcome.html 中修复性别选择
+        function toggleCustomGender() {
+            const genderSelect = document.getElementById('gender');
+            const customContainer = document.getElementById('custom-gender-container');
+            const customInput = document.getElementById('custom-gender');
+            
+            if (genderSelect.value === 'others') {
+                customContainer.classList.remove('hidden');
+                customInput.required = true;
+            } else {
+                customContainer.classList.add('hidden');
+                customInput.required = false;
+                customInput.value = '';
+            }
+        }
+        
+        // 修复保存逻辑
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const saveBtn = document.getElementById('save-btn');
             const saveText = document.getElementById('save-text');
             const saveLoading = document.getElementById('save-loading');
-
+        
             saveText.textContent = 'Saving...';
             saveLoading.classList.remove('hidden');
             saveBtn.disabled = true;
-
+        
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) {
-                showMessage('Session expired.', 'error');
+                showMessage('Session expired. Please login again.', 'error');
                 saveLoading.classList.add('hidden');
                 saveBtn.disabled = false;
                 return;
             }
-
+        
+            const gender = document.getElementById('gender').value;
+            let customGender = '';
+            if (gender === 'others') {
+                customGender = document.getElementById('custom-gender').value;
+            }
+        
             const userData = {
                 first_name: document.getElementById('first-name').value,
                 last_name: document.getElementById('last-name').value,
-                gender: document.getElementById('gender').value,
+                gender: gender,
+                custom_gender: customGender,
                 avatar_url: document.getElementById('avatar-preview').src
             };
-
-            const { error } = await supabaseClient.auth.updateUser({ data: userData });
+        
+            const { error } = await supabaseClient.auth.updateUser({
+                data: userData
+            });
             
             if (error) {
                 showMessage('Save failed: ' + error.message, 'error');
             } else {
-                showMessage('Profile saved!', 'success');
+                showMessage('Profile saved successfully!', 'success');
             }
-
+        
             saveText.textContent = 'Save Changes';
             saveLoading.classList.add('hidden');
             saveBtn.disabled = false;
+        });
+        // 在 welcome.html 的脚本中添加
+        document.getElementById('logout-btn').addEventListener('click', async function() {
+            const { error } = await supabaseClient.auth.signOut();
+            if (error) {
+                console.error('Logout error:', error);
+            } else {
+                // 清除本地存储
+                localStorage.removeItem('rememberedEmail');
+                localStorage.removeItem('rememberMe');
+                sessionStorage.clear();
+                window.location.href = '/';
+            }
         });
 
         // 4. 密码发邮件
