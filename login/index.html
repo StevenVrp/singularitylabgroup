@@ -147,7 +147,7 @@
                 <div class="flex items-start pt-1">
                     <input type="checkbox" id="terms" class="mt-1 rounded border-gray-300 text-primary focus:ring-primary" required>
                     <label for="terms" class="ml-2 text-sm text-gray-600">
-                        I agree to the <a href="legal.html#terms-of-use" class="text-primary hover:underline">Terms</a> and <a href="legal.html#privacy-policy" class="text-primary hover:underline">Privacy Policy</a>.
+                        I agree to the <a href="/legal/#terms-of-use" class="text-primary hover:underline">Terms</a> and <a href="/legal/#privacy-policy" class="text-primary hover:underline">Privacy Policy</a>.
                     </label>
                 </div>
                 <button type="submit" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl btn-hover flex items-center justify-center mt-2" id="signup-btn">
@@ -309,7 +309,7 @@
             if (!email) return alert("Please enter your email.");
             
             const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/reset-password.html`
+                redirectTo: `${window.location.origin}/resetpassword/`
             });
             
             if (error) {
@@ -364,6 +364,30 @@
             } else {
                 showMessage('Login successful! Redirecting...', false);
                 setTimeout(() => window.location.href = '/welcome/', 1500); 
+            }
+            if (!error && data.session) {
+                const rememberMe = document.getElementById('remember').checked;
+                
+                // 设置会话持久化
+                if (rememberMe) {
+                    // 长期保存 - 存储到 localStorage
+                    localStorage.setItem('rememberedEmail', document.getElementById('email').value);
+                    // 注意：不要存储明文密码，这里只存储标记
+                    localStorage.setItem('rememberMe', 'true');
+                } else {
+                    // 会话级保存 - 关闭浏览器后失效
+                    sessionStorage.setItem('rememberMe', 'true');
+                }
+                
+                window.location.href = '/welcome/';
+            }
+        });
+        // 页面加载时检查是否有记住的邮箱
+        document.addEventListener('DOMContentLoaded', function() {
+            const rememberedEmail = localStorage.getItem('rememberedEmail');
+            if (rememberedEmail) {
+                document.getElementById('email').value = rememberedEmail;
+                document.getElementById('remember').checked = true;
             }
         });
     
