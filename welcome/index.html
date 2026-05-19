@@ -79,29 +79,29 @@
             
             <!-- 桌面端导航菜单 -->
             <div class="hidden md:flex space-x-8">
-                <a href="/home/#partners" class="nav-link text-white hover:text-gray-300 transition-colors">Partners</a>
-                <a href="/home/#lessons" class="nav-link text-white hover:text-gray-300 transition-colors">Singularity Lessons</a>
-                <a href="/home/#study-assistant" class="nav-link text-white hover:text-gray-300 transition-colors">Study Assistant <span class="pro-badge">Pro</span></a>
-                <a href="/home/#community" class="nav-link text-white hover:text-gray-300 transition-colors">Community</a>
-                <a href="/home/#about" class="nav-link text-white hover:text-gray-300 transition-colors">About Us</a>
-                <a href="/home/#members" class="nav-link text-white hover:text-gray-300 transition-colors">Meet the Team</a>
-                <a href="/home/#join" class="nav-link text-white hover:text-gray-300 transition-colors">Join Us</a>
-                <a href="/legal/" class="nav-link text-white hover:text-gray-300 transition-colors">Legal</a>
+                <a href="/home/#partners" class="nav-link text-black hover:text-gray-600 transition-colors">Partners</a>
+                <a href="/home/#lessons" class="nav-link text-black hover:text-gray-600 transition-colors">Singularity Lessons</a>
+                <a href="/home/#study-assistant" class="nav-link text-black hover:text-gray-600 transition-colors">Study Assistant <span class="pro-badge">Pro</span></a>
+                <a href="/home/#community" class="nav-link text-black hover:text-gray-600 transition-colors">Community</a>
+                <a href="/home/#about" class="nav-link text-black hover:text-gray-600 transition-colors">About Us</a>
+                <a href="/home/#members" class="nav-link text-black hover:text-gray-600 transition-colors">Meet the Team</a>
+                <a href="/home/#join" class="nav-link text-black hover:text-gray-600 transition-colors">Join Us</a>
+                <a href="/legal/" class="nav-link text-black hover:text-gray-600 transition-colors">Legal</a>
             </div>
             
             <!-- 用户图标 -->
             <div class="flex items-center space-x-6">
-                <a href="#" class="nav-link text-white hover:text-gray-300 transition-colors">
+                <a href="#" class="nav-link text-black hover:text-gray-600 transition-colors">
                     <i class="fa fa-search"></i>
                 </a>
-                <a href="#" class="nav-link text-white hover:text-gray-300 transition-colors">
+                <a href="#" class="nav-link text-black hover:text-gray-600 transition-colors">
                     <i class="fa fa-bookmark"></i>
                 </a>
-                <a href="/welcome/" class="nav-link text-white hover:text-gray-300 transition-colors">
+                <a href="/welcome/" class="nav-link text-black hover:text-gray-600 transition-colors">
                     <i class="fa fa-circle-user"></i>
                 </a>
                 <!-- 移动端菜单按钮 -->
-                <button id="mobile-menu-button" class="md:hidden nav-link text-white hover:text-gray-300 transition-colors">
+                <button id="mobile-menu-button" class="md:hidden nav-link text-black hover:text-gray-600 transition-colors">
                     <i class="fa fa-bars"></i>
                 </button>
             </div>
@@ -155,12 +155,20 @@
 
                     <div>
                         <label class="block text-gray-700 font-medium mb-2">Gender</label>
-                        <select id="gender" class="form-input">
-                            <option value="">Select</option>
+                        <select id="gender" class="form-input" onchange="toggleCustomGender()">
+                            <option value="prefer_not_to_say">Prefer not to say</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
-                            <option value="other">Other</option>
+                            <option value="others">Others</option>
                         </select>
+                        <div id="custom-gender-container" class="hidden mt-4">
+                            <input
+                                type="text"
+                                id="custom-gender"
+                                class="form-input"
+                                placeholder="Please specify"
+                            >
+                        </div>
                     </div>
 
                     <!-- 密码重置（发邮件） -->
@@ -175,6 +183,13 @@
                     <button type="submit" id="save-btn" class="save-btn w-full flex items-center justify-center">
                         <span id="save-text">Save Changes</span>
                         <div id="save-loading" class="loading-spinner ml-2 hidden"></div>
+                    </button>
+                    <button
+                        type="button"
+                        id="logout-btn"
+                        class="w-full mt-4 px-4 py-3 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition"
+                    >
+                        Logout
                     </button>
                 </form>
 
@@ -276,11 +291,46 @@
 
         // 1. 检查登录状态（关闭页面后失效）
         document.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
+
+            const ONE_DAY = 24 * 60 * 60 * 1000;
+        
+            const loginTime =
+                localStorage.getItem('login_time');
+        
+            if (!loginTime) {
+        
                 window.location.href = '/login/';
+        
                 return;
             }
+        
+            const expired =
+                Date.now() - parseInt(loginTime) > ONE_DAY;
+        
+            if (expired) {
+        
+                await supabaseClient.auth.signOut();
+        
+                localStorage.removeItem('login_time');
+        
+                window.location.href = '/login/';
+        
+                return;
+            }
+        
+            const {
+                data: { session }
+            } = await supabaseClient.auth.getSession();
+        
+            if (!session) {
+        
+                localStorage.removeItem('login_time');
+        
+                window.location.href = '/login/';
+        
+                return;
+            }
+        
             loadUser(session.user);
         });
 
@@ -293,23 +343,38 @@
             document.getElementById('first-name').value = user.user_metadata?.first_name || '';
             document.getElementById('last-name').value = user.user_metadata?.last_name || '';
             
-            // 关键修复：处理性别显示
-            const gender = user.user_metadata?.gender || '';
-            const genderSelect = document.getElementById('gender');
-            const customContainer = document.getElementById('custom-gender-container');
-            const customInput = document.getElementById('custom-gender');
+            const gender =
+                user.user_metadata?.gender ||
+                'prefer_not_to_say';
             
-            // 预设性别（male/female/others）
-            if (['male', 'female', 'others'].includes(gender)) {
+            const genderSelect =
+                document.getElementById('gender');
+            
+            const customContainer =
+                document.getElementById('custom-gender-container');
+            
+            const customInput =
+                document.getElementById('custom-gender');
+            
+            const standardGenders = [
+                'male',
+                'female',
+                'prefer_not_to_say'
+            ];
+            
+            if (standardGenders.includes(gender)) {
+            
                 genderSelect.value = gender;
+            
                 customContainer.classList.add('hidden');
-                customInput.required = false;
+            
             } else {
-                // 非预设性别：显示自定义输入框并填充值
+            
                 genderSelect.value = 'others';
+            
                 customContainer.classList.remove('hidden');
+            
                 customInput.value = gender;
-                customInput.required = true;
             }
             
             // 头像显示
@@ -322,6 +387,25 @@
         document.getElementById('avatar-upload').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
+            if (!file.type.startsWith('image/')) {
+
+                showMessage(
+                    'Please upload a valid image.',
+                    'error'
+                );
+            
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+            
+                showMessage(
+                    'Image must be smaller than 5MB.',
+                    'error'
+                );
+            
+                return;
+            }
             
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (!session) return;
@@ -363,95 +447,137 @@
 
        // 在 welcome.html 中修复性别选择
         function toggleCustomGender() {
-            const genderSelect = document.getElementById('gender');
-            const customContainer = document.getElementById('custom-gender-container');
-            const customInput = document.getElementById('custom-gender');
-            
-            if (genderSelect.value === 'others') {
-                customContainer.classList.remove('hidden');
-                customInput.required = true;
+
+            const gender =
+                document.getElementById('gender').value;
+        
+            const container =
+                document.getElementById('custom-gender-container');
+        
+            const input =
+                document.getElementById('custom-gender');
+        
+            if (gender === 'others') {
+        
+                container.classList.remove('hidden');
+        
+                input.required = true;
+        
             } else {
-                customContainer.classList.add('hidden');
-                customInput.required = false;
-                customInput.value = '';
+        
+                container.classList.add('hidden');
+        
+                input.required = false;
+        
+                input.value = '';
             }
         }
         
-        // 修复保存逻辑
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
+
             e.preventDefault();
-            const saveBtn = document.getElementById('save-btn');
-            const saveText = document.getElementById('save-text');
-            const saveLoading = document.getElementById('save-loading');
+        
+            const saveBtn =
+                document.getElementById('save-btn');
+        
+            const saveText =
+                document.getElementById('save-text');
+        
+            const saveLoading =
+                document.getElementById('save-loading');
         
             saveText.textContent = 'Saving...';
+        
             saveLoading.classList.remove('hidden');
+        
             saveBtn.disabled = true;
         
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                showMessage('Session expired. Please login again.', 'error');
+            try {
+        
+                const {
+                    data: { session }
+                } = await supabaseClient.auth.getSession();
+        
+                if (!session) {
+        
+                    throw new Error(
+                        'Session expired. Please login again.'
+                    );
+                }
+        
+                const gender =
+                    document.getElementById('gender').value;
+        
+                const customGender =
+                    document.getElementById('custom-gender').value;
+        
+                const userData = {
+        
+                    first_name:
+                        document.getElementById('first-name').value,
+        
+                    last_name:
+                        document.getElementById('last-name').value,
+        
+                    gender:
+                        gender === 'others'
+                        ? customGender
+                        : gender,
+        
+                    avatar_url:
+                        document.getElementById('avatar-preview').src
+                };
+        
+                const { error } =
+                    await supabaseClient.auth.updateUser({
+                        data: userData
+                    });
+        
+                if (error) {
+        
+                    throw error;
+                }
+        
+                showMessage(
+                    'Profile saved successfully!',
+                    'success'
+                );
+        
+            } catch (error) {
+        
+                showMessage(
+                    error.message || 'Save failed.',
+                    'error'
+                );
+        
+            } finally {
+        
+                saveText.textContent = 'Save Changes';
+        
                 saveLoading.classList.add('hidden');
+        
                 saveBtn.disabled = false;
-                return;
             }
-        
-            const gender = document.getElementById('gender').value;
-            let customGender = '';
-            if (gender === 'others') {
-                customGender = document.getElementById('custom-gender').value;
-            }
-        
-            const userData = {
-                first_name: document.getElementById('first-name').value,
-                last_name: document.getElementById('last-name').value,
-                gender: gender,
-                custom_gender: customGender,
-                avatar_url: document.getElementById('avatar-preview').src
-            };
-        
-            const { error } = await supabaseClient.auth.updateUser({
-                data: userData
-            });
-            
-            if (error) {
-                showMessage('Save failed: ' + error.message, 'error');
-            } else {
-                showMessage('Profile saved successfully!', 'success');
-            }
-        
-            saveText.textContent = 'Save Changes';
-            saveLoading.classList.add('hidden');
-            saveBtn.disabled = false;
         });
         // 在 welcome.html 的脚本中添加
-        document.getElementById('logout-btn').addEventListener('click', async function() {
-            const { error } = await supabaseClient.auth.signOut();
-            if (error) {
-                console.error('Logout error:', error);
-            } else {
-                // 清除本地存储
-                localStorage.removeItem('rememberedEmail');
-                localStorage.removeItem('rememberMe');
-                sessionStorage.clear();
-                window.location.href = '/';
-            }
+        document
+        .getElementById('logout-btn')
+        .addEventListener('click', async () => {
+        
+            await supabaseClient.auth.signOut();
+        
+            localStorage.removeItem('login_time');
+        
+            window.location.href = '/';
         });
 
         // 4. 密码发邮件
-        document.getElementById('reset-password-btn').addEventListener('click', async () => {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) return;
-
-            const { error } = await supabaseClient.auth.resetPasswordForEmail(session.user.email, {
-                redirectTo: window.location.origin + '/resetpassword/'
-            });
-
-            if (error) {
-                showMessage('Failed to send link: ' + error.message, 'error');
-            } else {
-                showMessage('Reset link sent to your email!', 'success');
-            }
+        document
+        .getElementById('reset-password-btn')
+        .addEventListener('click', () => {
+        
+            window.location.href =
+                '/resetpassword/';
         });
 
         function showMessage(text, type) {
