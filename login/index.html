@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Singularity Lab - Authentication</title>
 
-    <!-- Dependencies -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        rel="stylesheet"
+    />
+
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
-    
+
+    <!-- reCAPTCHA -->
+    <script
+        src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit"
+        async
+        defer
+    ></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -22,441 +36,1028 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                     },
-                }
+                },
+            },
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
             }
         }
-    </script>
-    
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .input-focus { @apply focus:border-primary focus:ring-2 focus:ring-primary/20; }
-        .btn-hover { @apply hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200; }
-        
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-    
+
         .animate-scroll {
             animation: scroll 40s linear infinite;
             width: max-content;
             will-change: transform;
         }
-        
-        /* Tab glow effect */
+
         .tab-glow:hover {
             filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.5));
         }
+
+        .btn-hover {
+            transition: all 0.2s ease;
+        }
+
+        .btn-hover:hover {
+            transform: translateY(-2px);
+        }
+
+        .custom-shadow {
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.05),
+                0 5px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        input:focus,
+        select:focus {
+            outline: none !important;
+            border-color: #3B82F6 !important;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
     </style>
 </head>
+
 <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen flex items-center justify-center p-4">
-    
+
     <!-- Main Container -->
-    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-custom overflow-hidden flex flex-col lg:flex-row min-h-[770px] lg:min-h-[770px]">
-        
-        <!-- Right Form Panel -->
-        <div class="w-full p-8 lg:p-12 flex flex-col justify-start min-h-[770px] lg:min-h-[770px]">
-            
+    <div class="w-full max-w-2xl bg-white rounded-2xl custom-shadow overflow-hidden flex flex-col lg:flex-row min-h-[770px]">
+
+        <!-- Form Panel -->
+        <div class="w-full p-8 lg:p-12 flex flex-col justify-start min-h-[770px]">
+
             <!-- Tabs -->
             <div class="flex border-b border-gray-100 mb-8">
-                <button id="login-tab" class="flex-1 py-3 font-bold text-lg text-primary border-b-2 border-primary tab-glow hover:text-primary transition-colors">Login</button>
-                <button id="signup-tab" class="flex-1 py-3 font-bold text-lg text-gray-400 hover:text-primary transition-colors tab-glow">Sign Up</button>
+                <button
+                    id="login-tab"
+                    class="flex-1 py-3 font-bold text-lg text-primary border-b-2 border-primary tab-glow transition-colors"
+                >
+                    Login
+                </button>
+
+                <button
+                    id="signup-tab"
+                    class="flex-1 py-3 font-bold text-lg text-gray-400 hover:text-primary transition-colors tab-glow"
+                >
+                    Sign Up
+                </button>
             </div>
-    
-            <!-- Login Form -->
+
+            <!-- LOGIN FORM -->
             <form id="login-form" class="space-y-5">
+
+                <!-- Email -->
                 <div class="relative">
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Email
+                    </label>
+
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none mt-7">
                         <i class="fas fa-envelope text-gray-400"></i>
                     </div>
-                    <input type="email" id="email" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl input-focus" placeholder="you@example.com" required>
+
+                    <input
+                        type="email"
+                        id="email"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl"
+                        placeholder="you@example.com"
+                        required
+                    />
                 </div>
+
+                <!-- Password -->
                 <div class="relative">
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Password
+                    </label>
+
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none mt-7">
                         <i class="fas fa-lock text-gray-400"></i>
                     </div>
-                    <input type="password" id="password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl input-focus" placeholder="••••••••" required>
+
+                    <input
+                        type="password"
+                        id="password"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl"
+                        placeholder="••••••••"
+                        required
+                    />
                 </div>
-                <!-- reCAPTCHA (Required for Login) -->
+
+                <!-- Recaptcha -->
                 <div class="flex justify-center pt-2">
-                    <div id="recaptcha-login" class="g-recaptcha" data-sitekey="6Levr-ksAAAAAH8krNDApNxbGzLLcKiBY7x4Gah-"></div>
+                    <div id="recaptcha-login"></div>
                 </div>
-    
+
+                <!-- Remember -->
                 <div class="flex items-center justify-between pt-1">
+
                     <div class="flex items-center">
-                        <input type="checkbox" id="remember" class="rounded border-gray-300 text-primary focus:ring-primary">
-                        <label for="remember" class="ml-2 text-sm text-gray-600">Remember me</label>
+                        <input
+                            type="checkbox"
+                            id="remember"
+                            class="rounded border-gray-300 text-primary focus:ring-primary"
+                        />
+
+                        <label for="remember" class="ml-2 text-sm text-gray-600">
+                            Remember email
+                        </label>
                     </div>
-                    <button type="button" onclick="showResetModal()" class="text-sm text-primary hover:underline">Forgot password?</button>
+
+                    <button
+                        type="button"
+                        onclick="showResetModal()"
+                        class="text-sm text-primary hover:underline"
+                    >
+                        Forgot password?
+                    </button>
                 </div>
-    
-                <button type="submit" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl btn-hover flex items-center justify-center mt-2" id="login-btn">
-                    <span>Sign In</span>
-                    <i class="fas fa-spinner fa-spin hidden ml-2" id="login-spinner"></i>
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    id="login-btn"
+                    class="w-full bg-primary text-white font-bold py-3.5 rounded-xl btn-hover flex items-center justify-center"
+                >
+                    <span id="login-btn-text">Sign In</span>
+
+                    <i
+                        id="login-spinner"
+                        class="fas fa-spinner fa-spin hidden ml-2"
+                    ></i>
                 </button>
-                
-                <!-- 新增：登录提示 -->
-                <div class="text-xs text-gray-500 mt-4 text-center">
-                    By signing in, you agree to our <a href="/legal/#terms-of-use" class="text-primary hover:underline">Terms of Use</a> and <a href="/legal/#privacy-policy" class="text-primary hover:underline">Privacy Policy</a>. 
-                    <br>
-                    "Remember me" keeps you logged in across browser restarts. Uncheck to log out when closing the browser.
+
+                <!-- Info -->
+                <div class="text-xs text-gray-500 mt-4 text-center leading-relaxed">
+                    By signing in, you agree to our
+                    <a href="/legal/#terms-of-use" class="text-primary hover:underline">
+                        Terms of Use
+                    </a>
+                    and
+                    <a href="/legal/#privacy-policy" class="text-primary hover:underline">
+                        Privacy Policy
+                    </a>.
+                    <br /><br />
+                    Sessions last for 24 hours from login time.
+                    <br />
+                    “Remember email” only autofills your email next time.
                 </div>
             </form>
-    
-            <!-- Sign Up Form -->
+
+            <!-- SIGNUP FORM -->
             <form id="signup-form" class="space-y-5 hidden">
+
+                <!-- Names -->
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="relative">
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">First Name</label>
-                        <input type="text" id="first-name" class="w-full px-4 py-3 border border-gray-200 rounded-xl input-focus" placeholder="John" required>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                            First Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="first-name"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl"
+                            placeholder="John"
+                            required
+                        />
                     </div>
-                    <div class="relative">
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Last Name</label>
-                        <input type="text" id="last-name" class="w-full px-4 py-3 border border-gray-200 rounded-xl input-focus" placeholder="Doe" required>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                            Last Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="last-name"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl"
+                            placeholder="Doe"
+                            required
+                        />
                     </div>
                 </div>
+
+                <!-- Gender -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Gender Identity</label>
-                    <select id="gender" class="w-full px-4 py-3 border border-gray-200 rounded-xl input-focus" onchange="toggleCustomGender()">
-                        <option value="">Prefer not to say</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="others">Others</option>
+
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Gender Identity
+                    </label>
+
+                    <select
+                        id="gender"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl"
+                        onchange="toggleCustomGender()"
+                    >
+                        <option value="prefer_not_to_say">
+                            Prefer not to say
+                        </option>
+
+                        <option value="male">
+                            Male
+                        </option>
+
+                        <option value="female">
+                            Female
+                        </option>
+
+                        <option value="others">
+                            Others
+                        </option>
                     </select>
-                    
+
+                    <!-- Custom Gender -->
                     <div id="custom-gender-container" class="hidden mt-4">
-                        <input type="text" id="custom-gender" class="w-full px-4 py-3 border border-gray-200 rounded-xl input-focus" placeholder="Please specify your gender">
+
+                        <input
+                            type="text"
+                            id="custom-gender"
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl"
+                            placeholder="Please specify your gender"
+                        />
                     </div>
                 </div>
+
+                <!-- Signup Email -->
                 <div class="relative">
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Email
+                    </label>
+
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none mt-7">
                         <i class="fas fa-envelope text-gray-400"></i>
                     </div>
-                    <input type="email" id="signup-email" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl input-focus" placeholder="you@example.com" required>
+
+                    <input
+                        type="email"
+                        id="signup-email"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl"
+                        placeholder="you@example.com"
+                        required
+                    />
                 </div>
-                
+
+                <!-- Signup Password -->
                 <div class="relative">
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Password
+                    </label>
+
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none mt-7">
                         <i class="fas fa-lock text-gray-400"></i>
                     </div>
-                    <input type="password" id="signup-password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl input-focus" placeholder="Min. 6 characters" required>
+
+                    <input
+                        type="password"
+                        id="signup-password"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl"
+                        placeholder="Minimum 6 characters"
+                        required
+                    />
                 </div>
-                
-                <!-- reCAPTCHA -->
+
+                <!-- Recaptcha -->
                 <div class="flex justify-center pt-2">
-                    <div id="recaptcha-signup" class="g-recaptcha" data-sitekey="6Levr-ksAAAAAH8krNDApNxbGzLLcKiBY7x4Gah-"></div>
+                    <div id="recaptcha-signup"></div>
                 </div>
-    
+
+                <!-- Terms -->
                 <div class="flex items-start pt-1">
-                    <input type="checkbox" id="terms" class="mt-1 rounded border-gray-300 text-primary focus:ring-primary" required>
+
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        class="mt-1 rounded border-gray-300 text-primary focus:ring-primary"
+                        required
+                    />
+
                     <label for="terms" class="ml-2 text-sm text-gray-600">
-                        I agree to the <a href="/legal/#terms-of-use" class="text-primary hover:underline">Terms</a> and <a href="/legal/#privacy-policy" class="text-primary hover:underline">Privacy Policy</a>.
+                        I agree to the
+                        <a href="/legal/#terms-of-use" class="text-primary hover:underline">
+                            Terms
+                        </a>
+                        and
+                        <a href="/legal/#privacy-policy" class="text-primary hover:underline">
+                            Privacy Policy
+                        </a>.
                     </label>
                 </div>
-                <button type="submit" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl btn-hover flex items-center justify-center mt-2" id="signup-btn">
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    id="signup-btn"
+                    class="w-full bg-primary text-white font-bold py-3.5 rounded-xl btn-hover flex items-center justify-center"
+                >
                     <span>Create Account</span>
-                    <i class="fas fa-spinner fa-spin hidden ml-2" id="signup-spinner"></i>
+
+                    <i
+                        id="signup-spinner"
+                        class="fas fa-spinner fa-spin hidden ml-2"
+                    ></i>
                 </button>
-                
-                <!-- 新增：注册提示 -->
-                <div class="text-xs text-gray-500 mt-4 text-center">
-                    Password must be at least 6 characters. We'll send a confirmation email to activate your account. 
-                    <br>
-                    By signing up, you agree to our <a href="/legal/#terms-of-use" class="text-primary hover:underline">Terms of Use</a> and <a href="/legal/#privacy-policy" class="text-primary hover:underline">Privacy Policy</a>.
-                </div>
             </form>
-    
-            <!-- Status Message -->
-            <div id="message" class="mt-6 text-center text-sm hidden p-3 rounded-xl"></div>
-    
-            <!-- Premium Filler Content -->
-            <div class="mt-12 pt-6 border-t border-gray-100" id="premium-filler">
+
+            <!-- Status -->
+            <div
+                id="message"
+                class="mt-6 text-center text-sm hidden p-3 rounded-xl"
+            ></div>
+
+            <!-- Bottom -->
+            <div class="mt-12 pt-6 border-t border-gray-100">
+
                 <div class="overflow-hidden relative mt-8">
+
                     <div class="flex animate-scroll space-x-12" id="logo-track">
-                        <i class="fab fa-microsoft text-[2.5rem] opacity-70 hover:opacity-100 transition-opacity"></i>
-                        <i class="fab fa-google text-[2.5rem] opacity-70 hover:opacity-100 transition-opacity"></i>
-                        <i class="fab fa-google-plus-g text-[2.5rem] opacity-70 hover:opacity-100 transition-opacity"></i>
-                        <i class="fab fa-google-drive text-[2.5rem] opacity-70 hover:opacity-100 transition-opacity"></i>
-                        <i class="fab fa-github text-[2.5rem] opacity-70 hover:opacity-100 transition-opacity"></i>
-                        <i class="fa-regular fa-closed-captioning text-[2.5rem] opacity-70 hover:opacity-100 transition-opacity"></i>
-                        <i class="fab fa-bilibili text-[2.5rem] opacity-70 hover:opacity-100 transition-opacity"></i>
-                        <img src="" alt="Xiaohongshu" class="h-12 opacity-70 hover:opacity-100 transition-opacity">
-                        <i class="fab fa-weixin text-[2.5rem] opacity-70 hover:opacity-100 transition-opacity"></i>
-                        <i class="fab fa-youtube text-[2.5rem] opacity-70 hover:opacity-100 transition-opacity"></i>
+
+                        <i class="fab fa-microsoft text-[2.5rem] opacity-70"></i>
+                        <i class="fab fa-google text-[2.5rem] opacity-70"></i>
+                        <i class="fab fa-github text-[2.5rem] opacity-70"></i>
+                        <i class="fab fa-bilibili text-[2.5rem] opacity-70"></i>
+                        <i class="fab fa-weixin text-[2.5rem] opacity-70"></i>
+                        <i class="fab fa-youtube text-[2.5rem] opacity-70"></i>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Password Reset Modal -->
-    <div id="reset-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+
+    <!-- RESET MODAL -->
+    <div
+        id="reset-modal"
+        class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50"
+    >
+
         <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
-            <h3 class="text-xl font-bold mb-4">Reset Password</h3>
-            <p class="text-gray-600 mb-6">Enter your email to receive a reset link.</p>
-            <input type="email" id="reset-email" class="w-full px-4 py-3 border border-gray-200 rounded-xl mb-6" placeholder="you@example.com">
+
+            <h3 class="text-xl font-bold mb-4">
+                Reset Password
+            </h3>
+
+            <p class="text-gray-600 mb-6">
+                Enter your email to receive a reset link.
+            </p>
+
+            <input
+                type="email"
+                id="reset-email"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl mb-6"
+                placeholder="you@example.com"
+            />
+
             <div class="flex gap-4">
-                <button onclick="hideResetModal()" class="flex-1 py-3 border border-gray-200 rounded-xl">Cancel</button>
-                <button onclick="sendResetEmail()" class="flex-1 py-3 bg-primary text-white rounded-xl">Send Link</button>
+
+                <button
+                    onclick="hideResetModal()"
+                    class="flex-1 py-3 border border-gray-200 rounded-xl"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    onclick="sendResetEmail()"
+                    class="flex-1 py-3 bg-primary text-white rounded-xl"
+                >
+                    Send Link
+                </button>
             </div>
         </div>
     </div>
-    
+
+    <!-- SCRIPT -->
     <script>
-        // --- Supabase Initialization ---
-        const SUPABASE_URL = 'https://wtfmsmibjktgajegflwp.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ';
-        
+
+        // =========================================
+        // SUPABASE
+        // =========================================
+
+        const SUPABASE_URL =
+            'https://wtfmsmibjktgajegflwp.supabase.co';
+
+        const SUPABASE_ANON_KEY =
+            'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ';
+
+        const supabaseClient = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY,
+            {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: true
+                }
+            }
+        );
+
+        // =========================================
+        // SESSION SETTINGS
+        // =========================================
+
+        const ONE_DAY = 24 * 60 * 60 * 1000;
+
+        // =========================================
+        // RECAPTCHA
+        // =========================================
+
         let loginRecaptchaWidgetId = null;
         let signupRecaptchaWidgetId = null;
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            const track = document.getElementById('logo-track');
-            if (track) {
-                track.innerHTML += track.innerHTML;
-                track.style.animationTimingFunction = 'linear';
-            }
-        });
-        
-        let supabaseClient = null;
-        if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        }
-    
-        // --- Explicitly Render reCAPTCHA ---
+
         function onRecaptchaLoad() {
-            const loginElement = document.getElementById('recaptcha-login');
-            if (loginElement && typeof grecaptcha !== 'undefined') {
-                loginRecaptchaWidgetId = grecaptcha.render('recaptcha-login', {
-                    'sitekey': '6Levr-ksAAAAAH8krNDApNxbGzLLcKiBY7x4Gah-'
-                });
-            }
-            
-            const signupElement = document.getElementById('recaptcha-signup');
-            if (signupElement && typeof grecaptcha !== 'undefined') {
-                signupRecaptchaWidgetId = grecaptcha.render('recaptcha-signup', {
-                    'sitekey': '6Levr-ksAAAAAH8krNDApNxbGzLLcKiBY7x4Gah-'
-                });
-            }
+
+            if (typeof grecaptcha === 'undefined') return;
+
+            loginRecaptchaWidgetId = grecaptcha.render(
+                'recaptcha-login',
+                {
+                    sitekey: '6Levr-ksAAAAAH8krNDApNxbGzLLcKiBY7x4Gah-'
+                }
+            );
+
+            signupRecaptchaWidgetId = grecaptcha.render(
+                'recaptcha-signup',
+                {
+                    sitekey: '6Levr-ksAAAAAH8krNDApNxbGzLLcKiBY7x4Gah-'
+                }
+            );
         }
-    
-        // --- DOM Elements ---
+
+        // =========================================
+        // DOM
+        // =========================================
+
         const loginTab = document.getElementById('login-tab');
         const signupTab = document.getElementById('signup-tab');
+
         const loginForm = document.getElementById('login-form');
         const signupForm = document.getElementById('signup-form');
+
         const messageDiv = document.getElementById('message');
-        const premiumFiller = document.getElementById('premium-filler');
-    
-        // Tab handlers
+
+        // =========================================
+        // INITIALIZATION
+        // =========================================
+
+        document.addEventListener('DOMContentLoaded', async () => {
+
+            duplicateLogos();
+
+            loadRememberedEmail();
+
+            await validateExistingSession();
+        });
+
+        // =========================================
+        // DUPLICATE LOGOS
+        // =========================================
+
+        function duplicateLogos() {
+
+            const track = document.getElementById('logo-track');
+
+            if (!track) return;
+
+            track.innerHTML += track.innerHTML;
+        }
+
+        // =========================================
+        // TABS
+        // =========================================
+
         loginTab.addEventListener('click', () => {
+
             loginForm.classList.remove('hidden');
             signupForm.classList.add('hidden');
-            loginTab.classList.add('text-primary', 'border-b-2', 'border-primary');
-            loginTab.classList.remove('text-gray-400');
-            premiumFiller.classList.remove('hidden');
-            signupTab.classList.remove('text-primary', 'border-b-2', 'border-primary');
+
+            loginTab.classList.add(
+                'text-primary',
+                'border-b-2',
+                'border-primary'
+            );
+
+            signupTab.classList.remove(
+                'text-primary',
+                'border-b-2',
+                'border-primary'
+            );
+
             signupTab.classList.add('text-gray-400');
+
             clearMessage();
         });
-    
+
         signupTab.addEventListener('click', () => {
+
             signupForm.classList.remove('hidden');
             loginForm.classList.add('hidden');
-            signupTab.classList.add('text-primary', 'border-b-2', 'border-primary');
-            signupTab.classList.remove('text-gray-400');
-            premiumFiller.classList.add('hidden');
-            loginTab.classList.remove('text-primary', 'border-b-2', 'border-primary');
+
+            signupTab.classList.add(
+                'text-primary',
+                'border-b-2',
+                'border-primary'
+            );
+
+            loginTab.classList.remove(
+                'text-primary',
+                'border-b-2',
+                'border-primary'
+            );
+
             loginTab.classList.add('text-gray-400');
+
             clearMessage();
         });
-    
-        // --- UI Helpers ---
+
+        // =========================================
+        // MESSAGE HELPERS
+        // =========================================
+
         function showMessage(text, isError = true) {
+
             messageDiv.textContent = text;
-            messageDiv.className = `mt-6 text-center text-sm p-3 rounded-xl ${isError ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`;
+
+            messageDiv.className =
+                `mt-6 text-center text-sm p-3 rounded-xl ${
+                    isError
+                    ? 'bg-red-50 text-red-600'
+                    : 'bg-green-50 text-green-600'
+                }`;
+
             messageDiv.classList.remove('hidden');
         }
-    
+
         function clearMessage() {
+
             messageDiv.classList.add('hidden');
         }
-    
-        // --- Social Login ---
-        function loginWithProvider(provider) {
-            if (!supabaseClient) return alert("Database not connected.");
-            supabaseClient.auth.signInWithOAuth({ provider });
-        }
-    
-        // --- Password Reset Modal ---
-        function showResetModal() {
-            document.getElementById('reset-modal').classList.remove('hidden');
-            document.getElementById('reset-modal').classList.add('flex');
-        }
-    
-        function hideResetModal() {
-            document.getElementById('reset-modal').classList.add('hidden');
-            document.getElementById('reset-modal').classList.remove('flex');
-        }
-        
+
+        // =========================================
+        // CUSTOM GENDER
+        // =========================================
+
         function toggleCustomGender() {
-            const genderSelect = document.getElementById('gender');
-            const customContainer = document.getElementById('custom-gender-container');
-            const customInput = document.getElementById('custom-gender');
-            
-            if (genderSelect.value === 'others') {
-                customContainer.classList.remove('hidden');
-                customInput.required = true;
+
+            const gender =
+                document.getElementById('gender').value;
+
+            const container =
+                document.getElementById('custom-gender-container');
+
+            const input =
+                document.getElementById('custom-gender');
+
+            if (gender === 'others') {
+
+                container.classList.remove('hidden');
+
+                input.required = true;
+
             } else {
-                customContainer.classList.add('hidden');
-                customInput.required = false;
-                customInput.value = '';
+
+                container.classList.add('hidden');
+
+                input.required = false;
+
+                input.value = '';
             }
         }
-    
-        async function sendResetEmail() {
-            const email = document.getElementById('reset-email').value;
-            if (!email) return alert("Please enter your email.");
-            
-            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/resetpassword/`
-            });
-            
-            if (error) {
-                alert(error.message);
-            } else {
-                alert("Password reset email sent! Check your inbox.");
-                hideResetModal();
-            }
-        }
-    
-        // --- Login Logic (修复：正确设置会话持久化) ---
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('login-btn');
-            const spinner = document.getElementById('login-spinner');
-            
-            // reCAPTCHA检查
-            if (typeof grecaptcha !== 'undefined') {
-                const recaptchaResponse = grecaptcha.getResponse(loginRecaptchaWidgetId);
-                if (!recaptchaResponse) {
-                    showMessage('Please complete the reCAPTCHA verification.');
-                    return;
-                }
-            }
-    
-            btn.disabled = true;
-            spinner.classList.remove('hidden');
-            
-            const rememberMe = document.getElementById('remember').checked;
-            
-            // 关键修复：在signInWithPassword中直接设置persistSession
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                options: {
-                    persistSession: rememberMe // true→localStorage（长期），false→sessionStorage（关闭浏览器失效）
-                }
-            });
-            
-            btn.disabled = false;
-            spinner.classList.add('hidden');
-            
-            if (error) {
-                showMessage(error.message);
-            } else {
-                // 可选：存储记住的邮箱（仅用于预填，不影响会话）
-                if (rememberMe) {
-                    localStorage.setItem('rememberedEmail', document.getElementById('email').value);
-                } else {
-                    localStorage.removeItem('rememberedEmail');
-                }
-                showMessage('Login successful! Redirecting...', false);
-                setTimeout(() => window.location.href = '/welcome/', 1500);
-            }
-        });
-    
-        // 页面加载时检查是否有记住的邮箱
-        document.addEventListener('DOMContentLoaded', function() {
-            const rememberedEmail = localStorage.getItem('rememberedEmail');
-            if (rememberedEmail) {
-                document.getElementById('email').value = rememberedEmail;
-                document.getElementById('remember').checked = true;
-            }
-        });
-    
-        // --- Sign Up Logic (保留原有修复) ---
-        signupForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('signup-btn');
-            const spinner = document.getElementById('signup-spinner');
-            btn.disabled = true;
-            spinner.classList.remove('hidden');
-        
-            // reCAPTCHA检查
-            if (typeof grecaptcha !== 'undefined') {
-                const recaptchaResponse = grecaptcha.getResponse(signupRecaptchaWidgetId);
-                if (!recaptchaResponse) {
-                    showMessage('Please complete the reCAPTCHA verification.');
-                    btn.disabled = false;
-                    spinner.classList.add('hidden');
-                    return;
-                }
-            }
-        
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            const firstName = document.getElementById('first-name').value;
-            const lastName = document.getElementById('last-name').value;
-            const genderSelect = document.getElementById('gender');
-            let genderValue = genderSelect.value;
-            const customGenderInput = document.getElementById('custom-gender');
-        
-            // 处理自定义性别
-            if (genderValue === 'others') {
-                if (!customGenderInput.value.trim()) {
-                    showMessage('Please specify your gender when selecting "Others".');
-                    btn.disabled = false;
-                    spinner.classList.add('hidden');
-                    return;
-                }
-                genderValue = customGenderInput.value.trim();
-            }
-        
-            const { data, error } = await supabaseClient.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    emailRedirectTo: `${window.location.origin}/welcome/`,
-                    data: {
-                        first_name: firstName,
-                        last_name: lastName,
-                        gender: genderValue
-                    }
-                }
-            });
-        
-            btn.disabled = false;
-            spinner.classList.add('hidden');
-            
-            // 检查用户是否已存在
-            if (data?.user && data.user.identities && data.user.identities.length === 0) {
-                showMessage('An account with this email already exists. Please log in.');
-                if (typeof grecaptcha !== 'undefined') grecaptcha.reset(signupRecaptchaWidgetId);
+
+        // =========================================
+        // SESSION VALIDATION
+        // =========================================
+
+        async function validateExistingSession() {
+
+            const loginTime =
+                localStorage.getItem('login_time');
+
+            if (!loginTime) return;
+
+            const expired =
+                Date.now() - parseInt(loginTime) > ONE_DAY;
+
+            if (expired) {
+
+                await supabaseClient.auth.signOut();
+
+                localStorage.removeItem('login_time');
+
                 return;
             }
-        
-            if (error) {
-                showMessage(error.message);
-            } else {
-                showMessage('Registration successful! Please check your email to confirm.', false);
-                if (typeof grecaptcha !== 'undefined') grecaptcha.reset(signupRecaptchaWidgetId);
+
+            const { data } =
+                await supabaseClient.auth.getSession();
+
+            if (data.session) {
+
+                window.location.href = '/welcome/';
             }
-        });
+        }
+
+        // =========================================
+        // REMEMBER EMAIL
+        // =========================================
+
+        function loadRememberedEmail() {
+
+            const rememberedEmail =
+                localStorage.getItem('remember_email');
+
+            if (!rememberedEmail) return;
+
+            document.getElementById('email').value =
+                rememberedEmail;
+
+            document.getElementById('remember').checked = true;
+        }
+
+        // =========================================
+        // RESET MODAL
+        // =========================================
+
+        function showResetModal() {
+
+            document
+                .getElementById('reset-modal')
+                .classList
+                .remove('hidden');
+
+            document
+                .getElementById('reset-modal')
+                .classList
+                .add('flex');
+        }
+
+        function hideResetModal() {
+
+            document
+                .getElementById('reset-modal')
+                .classList
+                .add('hidden');
+
+            document
+                .getElementById('reset-modal')
+                .classList
+                .remove('flex');
+        }
+
+        // =========================================
+        // RESET EMAIL
+        // =========================================
+
+        async function sendResetEmail() {
+
+            const email =
+                document
+                    .getElementById('reset-email')
+                    .value
+                    .trim();
+
+            if (!email) {
+
+                showMessage(
+                    'Please enter your email.'
+                );
+
+                return;
+            }
+
+            const { error } =
+                await supabaseClient.auth.resetPasswordForEmail(
+                    email,
+                    {
+                        redirectTo:
+                            'https://www.singularitylabgroup.org/resetpassword/'
+                    }
+                );
+
+            if (error) {
+
+                showMessage(error.message);
+
+                return;
+            }
+
+            hideResetModal();
+
+            showMessage(
+                'Password reset email sent successfully.',
+                false
+            );
+        }
+
+        // =========================================
+        // LOGIN
+        // =========================================
+
+        loginForm.addEventListener(
+            'submit',
+            async (e) => {
+
+                e.preventDefault();
+
+                clearMessage();
+
+                const button =
+                    document.getElementById('login-btn');
+
+                const spinner =
+                    document.getElementById('login-spinner');
+
+                const email =
+                    document.getElementById('email').value.trim();
+
+                const password =
+                    document.getElementById('password').value;
+
+                const remember =
+                    document.getElementById('remember').checked;
+
+                // Recaptcha
+
+                if (typeof grecaptcha !== 'undefined') {
+
+                    const response =
+                        grecaptcha.getResponse(
+                            loginRecaptchaWidgetId
+                        );
+
+                    if (!response) {
+
+                        showMessage(
+                            'Please complete the reCAPTCHA verification.'
+                        );
+
+                        return;
+                    }
+                }
+
+                button.disabled = true;
+
+                spinner.classList.remove('hidden');
+
+                try {
+
+                    const { data, error } =
+                        await supabaseClient.auth.signInWithPassword({
+                            email,
+                            password
+                        });
+
+                    if (error) {
+
+                        showMessage(error.message);
+
+                        return;
+                    }
+
+                    // Save login time
+
+                    localStorage.setItem(
+                        'login_time',
+                        Date.now()
+                    );
+
+                    // Remember email
+
+                    if (remember) {
+
+                        localStorage.setItem(
+                            'remember_email',
+                            email
+                        );
+
+                    } else {
+
+                        localStorage.removeItem(
+                            'remember_email'
+                        );
+                    }
+
+                    showMessage(
+                        'Login successful! Redirecting...',
+                        false
+                    );
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            '/welcome/';
+
+                    }, 1200);
+
+                } catch (err) {
+
+                    showMessage(
+                        'Unexpected error occurred.'
+                    );
+
+                } finally {
+
+                    button.disabled = false;
+
+                    spinner.classList.add('hidden');
+
+                    if (
+                        typeof grecaptcha !== 'undefined'
+                    ) {
+
+                        grecaptcha.reset(
+                            loginRecaptchaWidgetId
+                        );
+                    }
+                }
+            }
+        );
+
+        // =========================================
+        // SIGNUP
+        // =========================================
+
+        signupForm.addEventListener(
+            'submit',
+            async (e) => {
+
+                e.preventDefault();
+
+                clearMessage();
+
+                const button =
+                    document.getElementById('signup-btn');
+
+                const spinner =
+                    document.getElementById('signup-spinner');
+
+                button.disabled = true;
+
+                spinner.classList.remove('hidden');
+
+                try {
+
+                    // Recaptcha
+
+                    if (
+                        typeof grecaptcha !== 'undefined'
+                    ) {
+
+                        const response =
+                            grecaptcha.getResponse(
+                                signupRecaptchaWidgetId
+                            );
+
+                        if (!response) {
+
+                            showMessage(
+                                'Please complete the reCAPTCHA verification.'
+                            );
+
+                            return;
+                        }
+                    }
+
+                    // Form values
+
+                    const firstName =
+                        document
+                            .getElementById('first-name')
+                            .value
+                            .trim();
+
+                    const lastName =
+                        document
+                            .getElementById('last-name')
+                            .value
+                            .trim();
+
+                    const email =
+                        document
+                            .getElementById('signup-email')
+                            .value
+                            .trim();
+
+                    const password =
+                        document
+                            .getElementById('signup-password')
+                            .value;
+
+                    const genderSelect =
+                        document
+                            .getElementById('gender')
+                            .value;
+
+                    const customGender =
+                        document
+                            .getElementById('custom-gender')
+                            .value
+                            .trim();
+
+                    let finalGender =
+                        genderSelect;
+
+                    if (
+                        genderSelect === 'others'
+                    ) {
+
+                        if (!customGender) {
+
+                            showMessage(
+                                'Please specify your gender.'
+                            );
+
+                            return;
+                        }
+
+                        finalGender = customGender;
+                    }
+
+                    const { data, error } =
+                        await supabaseClient.auth.signUp({
+
+                            email,
+
+                            password,
+
+                            options: {
+
+                                emailRedirectTo:
+                                    `${window.location.origin}/welcome/`,
+
+                                data: {
+
+                                    first_name: firstName,
+
+                                    last_name: lastName,
+
+                                    gender: finalGender
+                                }
+                            }
+                        });
+
+                    if (
+                        data?.user &&
+                        data.user.identities &&
+                        data.user.identities.length === 0
+                    ) {
+
+                        showMessage(
+                            'An account with this email already exists.'
+                        );
+
+                        return;
+                    }
+
+                    if (error) {
+
+                        showMessage(error.message);
+
+                        return;
+                    }
+
+                    showMessage(
+                        'Registration successful! Please verify your email.',
+                        false
+                    );
+
+                } catch (err) {
+
+                    showMessage(
+                        'Unexpected error occurred.'
+                    );
+
+                } finally {
+
+                    button.disabled = false;
+
+                    spinner.classList.add('hidden');
+
+                    if (
+                        typeof grecaptcha !== 'undefined'
+                    ) {
+
+                        grecaptcha.reset(
+                            signupRecaptchaWidgetId
+                        );
+                    }
+                }
+            }
+        );
+
     </script>
 </body>
 </html>
