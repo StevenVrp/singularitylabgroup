@@ -252,7 +252,7 @@
     </div>
 
     <script>
-
+        const HAS_REFRESHED_KEY = "singularity_preloader_refreshed";
         /* =========================================
            PARTICLE GENERATION
         ========================================== */
@@ -339,22 +339,61 @@
         function updateProgress() {
 
             loadedAssets++;
-
+        
             const progress =
                 Math.floor((loadedAssets / assets.length) * 100);
-
+        
             progressBar.style.width = `${progress}%`;
-
+        
             progressPercent.innerText = `${progress}%`;
-
+        
             if (progress >= 100) {
-
+        
                 setTimeout(() => {
-
+        
+                    /*
+                    ==========================================
+                    FIRST COMPLETION:
+                    Force one refresh
+                    ==========================================
+                    */
+        
+                    if (!sessionStorage.getItem(HAS_REFRESHED_KEY)) {
+        
+                        sessionStorage.setItem(
+                            HAS_REFRESHED_KEY,
+                            "true"
+                        );
+        
+                        location.reload();
+        
+                        return;
+                    }
+        
+                    /*
+                    ==========================================
+                    SECOND COMPLETION:
+                    Show actual site
+                    ==========================================
+                    */
+        
                     document.body.classList.add('loaded');
-
+        
+                    /*
+                    Optional:
+                    clean up refresh flag afterwards
+                    */
+        
+                    setTimeout(() => {
+        
+                        sessionStorage.removeItem(
+                            HAS_REFRESHED_KEY
+                        );
+        
+                    }, 2000);
+        
                 }, 1000);
-
+        
             }
         }
 
