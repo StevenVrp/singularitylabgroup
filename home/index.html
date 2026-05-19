@@ -914,19 +914,81 @@
             });
         });
         // 在 index.html 的 <script> 标签中添加
-        document.addEventListener('DOMContentLoaded', function() {
-            const loginIcon = document.querySelector('a[href="/login/"]');
-            if (loginIcon) {
-                loginIcon.addEventListener('click', async function(e) {
-                    e.preventDefault();
-                    const { data: { session } } = await supabaseClient.auth.getSession();
-                    if (session) {
-                        window.location.href = '/welcome/';
-                    } else {
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const loginIcon =
+                document.getElementById('loginIcon');
+        
+            if (!loginIcon) return;
+        
+            loginIcon.addEventListener('click', async function (e) {
+        
+                e.preventDefault();
+        
+                try {
+        
+                    const ONE_DAY =
+                        24 * 60 * 60 * 1000;
+        
+                    const loginTime =
+                        localStorage.getItem('login_time');
+        
+                    const {
+                        data: { session }
+                    } = await supabaseClient.auth.getSession();
+        
+                    // No session at all
+        
+                    if (!session) {
+        
+                        localStorage.removeItem('login_time');
+        
                         window.location.href = '/login/';
+        
+                        return;
                     }
-                });
-            }
+        
+                    // No timestamp saved
+        
+                    if (!loginTime) {
+        
+                        await supabaseClient.auth.signOut();
+        
+                        window.location.href = '/login/';
+        
+                        return;
+                    }
+        
+                    // Expired
+        
+                    const expired =
+                        Date.now() - parseInt(loginTime) > ONE_DAY;
+        
+                    if (expired) {
+        
+                        await supabaseClient.auth.signOut();
+        
+                        localStorage.removeItem('login_time');
+        
+                        window.location.href = '/login/';
+        
+                        return;
+                    }
+        
+                    // Valid session
+        
+                    window.location.href = '/welcome/';
+        
+                } catch (error) {
+        
+                    console.error(
+                        'Session validation failed:',
+                        error
+                    );
+        
+                    window.location.href = '/login/';
+                }
+            });
         });
         // 平滑滚动到锚点
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
