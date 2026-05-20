@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 使用正确的尺寸对应正确的文件 -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon-16x16.png">
+    <link rel="shortcut icon" href="/Images/favicon.ico">
+ 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singularity Lab - Study Assistant Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== Base Styles ===== */
+        :root {
+            --primary: #4a6bff;
+            --primary-light: #7a94ff;
+            --primary-dark: #3a56cc;
+            --secondary: #00c9a7;
+            --text: #2d3748;
+            --text-light: #718096;
+            --bg: #f7fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --high: #ff4757;
+            --medium: #ffa502;
+            --low: #2ed573;
+            --completed: #00b894;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* ===== Header Styles ===== */
+        header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .app-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .app-title h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0;
+        }
+
+        /* .app-title .pro-badge {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        } */
+        .app-title .pro-badge {
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* ===== Button Styles ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-startbtntimer {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            box-shadow: var(--shadow-sm);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-startbtntimer:hover {
+            background: linear-gradient(135deg, #00a884 0%, #00b8b9 100%);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(74, 107, 255, 0.05);
+        }
+
+        .btn-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        .btn-danger {
+            background-color: var(--high);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #e84118;
+        }
+
+        .btn-success {
+            background-color: var(--completed);
+            color: white;
+        }
+        /* Firework styles */
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+            pointer-events: none; /* Prevent interaction */
+        }
+
+        /* Firework explosion animation */
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+        /* ===== Task Form Styles ===== */
+        .task-form {
+            margin-bottom: 2rem;
+            background-color: var(--card);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .form-control {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 0.875rem;
+            transition: border-color 0.2s ease;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.1);
+        }
+
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23718096' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+            padding-right: 2.5rem;
+        }
+
+        /* ===== Task List Styles ===== */
+        .task-list-container {
+            background-color: var(--card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .task-list-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-list-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .task-count {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item:hover {
+            background-color: rgba(74, 107, 255, 0.02);
+        }
+
+        .task-checkbox {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .task-checkbox:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .task-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .task-title {
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .task-priority {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .priority-high {
+            color: var(--high);
+        }
+
+        .priority-medium {
+            color: var(--medium);
+        }
+
+        .priority-low {
+            color: var(--low);
+        }
+
+        .task-subject {
+            background-color: rgba(74, 107, 255, 0.1);
+            color: var(--primary);
+            padding: 0.125rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.6875rem;
+            font-weight: 500;
+                /* Set a reasonable max width */
+        }
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .task-completed {
+            opacity: 0.7;
+        }
+
+        .task-completed .task-title {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+
+        .task-completed .task-checkbox:checked {
+            background-color: var(--completed);
+            border-color: var(--completed);
+        }
+
+        /* ===== Graph Section Styles ===== */
+        #graphSection {
+            display: none;
+        }
+
+        .graph-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+        }
+
+        /* ===== Reminders Section Styles ===== */
+        #remindersSection {
+            display: none;
+        }
+
+        .reminders-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .reminder-item {
+            background-color: var(--card);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .reminder-text {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .reminder-due {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* ===== Floating Timer Styles ===== */
+        .floating-timer {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            width: 250px;
+            height: 230px;
+            background-color: var(--card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            border: 1px solid var(--border);
+        }
+
+        .timer-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .timer-body {
+            padding: 1rem;
+        }
+
+        .timer-inputs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .timer-inputs input {
+            width: 50px;
+            height: 30px;
+            font-size: 0.8rem;
+            padding: 0.3rem;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 0.2rem;
+        }
+
+        .timer-display {
+            font-size: 1.5rem;
+            font-family: monospace;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .timer-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .timer-actions .btn {
+            flex: 1;
+        }
+
+        /* ===== Voice Control Styles ===== */
+        .voice-control {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: var(--card);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 1000;
+            border: 1px solid var(--border);
+        }
+
+        .voice-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .voice-wave {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            height: 30px;
+        }
+
+        .wave-bar {
+            width: 4px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        /* Animation for loading state */
+        .fa-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes wave {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.5); }
+        }
+        .task-context-menu {
+            position: fixed;
+            background: var(--card);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            min-width: 180px;
+            overflow: hidden;
+            animation: fadeIn 0.2s ease-out;
+            border: 1px solid var(--border);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: none;
+            text-align: left;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(74, 107, 255, 0.1);
+        }
+
+        .menu-item i {
+            width: 16px;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Task edit input styling */
+        .task-edit-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: inherit;
+            transition: all 0.2s ease;
+            background: var(--card);
+            color: var(--text);
+        }
+
+        /* Animation for edit mode */
+        .task-item.editing {
+            background-color: rgba(74, 107, 255, 0.05);
+            transition: background-color 0.2s ease;
+        }
+        .voice-response {
+            font-size: 0.875rem;
+            color: var(--text);
+            max-width: 200px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* ===== Footer Styles ===== */
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ===== Animations ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseComplete {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); box-shadow: 0 0 15px rgba(0, 184, 148, 0.5); }
+            100% { transform: scale(1); }
+        }
+
+        /* ===== Subject Colors ===== */
+        .subject-biology { background-color: #00b894; color: white; }
+        .subject-physics { background-color: #0984e3; color: white; }
+        .subject-chemistry { background-color: #6c5ce7; color: white; }
+        .subject-math { background-color: #e84393; color: white; }
+        .subject-english { background-color: #fd79a8; color: white; }
+        .subject-chinese { background-color: #e17055; color: white; }
+        .subject-spanish { background-color: #fdcb6e; color: var(--text); }
+        .subject-french { background-color: #a29bfe; color: white; }
+        .subject-history { background-color: #636e72; color: white; }
+        .subject-geography { background-color: #00cec9; color: white; }
+        .subject-technology { background-color: #2d3436; color: white; }
+        .subject-music { background-color: #fab1a0; color: var(--text); }
+        .subject-business { background-color: #000367; color: white; }
+        .subject-other { background-color: #dfe6e9; color: var(--text); }
+
+        /* ===== Responsive Styles ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .form-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .form-control, .form-select {
+                width: 100%;
+            }
+
+            .floating-timer {
+                width: calc(100% - 2rem);
+                bottom: 5rem;
+            }
+            .task-completed-animation {
+                animation: pulseComplete 1s;
+                background-color: rgba(0, 184, 148, 0.1);
+            }
+
+            @keyframes pulseComplete {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.03); box-shadow: 0 0 15px rgba(0, 184, 148, 0.5); }
+                100% { transform: scale(1); }
+            }
+            .voice-control {
+                bottom: 8rem;
+                right: 0.5rem;
+                left: 0.5rem;
+                width: calc(100% - 1rem);
+                border-radius: 25px;
+                justify-content: center;
+                z-index: 10000;
+            }
+            footer {
+                background-color: #f8f9fa;
+                padding: 20px 0;
+                margin-top: 40px;
+                border-top: 1px solid #e9ecef;
+            }
+
+            .footer-content {
+                max-width: 1200px;
+                margin: 0 auto;
+                text-align: center;
+            }
+
+            .footer-links {
+                margin-bottom: 10px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .footer-links a {
+                color: #6c757d;
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+            .footer-links a:hover {
+                color: var(--accent);
+            }
+            /* Notification Modal Styles */
+            .notification-modal {
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                background-color: var(--primary-light);
+                color: white;
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                width: auto;
+                max-width: 300px;
+                padding: 1rem;
+                text-align: left;
+                border: 1px solid var(--primary-dark);
+                opacity: 0; /* Start hidden */
+                display: none; /* Initially hidden */
+                transition: opacity 0.3s ease; /* Smooth fade-in/out */
+            }
+
+            .notification-modal h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+                color: white;
+            }
+
+            .notification-modal p {
+                font-size: 0.875rem;
+                color: white;
+                margin-bottom: 1rem;
+            }
+
+            .notification-modal .btn {
+                background-color: var(--primary-dark);
+                color: white;
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+                border-radius: var(--radius-sm);
+                cursor: pointer;
+                border: none;
+                transition: background-color 0.2s ease;
+            }
+
+            .notification-modal .btn:hover {
+                background-color: var(--primary);
+            }
+
+            /* Notification Highlight Styles */
+            .notification-highlight {
+                background-color: var(--primary-light);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: var(--radius-md);
+                font-size: 0.875rem;
+                font-weight: 500;
+                display: inline-block;
+                margin: 0.5rem 0;
+                animation: pulseComplete 1s infinite;
+            }
+            .footer-copyright {
+            color: #6c757d;
+            font-size: 14px;
+            }
+        }
+        /* Top Bar Styles */
+        .top-bar {
+            position: fixed;
+            top: -60px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: var(--card);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            transition: top 0.3s ease;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .top-bar.visible {
+            top: 0;
+        }
+
+        .top-bar-time-date {
+            display: flex;
+            align-items: baseline;
+        }
+
+        .top-bar-time {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .top-bar-date {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-left: 10px;
+        }
+
+        .top-bar-settings {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            padding: 8px;
+        }
+
+        .top-bar-settings:hover {
+            color: var(--primary);
+        }
+        /* Settings Modal Styles */
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .settings-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .settings-content {
+            background-color: var(--card);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .settings-modal.active .settings-content {
+            transform: translateY(0);
+        }
+
+        .settings-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .settings-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.2s ease;
+            padding: 0.5rem;
+        }
+
+        .settings-close:hover {
+            color: var(--primary);
+        }
+
+        .settings-body {
+            padding: 1.5rem;
+        }
+
+        .settings-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-group-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .setting-label {
+            font-size: 0.875rem;
+            color: var(--text);
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Toggle Switch Styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .task-time-range {
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: left; 
+            height: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            font-family: Georgia, serif;
+            font-weight: 500;
+            font-size: 1.3rem;
+            color: var(--text);
+            line-height: 1.4;
+            transition: all 0.2s ease;
+        }
+
+        /* Completed task styling */
+        .task-completed .task-time-range {
+            background: rgba(0, 184, 148, 0.08);
+            border-left-color: var(--completed);
+            opacity: 0.8;
+        }
+
+        .time-connector {
+            padding: 0 0.5rem;
+            color: var(--text-light);
+            font-size: 0.875rem;
+            align-self: center;
+            display: none;
+        }
+
+        .time-connector {
+            display: inline;
+        }
+
+        .task-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .task-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            background: rgba(74, 107, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Audio controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 5rem;
+            right: 1rem;
+            background: var(--card);
+            padding: 0.5rem;
+            border-radius: 50%;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+        }
+
+        /* Theme color preview */
+        .color-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 10px;
+            border: 1px solid var(--border);
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Settings Footer Styles */
+        .settings-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .settings-save {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-family: inherit;
+            font-weight: 500;
+        }
+        #settingsSave {
+            pointer-events: all !important; /* Override if needed */
+        }
+
+        .settings-save:hover {
+            background-color: var(--primary-dark);
+        }
+        canvas {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+        }
+        /* Responsive Styles for Settings Modal */
+        @media (max-width: 600px) {
+            .settings-content {
+                width: 95%;
+                margin: 0 auto;
+            }
+            
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .setting-control {
+                margin-top: 0.5rem;
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+        /* Volume Control Container */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        /* Volume Icon */
+        .volume-icon {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Custom Range Input */
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            flex-grow: 1;
+        }
+
+        .volume-slider:hover {
+            opacity: 1;
+        }
+
+        /* Track */
+        .volume-slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        /* Thumb */
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            margin-top: -5px;
+            transition: transform 0.1s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Active State */
+        .volume-slider:active::-webkit-slider-thumb {
+            transform: scale(1.2);
+            background: var(--primary-light);
+        }
+
+        /* Tooltip (optional) */
+        .volume-tooltip {
+            font-family: Georgia, serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            min-width: 30px;
+            text-align: right;
+        }
+        #settingsButton {
+            padding: 0.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="app-title">
+                    <h1>Study Assistant</h1>
+                    <span class="pro-badge">Pro</span>
+                </div>
+                <div class="header-actions">
+                    <button id="graphBtn" class="btn btn-secondary">
+                        <i class="fas fa-chart-line"></i> Stats
+                    </button>
+                    <button id="remindersBtn" class="btn btn-secondary">
+                        <i class="fas fa-bell"></i> Reminders
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.replace('/studyassistantpro/game/')">
+                        <i class="fas fa-gamepad"></i> Game
+                    </button>
+                    <button id="showTimerBtn" class="btn btn-secondary">
+                        <i class="fas fa-clock"></i> Timer
+                    </button>
+                    <button id="resetAllBtn" class="btn btn-danger">
+                        <i class="fas fa-trash-alt"></i> Reset
+                    </button>
+                    <!-- ✅ 新增：设置按钮 -->
+                    <button id="settingsButton" class="btn btn-secondary">
+                        <!-- <i class="fas fa-cog"></i> -->
+                         <i class="fas fa-sun"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Task Section -->
+            <section id="taskSection">
+                <form id="taskForm" class="task-form">
+                    <div class="form-group">
+                        <input type="text" id="taskInput" class="form-control" placeholder="Task Title" required>
+                        <select id="subjectSelect" class="form-control form-select">
+                            <option value="biology">Biology</option>
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="math">Math</option>
+                            <option value="english">English</option>
+                            <option value="chinese">Chinese</option>
+                            <option value="spanish">Spanish</option>
+                            <option value="french">French</option>
+                            <option value="history">History</option>
+                            <option value="geography">Geography</option>
+                            <option value="technology">Technology</option>
+                            <option value="music">Music</option>
+                            <option value="business">Business</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <select id="prioritySelect" class="form-control form-select">
+                            <option value="low">Low Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <div class="input" style="display: none;">
+                            <input type="time" id="startTimeInput" name="startTime" class="form-control">
+                            <span>-</span>
+                            <input type="time" id="endTimeInput" name="endTime" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </div>
+                </form>
+
+                <div class="task-list-container">
+                    <div class="task-list-header">
+                        <div>
+                            <span class="task-list-title">Today's Tasks</span>
+                            <span class="task-count" id="taskCount">0 remaining</span>
+                        </div>
+                        <button class="btn btn-icon btn-secondary">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    <div id="taskList" class="task-list"></div>
+                </div>
+            </section>
+
+            <!-- Graph Section -->
+            <section id="graphSection">
+                <div class="graph-header">
+                    <button id="backBtn" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h2 class="task-list-title">
+                        <i class="fas fa-chart-pie"></i> Statistics
+                    </h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="efficiencyChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+                <div id="dataDisplay" class="task-list-container">
+                    <div class="task-list-header">
+                        <span class="task-list-title">Study Data</span>
+                    </div>
+                    <div class="task-list"></div>
+                </div>
+            </section>
+
+            <!-- Reminders Section -->
+            <section id="remindersSection">
+                <div class="reminders-header">
+                    <button id="backFromRemindersBtn" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h2 class="task-list-title">
+                        <i class="fas fa-bell"></i> Reminders
+                    </h2>
+                </div>
+                <form id="reminderForm" class="task-form">
+                    <div class="form-group">
+                        <input type="text" id="reminderInput" class="form-control" placeholder="Reminder text..." required>
+                        <input type="datetime-local" id="reminderDueDate" class="form-control" required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Reminder
+                        </button>
+                    </div>
+                </form>
+                <div id="remindersList" class="task-list-container">
+                    <div class="task-list-header">
+                        <span class="task-list-title">Active Reminders</span>
+                    </div>
+                    <div class="task-list"></div>
+                </div>
+                <div id="countdownDisplay" class="task-list-container">
+                    <div class="task-list-header">
+                        <span class="task-list-title">Upcoming Deadlines</span>
+                    </div>
+                    <div class="task-list"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Floating Timer -->
+    <div id="floatingTimer" class="floating-timer">
+        <div class="timer-header">
+            <span>Study Timer</span>
+            <div class="timer-controls">
+                <button id="toggleTimerBtn" class="btn btn-icon">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button id="closeTimerBtn" class="btn btn-icon">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="timer-body">
+            <div class="timer-inputs">
+                <input type="number" id="hoursInput" min="0" max="23" placeholder="H" class="timer-inputs input">
+                <span>:</span>
+                <input type="number" id="minutesInput" min="0" max="59" placeholder="M" class="timer-inputs input">
+                <span>:</span>
+                <input type="number" id="secondsInput" min="0" max="59" placeholder="S" class="timer-inputs input">
+            </div>
+            <div class="timer-display" id="timerDisplay">00:00:00</div>
+            <div class="timer-actions">
+                <button id="startTimerBtn" class="btn btn-startbtntimer">
+                    <i class="fas fa-play"></i> Start
+                </button>
+                <button id="resetTimerBtn" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Control UI -->
+    <div id="voiceControl" class="voice-control">
+        <div id="voiceStatus" class="voice-status">
+            <i class="fas fa-microphone"></i>
+            <span>Click to enable voice control</span>
+        </div>
+        <div id="voiceWave" class="voice-wave" style="display: none;">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+        <div id="voiceResponse" class="voice-response"></div>
+    </div>
+    <footer>
+        <div class="footer-links">
+            <a href="/home/">Back to Singularity Lab</a>
+            <a href="/studyassistantpro/about/">About This Project</a>
+            <a href="https://github.com/StevenVrp/">Creator</a>
+            <a href="/legal/#privacy-policy">Privacy Policy</a>
+            <a href="/legal/#terms-of-use">Terms of Service</a>
+            <a href="/home/#join">Join Us</a>
+        </div>
+        <div class="footer-copyright">
+            Study Assistant Pro | Copyright &copy; 2026 StevenVrp | Licensed under the MIT License.
+        </div>
+    </footer>
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="settings-modal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3 class="settings-title">Settings</h3>
+                <button id="settingsClose" class="settings-close">&times;</button>
+            </div>
+            <div class="settings-body">
+                <div class="settings-group">
+                    <h4 class="settings-group-title">Timer Settings</h4>
+                    <div class="setting-item">
+                        <span class="setting-label">Customize Target Time (minutes)</span>
+                        <div class="setting-control">
+                            <input type="number" id="targetCompletionTime" min="5" max="120" class="form-control" style="width: 80px;">
+                        </div>
+                    </div>    
+                    <h4 class="settings-group-title">Appearance</h4>
+                    <div class="setting-item">
+                        <span class="setting-label">Dark Mode</span>
+                        <div class="setting-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <h4 class="settings-group-title">App Mode</h4>
+                    <div class="setting-item">
+                        <span class="setting-label">Current Mode:</span>
+                        <div class="setting-control">
+                            <select id="appModeSelect" class="form-control">
+                                <option value="focus">Focus Mode (Default)</option>
+                                <option value="schedule">Schedule Mode</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting-description">
+                        <small>Switching modes will reset all your data</small>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-footer">
+                <button id="settingsSave" class="settings-save">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <script src="chart.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
