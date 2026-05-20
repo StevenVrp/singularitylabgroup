@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon-16x16.png">
     <link rel="shortcut icon" href="/Images/favicon.ico">
+
     <title>Singularity Lab - Initialising</title>
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Fonts & Icons -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script>
@@ -36,35 +39,48 @@
 
     <style>
 
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             overflow: hidden;
             background: black;
             font-family: 'SF Pro Display', sans-serif;
-        }
-
-        body.loaded #loader {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: all 1.4s ease;
+            width: 100%;
+            height: 100%;
         }
 
         /* =========================
-           BACKGROUND GRID
+           LOADER
+        ========================== */
+
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+            overflow: hidden;
+        }
+
+        /* =========================
+           GRID
         ========================== */
 
         .grid-bg {
             position: absolute;
             inset: 0;
+
             background-image:
                 linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
 
             background-size: 50px 50px;
 
-            mask-image: radial-gradient(circle at center,
+            mask-image: radial-gradient(
+                circle at center,
                 rgba(255,255,255,1),
                 rgba(255,255,255,0.1)
             );
@@ -76,6 +92,7 @@
             from {
                 transform: translateY(0px);
             }
+
             to {
                 transform: translateY(50px);
             }
@@ -93,6 +110,7 @@
         }
 
         @keyframes floatParticle {
+
             from {
                 transform: translateY(0px);
                 opacity: 0;
@@ -109,7 +127,7 @@
         }
 
         /* =========================
-           LOGO GLOW
+           LOGO
         ========================== */
 
         .logo-glow {
@@ -119,7 +137,7 @@
         }
 
         /* =========================
-           LOADING BAR
+           PROGRESS BAR
         ========================== */
 
         .progress-container {
@@ -134,6 +152,7 @@
         .progress-bar {
             height: 100%;
             width: 0%;
+
             background: linear-gradient(
                 90deg,
                 #2563eb,
@@ -142,11 +161,13 @@
             );
 
             transition: width 0.35s ease;
-            box-shadow: 0 0 20px rgba(37,99,235,0.7);
+
+            box-shadow:
+                0 0 20px rgba(37,99,235,0.7);
         }
 
         /* =========================
-           TEXT FLICKER
+           FLICKER
         ========================== */
 
         .flicker {
@@ -164,47 +185,16 @@
             }
         }
 
-        /* =========================
-           FADE IN SITE
-        ========================== */
-
-        #site-frame {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            opacity: 0;
-            transition: opacity 1.5s ease;
-            background: black;
-        }
-
-        body.loaded #site-frame {
-            opacity: 1;
-        }
-
     </style>
 </head>
 
 <body>
 
     <!-- =========================================
-         MAIN WEBSITE (PRELOADED)
+         LOADER
     ========================================== -->
 
-    <iframe
-        id="site-frame"
-        src="/home/">
-    </iframe>
-
-    <!-- =========================================
-         LOADER OVERLAY
-    ========================================== -->
-
-    <div
-        id="loader"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden"
-    >
+    <div id="loader">
 
         <!-- GRID -->
         <div class="grid-bg"></div>
@@ -215,19 +205,19 @@
         <!-- CONTENT -->
         <div class="relative z-10 text-center px-6">
 
-            <!-- Logo -->
+            <!-- LOGO -->
             <img
                 src="/Images/Logo1.png"
                 alt="Singularity Lab"
                 class="w-32 mx-auto mb-10 logo-glow animate-pulse"
             >
 
-            <!-- Title -->
+            <!-- TITLE -->
             <h1 class="text-white text-6xl md:text-7xl font-black italic tracking-tight">
                 Singularity
             </h1>
 
-            <!-- Subtitle -->
+            <!-- STATUS -->
             <div
                 id="status-text"
                 class="mt-5 text-sm uppercase tracking-[0.35em] text-blue-400 flicker"
@@ -235,15 +225,17 @@
                 Initializing Discovery Engine
             </div>
 
-            <!-- Progress -->
+            <!-- PROGRESS -->
             <div class="mt-10 progress-container mx-auto">
+
                 <div
                     id="progress-bar"
                     class="progress-bar">
                 </div>
+
             </div>
 
-            <!-- Percent -->
+            <!-- PERCENT -->
             <div
                 id="progress-percent"
                 class="mt-4 text-gray-500 text-sm tracking-widest"
@@ -252,28 +244,34 @@
             </div>
 
         </div>
+
     </div>
 
     <script>
-        const HAS_REFRESHED_KEY = "singularity_preloader_refreshed";
+
         /* =========================================
-           PARTICLE GENERATION
+           PARTICLES
         ========================================== */
 
-        const particleContainer = document.getElementById('particles');
+        const particleContainer =
+            document.getElementById('particles');
 
         for (let i = 0; i < 40; i++) {
 
-            const particle = document.createElement('div');
+            const particle =
+                document.createElement('div');
 
             particle.classList.add('particle');
 
-            const size = Math.random() * 4 + 1;
+            const size =
+                Math.random() * 4 + 1;
 
             particle.style.width = `${size}px`;
             particle.style.height = `${size}px`;
 
-            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.left =
+                `${Math.random() * 100}%`;
+
             particle.style.bottom = `-20px`;
 
             particle.style.animationDuration =
@@ -290,6 +288,7 @@
         ========================================== */
 
         const statuses = [
+
             "Initializing Discovery Engine",
             "Synchronizing Neural Systems",
             "Rendering Molecular Structures",
@@ -298,6 +297,7 @@
             "Loading Educational Modules",
             "Establishing Quantum Link",
             "Finalizing Visual Pipeline"
+
         ];
 
         let statusIndex = 0;
@@ -312,12 +312,12 @@
         }, 1800);
 
         /* =========================================
-           ASSET PRELOADING
+           ASSETS
         ========================================== */
 
         const assets = [
 
-            // HERO
+            // HERO VIDEO
             "/Images/Hero.mov",
 
             // LOGOS
@@ -327,7 +327,7 @@
             "/Images/StevenWorld.png",
 
             // LESSONS
-            "/Images/L1.png",
+            "/Images/L1.png"
 
         ];
 
@@ -339,69 +339,45 @@
         const progressPercent =
             document.getElementById('progress-percent');
 
+        /* =========================================
+           UPDATE PROGRESS
+        ========================================== */
+
         function updateProgress() {
 
             loadedAssets++;
-        
+
             const progress =
-                Math.floor((loadedAssets / assets.length) * 100);
-        
-            progressBar.style.width = `${progress}%`;
-        
-            progressPercent.innerText = `${progress}%`;
-        
+                Math.floor(
+                    (loadedAssets / assets.length) * 100
+                );
+
+            progressBar.style.width =
+                `${progress}%`;
+
+            progressPercent.innerText =
+                `${progress}%`;
+
+            /* =====================================
+               FINISHED
+            ====================================== */
+
             if (progress >= 100) {
-        
+
                 setTimeout(() => {
-        
+
                     /*
-                    ==========================================
-                    FIRST COMPLETION:
-                    Force one refresh
-                    ==========================================
+                    REDIRECT TO REAL HOME PAGE
                     */
-        
-                    if (!sessionStorage.getItem(HAS_REFRESHED_KEY)) {
-        
-                        sessionStorage.setItem(
-                            HAS_REFRESHED_KEY,
-                            "true"
-                        );
-        
-                        location.reload();
-        
-                        return;
-                    }
-        
-                    /*
-                    ==========================================
-                    SECOND COMPLETION:
-                    Show actual site
-                    ==========================================
-                    */
-        
-                    document.body.classList.add('loaded');
-        
-                    /*
-                    Optional:
-                    clean up refresh flag afterwards
-                    */
-        
-                    setTimeout(() => {
-        
-                        sessionStorage.removeItem(
-                            HAS_REFRESHED_KEY
-                        );
-        
-                    }, 2000);
-        
-                }, 1000);
-        
+
+                    window.location.href = "/home/";
+
+                }, 1200);
             }
         }
 
         /* =========================================
-           IMAGE CHECK
+           IMAGE PRELOAD
         ========================================== */
 
         function preloadImage(src) {
@@ -419,7 +395,7 @@
         }
 
         /* =========================================
-           VIDEO CHECK
+           VIDEO PRELOAD
         ========================================== */
 
         function preloadVideo(src) {
@@ -446,7 +422,7 @@
         }
 
         /* =========================================
-           MAIN PRELOAD FUNCTION
+           MAIN PRELOAD
         ========================================== */
 
         async function preloadAssets() {
@@ -468,6 +444,7 @@
                 return preloadImage(src)
                     .then(updateProgress)
                     .catch(updateProgress);
+
             });
 
             await Promise.all(promises);
@@ -481,9 +458,9 @@
 
         setTimeout(() => {
 
-            document.body.classList.add('loaded');
+            window.location.href = "/home/";
 
-        }, 10000);
+        }, 12000);
 
     </script>
 
