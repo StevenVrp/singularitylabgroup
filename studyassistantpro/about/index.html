@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Study Assistant Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon-16x16.png">
+    <link rel="shortcut icon" href="/Images/favicon.ico">
+    
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --primary-light: #7a94ff;
+            --primary-dark: #3a56cc;
+            --secondary: #00c9a7;
+            --text: #2d3748;
+            --text-light: #718096;
+            --bg: #f7fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .app-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .app-title h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .app-title .pro-badge {
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(74, 107, 255, 0.05);
+        }
+
+        .about-section {
+            background-color: var(--card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .about-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .about-content {
+            font-size: 0.9375rem;
+            color: var(--text);
+        }
+
+        .about-content p {
+            margin-bottom: 1rem;
+        }
+
+        .about-content ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            background-color: rgba(74, 107, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .github-link:hover {
+            background-color: rgba(74, 107, 255, 0.2);
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-copyright {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .about-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="app-title">
+                    <h1>Study Assistant</h1>
+                    <span class="pro-badge">Pro</span>
+                </div>
+                <div class="header-actions">
+                    <button id="backBtn" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to App
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="about-section">
+                <h2 class="about-title">
+                    <i class="fas fa-info-circle"></i> About Study Assistant Pro
+                </h2>
+                <div class="about-content">
+                    <p>
+                        Study Assistant Pro is a lightweight, client-side productivity suite designed to help students manage their academic workload efficiently. It features a comprehensive homework task manager with progress analytics, a built-in Pomodoro timer, and even includes a fun Nim game for breaks!
+                    </p>
+                    <p>
+                        The application is fully open-source and developed by <strong>StevenVRP</strong>. It's licensed under the MIT License, allowing free use, modification, and distribution.
+                    </p>
+                    <p>
+                        Key features include:
+                    </p>
+                    <ul>
+                        <li><strong>Task Management:</strong> Organize tasks by subject, priority, and time slots.</li>
+                        <li><strong>Analytics:</strong> Visualize your productivity with interactive charts.</li>
+                        <li><strong>Pomodoro Timer:</strong> Stay focused with a customizable study timer.</li>
+                        <li><strong>Voice Control:</strong> Manage tasks hands-free using voice commands.</li>
+                        <li><strong>Reminders:</strong> Never miss a deadline with smart notifications.</li>
+                        <li><strong>Nim Game:</strong> Take a quick break with the classic strategy game.</li>
+                    </ul>
+                    <p>
+                        The entire project is built with modern web technologies: HTML5, CSS3, and JavaScript. It runs entirely in your browser—no server required! Your data stays private on your device via localStorage.
+                    </p>
+                    <p>
+                        Want to contribute, report issues, or check out the source code? Visit the GitHub repository:
+                    </p>
+                    <a href="https://github.com/StevenVrp/" target="_blank" class="github-link">
+                        <i class="fab fa-github"></i> github.com/StevenVrp
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-links">
+                <a href="/studyassistantpro/about/">About This Project</a>
+                <a href="https://github.com/StevenVrp/">Creator</a>
+                <a href="/legal/#privacy-policy">Privacy Policy</a>
+                <a href="/legal/#terms-of-use">Terms of Service</a>
+                <a href="/home/#join">Join Us</a>
+            </div>
+            <div class="footer-copyright">
+                Study Assistant Pro | Copyright &copy; 2026 StevenVrp | Licensed under the MIT License.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('backBtn').addEventListener('click', () => {
+            window.location.href = '/studyassistantpro/';
+        });
+    </script>
+</body>
+</html>
