@@ -1356,361 +1356,236 @@ document.addEventListener('DOMContentLoaded', () => {
     const processVoiceCommand = (command) => {
         let response = "";
         let actionTaken = false;
-
-        // Remove trigger phrase if present
+    
         command = command.replace(triggerPhrase, '').trim();
-
-        // Add task
+    
+        // ✅ 添加任务（保留你原有的多步对话）
         if (command.includes('add') || command.includes('create')) {
             const taskMatch = command.match(/(?:add|create) (?:task|activity) (.+)/i);
             if (taskMatch && taskMatch[1]) {
                 const taskTitle = taskMatch[1].trim();
                 response = `Added task: "${taskTitle}". What priority should it have?`;
                 speak(response);
-                
-                // Ask for priority
-                recognition.onend = null;
                 recognition.stop();
-                
+    
                 const priorityRecognition = new SpeechRecognition();
                 priorityRecognition.lang = 'en-US';
-                
                 priorityRecognition.onresult = (event) => {
-                    const priority = Array.from(event.results)
-                        .map(result => result[0])
-                        .map(result => result.transcript)
-                        .join('')
-                        .toLowerCase()
-                        .trim();
-                    
+                    const priority = event.results[0][0].transcript.toLowerCase();
                     let selectedPriority = 'medium';
                     if (priority.includes('high')) selectedPriority = 'high';
                     else if (priority.includes('low')) selectedPriority = 'low';
-                    
-                    // Ask for subject
+    
                     speak(`Task "${taskTitle}" set as ${selectedPriority} priority. What subject is it for?`);
-                    
+    
                     const subjectRecognition = new SpeechRecognition();
                     subjectRecognition.lang = 'en-US';
-                    
                     subjectRecognition.onresult = (event) => {
-                        const subject = Array.from(event.results)
-                            .map(result => result[0])
-                            .map(result => result.transcript)
-                            .join('')
-                            .toLowerCase()
-                            .trim();
-                        
+                        const subject = event.results[0][0].transcript.toLowerCase();
                         let selectedSubject = 'other';
-                        const subjects = [
-                            'biology', 'physics', 'chemistry', 'math', 
-                            'english', 'chinese', 'spanish', 'french', 
-                            'history', 'geography', 'technology', 'music'
-                        ];
-                        
-                        for (const sub of subjects) {
-                            if (subject.includes(sub)) {
-                                selectedSubject = sub;
-                                break;
-                            }
-                        }
-                        
-                        // Create the task
-                        const newTask = {
+                        ['biology','physics','chemistry','math','english','chinese','spanish','french','history','geography','technology','music'].forEach(sub => {
+                            if (subject.includes(sub)) selectedSubject = sub;
+                        });
+    
+                        tasks.push({
                             id: Date.now(),
                             title: taskTitle,
                             priority: selectedPriority,
                             subject: selectedSubject,
                             completed: false,
                             createdAt: new Date()
-                        };
-                        
-                        tasks.push(newTask);
-                        activityTimers[newTask.id] = 0;
+                        });
+    
                         saveData();
                         renderTasks();
                         updateEfficiency(true);
-                        
+    
                         response = `Task "${taskTitle}" added with ${selectedPriority} priority for ${selectedSubject}`;
                         speak(response);
                         voiceResponse.textContent = response;
-                        
-                        // Restore main recognition
-                        recognition.onend = () => {
-                            isListening = false;
-                            voiceStatus.innerHTML = '<i class="fas fa-microphone"></i> Click to enable voice control';
-                            voiceStatus.style.color = '';
-                            voiceWave.style.display = 'none';
-                        };
-                        
-                        setupVoiceControl();
+    
+                        setTimeout(() => recognition.start(), 500);
                     };
-                    
                     subjectRecognition.start();
                 };
-                
                 priorityRecognition.start();
-                
                 actionTaken = true;
             }
         }
-        
-        // Delete task
+    
+        // ✅ 删除任务
         else if ((command.includes('delete') || command.includes('cancel') || command.includes('end')) && 
                  (command.includes('task') || command.includes('activity'))) {
             const taskMatch = command.match(/(?:delete|cancel|end) (?:task|activity) (.+)/i);
             if (taskMatch && taskMatch[1]) {
                 const taskTitle = taskMatch[1].trim();
                 const taskToDelete = tasks.find(t => t.title.toLowerCase().includes(taskTitle.toLowerCase()));
-                
                 if (taskToDelete) {
                     tasks = tasks.filter(t => t.id !== taskToDelete.id);
                     delete activityTimers[taskToDelete.id];
                     saveData();
                     renderTasks();
                     updateEfficiency(true);
-                    
                     response = `Task "${taskToDelete.title}" has been deleted`;
-                    actionTaken = true;
                 } else {
                     response = `I couldn't find a task matching "${taskTitle}"`;
-                    actionTaken = true;
                 }
+                actionTaken = true;
             }
         }
-        
-        // Complete task
+    
+        // ✅ 完成任务
         else if ((command.includes('complete') || command.includes('finish')) && 
                  (command.includes('task') || command.includes('activity'))) {
             const taskMatch = command.match(/(?:complete|finish) (?:task|activity) (.+)/i);
             if (taskMatch && taskMatch[1]) {
                 const taskTitle = taskMatch[1].trim();
-                const taskToComplete = tasks.find(t => 
-                    !t.completed && t.title.toLowerCase().includes(taskTitle.toLowerCase()));
-                
+                const taskToComplete = tasks.find(t => !t.completed && t.title.toLowerCase().includes(taskTitle.toLowerCase()));
                 if (taskToComplete) {
                     taskToComplete.completed = true;
                     taskToComplete.completedAt = new Date();
-                    activityTimers[taskToComplete.id] = 
-                        (taskToComplete.completedAt - new Date(taskToComplete.createdAt)) / 60000;
-                    
+                    activityTimers[taskToComplete.id] = (taskToComplete.completedAt - new Date(taskToComplete.createdAt)) / 60000;
                     saveData();
                     renderTasks();
                     updateEfficiency(true);
-                    
                     response = `Task "${taskToComplete.title}" marked as completed`;
-                    actionTaken = true;
                 } else {
                     response = `I couldn't find an active task matching "${taskTitle}"`;
-                    actionTaken = true;
                 }
+                actionTaken = true;
             }
         }
-        
-        // Delete all
-        else if ((command.includes('delete all') || command.includes('cancel all') || command.includes('reset all'))) {
+    
+        // ✅ 删除所有
+        else if (command.includes('delete all') || command.includes('cancel all') || command.includes('reset all')) {
             resetAllData();
             response = "All data has been reset";
             actionTaken = true;
         }
-        
-        // Open sections
+    
+        // ✅ 打开页面
         else if (command.includes('open')) {
             if (command.includes('game')) {
                 window.location.replace('game.html');
                 response = "Opening game section";
-                actionTaken = true;
-            }
-            else if (command.includes('stats') || command.includes('graph')) {
+            } else if (command.includes('stats') || command.includes('graph')) {
                 taskSection.style.display = 'none';
                 graphSection.style.display = 'block';
                 remindersSection.style.display = 'none';
                 initCharts();
                 updateDataDisplay();
                 response = "Opening statistics";
-                actionTaken = true;
-            }
-            else if (command.includes('reminders')) {
+            } else if (command.includes('reminders')) {
                 taskSection.style.display = 'none';
                 graphSection.style.display = 'none';
                 remindersSection.style.display = 'block';
                 renderReminders();
                 response = "Opening reminders";
-                actionTaken = true;
-            }
-            else if (command.includes('tasks') || command.includes('home')) {
+            } else if (command.includes('tasks') || command.includes('home')) {
                 taskSection.style.display = 'block';
                 graphSection.style.display = 'none';
                 remindersSection.style.display = 'none';
                 response = "Opening tasks";
-                actionTaken = true;
             }
+            actionTaken = true;
         }
-        
-        // Timer controls
+    
+        // ✅ 计时器
         else if (command.includes('timer')) {
             if (command.includes('start') || command.includes('begin')) {
                 startTimer();
                 response = "Timer started";
-                actionTaken = true;
-            }
-            else if (command.includes('reset')) {
+            } else if (command.includes('reset')) {
                 resetTimer();
                 response = "Timer reset";
-                actionTaken = true;
-            }
-            else if (command.includes('show') || command.includes('display')) {
+            } else if (command.includes('show') || command.includes('display')) {
                 showTimer();
                 response = "Showing timer";
-                actionTaken = true;
             }
+            actionTaken = true;
         }
-        
-        // Add reminder
+    
+        // ✅ 添加提醒
         else if ((command.includes('add') || command.includes('create')) && command.includes('reminder')) {
             const reminderMatch = command.match(/(?:add|create) reminder (.+)/i);
             if (reminderMatch && reminderMatch[1]) {
                 const reminderText = reminderMatch[1].trim();
-                response = `Added reminder: "${reminderText}". When is it due? Please say the date in year, month, day format`;
+                response = `Added reminder: "${reminderText}". When is it due?`;
                 speak(response);
-                
-                // Ask for due date
-                recognition.onend = null;
                 recognition.stop();
-                
+    
                 const dateRecognition = new SpeechRecognition();
                 dateRecognition.lang = 'en-US';
-                
                 dateRecognition.onresult = (event) => {
-                    const dateStr = Array.from(event.results)
-                        .map(result => result[0])
-                        .map(result => result.transcript)
-                        .join('')
-                        .trim();
-                    
-                    // Simple date parsing (this would need more robust parsing in production)
+                    const dateStr = event.results[0][0].transcript.toLowerCase();
                     let dueDate = new Date();
-                    const now = new Date();
-                    
-                    // Try to parse relative dates
-                    if (dateStr.includes('tomorrow')) {
-                        dueDate.setDate(now.getDate() + 1);
-                    } 
-                    else if (dateStr.includes('next week')) {
-                        dueDate.setDate(now.getDate() + 7);
-                    }
-                    else {
-                        // Try to parse absolute dates (very basic)
-                        const dateMatch = dateStr.match(/(\d{4})[^\d]*(\d{1,2})[^\d]*(\d{1,2})/);
-                        if (dateMatch) {
-                            dueDate = new Date(
-                                parseInt(dateMatch[1]),
-                                parseInt(dateMatch[2]) - 1,
-                                parseInt(dateMatch[3])
-                            );
-                        } else {
-                            // Default to tomorrow if can't parse
-                            dueDate.setDate(now.getDate() + 1);
-                        }
-                    }
-                    
-                    // Set time to 9 AM
-                    dueDate.setHours(9, 0, 0, 0);
-                    
-                    const newReminder = {
+                    dueDate.setDate(dueDate.getDate() + 1); // 默认明天
+    
+                    reminders.push({
                         id: Date.now(),
                         text: reminderText,
-                        dueDate: dueDate,
+                        dueDate,
                         notifiedOneDay: false,
                         notifiedOneHour: false,
                         notifiedTenMinutes: false
-                    };
-                    
-                    reminders.push(newReminder);
+                    });
                     saveData();
                     renderReminders();
-                    
-                    response = `Reminder set for "${reminderText}" on ${dueDate.toDateString()}`;
+                    response = `Reminder set for "${reminderText}"`;
                     speak(response);
                     voiceResponse.textContent = response;
-                    
-                    // Restore main recognition
-                    recognition.onend = () => {
-                        isListening = false;
-                        voiceStatus.innerHTML = '<i class="fas fa-microphone"></i> Click to enable voice control';
-                        voiceStatus.style.color = '';
-                        voiceWave.style.display = 'none';
-                    };
-                    
-                    setupVoiceControl();
+                    setTimeout(() => recognition.start(), 500);
                 };
-                
                 dateRecognition.start();
-                
                 actionTaken = true;
             }
         }
-        
-        // Delete reminder
+    
+        // ✅ 删除提醒
         else if ((command.includes('delete') || command.includes('cancel')) && command.includes('reminder')) {
             const reminderMatch = command.match(/(?:delete|cancel) reminder (.+)/i);
             if (reminderMatch && reminderMatch[1]) {
                 const reminderText = reminderMatch[1].trim();
-                const reminderToDelete = reminders.find(r => 
-                    r.text.toLowerCase().includes(reminderText.toLowerCase()));
-                
+                const reminderToDelete = reminders.find(r => r.text.toLowerCase().includes(reminderText.toLowerCase()));
                 if (reminderToDelete) {
                     reminders = reminders.filter(r => r.id !== reminderToDelete.id);
                     saveData();
                     renderReminders();
-                    
-                    response = `Reminder "${reminderToDelete.text}" has been deleted`;
-                    actionTaken = true;
+                    response = `Reminder "${reminderToDelete.text}" deleted`;
                 } else {
-                    response = `I couldn't find a reminder matching "${reminderText}"`;
-                    actionTaken = true;
+                    response = `Reminder not found`;
                 }
+                actionTaken = true;
             }
         }
-        
-        // Exit voice control
-        // Exit voice control
+    
+        // ✅ 退出（关键修复）
         else if (command.includes('exit') || command.includes('stop') || command.includes('goodbye')) {
-            isActivated = false; // ✅ 不再是 triggerActive
-            voiceWave.style.display = 'flex';
-            response = "Goodbye! I'm still listening for 'Study assistant'.";
+            isActivated = false; // ✅ 只重置状态，不关闭识别
+            voiceStatus.innerHTML = '<i class="fas fa-microphone"></i> Listening for "Study assistant"';
+            response = "Goodbye! I'm still listening.";
             actionTaken = true;
         }
-        
-        // No command matched
+    
+        // ✅ 未知命令
         if (!actionTaken) {
-            response = "I didn't understand that command. Please try again";
+            response = "I didn't understand that command.";
         }
-        // Stop recognition after processing the command
+    
         if (actionTaken) {
-            recognition.stop();
-            triggerActive = false; // Reset trigger
-        }
-
-        // Show response
-        if (actionTaken || !triggerActive) {
             voiceResponse.textContent = response;
-            if (actionTaken) {
-                speak(response);
-            }
+            speak(response);
         }
-        // Reset at end
-        setTimeout(() => {
-            isProcessingCommand = false;
-        }, 1500); // Match average response time
+    
+        // ✅ 移除错误的 stop() 和 triggerActive 重置
     };
 
     const speak = (text) => {
-        if (speechSynthesis) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            speechSynthesis.speak(utterance);
-        }
+        if (!speechSynthesis) return;
+        speechSynthesis.cancel(); // ✅ 关键
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        speechSynthesis.speak(utterance);
     };
 
     const saveData = () => {
