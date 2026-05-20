@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Assistant Pro Max | Nim Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="Images\apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="Images\favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Images\favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <style>
+        :root {
+            --primary: #64b5f6;  /* Light blue */
+            --secondary: #e3f2fd;  /* Very light blue */
+            --accent: #1e88e5;    /* Medium blue */
+            --text: #2d3436;
+            --bg: #f5f6fa;
+            --card: #ffffff;
+            --success: #81c784;  /* Light green */
+            --warning: #ffb74d;  /* Light orange */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(100, 181, 246, 0.1) 0%, rgba(227, 242, 253, 0.1) 100%);
+            z-index: -1;
+            backdrop-filter: blur(2px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--accent);
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        h2 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .config-panel, #turnSelection, #gameBoard {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .input-group label {
+            font-weight: 600;
+            color: var(--text);
+            min-width: 150px;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        input[type="number"]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #90caf9 0%, #42a5f5 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .start-btn {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            font-size: 1.1rem;
+            padding: 15px;
+        }
+
+        #heapConfigs {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .heap-input {
+            background: var(--secondary);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .heap-input:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary);
+        }
+        
+        .heap-input label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .heap-input input {
+            width: 100%;
+        }
+
+        .heaps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .heap {
+            background: var(--secondary);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .heap-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        .items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .item {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item:hover {
+            transform: scale(1.1);
+            background: var(--accent);
+        }
+
+        .item.selected {
+            background: var(--warning);
+            transform: scale(1.1);
+        }
+
+        #resultPanel {
+            background: var(--secondary);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--accent);
+            font-size: 1.1rem;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .warning {
+            color: #e65100;
+            font-weight: 600;
+        }
+
+        .rules-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .rules-btn:hover {
+            background: #1976d2;
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .modal-header h2 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .modal-body {
+            line-height: 1.6;
+        }
+        
+        .modal-body h3 {
+            color: var(--accent);
+            margin: 15px 0 10px;
+        }
+        
+        .modal-body ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .home-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .home-icon {
+            color: white;
+            font-size: 20px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text);
+            padding: 15px;
+            font-size: 0.9rem;
+            z-index: 10;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            #heapConfigs, .heaps {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+        }
+
+        /* Game states */
+        .player-turn {
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+        
+        .ai-turn {
+            box-shadow: 0 0 0 3px var(--warning);
+        }
+        
+        .game-over {
+            box-shadow: 0 0 0 3px var(--success);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="container">
+        <h1><i class="fas fa-chess-rook"></i> Nim Game</h1>
+        <a href="/studyassistantpro/" class="home-btn" title="Home">
+            <i class="fas fa-home home-icon"></i>
+        </a>
+
+        <!-- Settings Panel (initially visible) -->
+        <div id="settingsPanel" class="config-panel">
+            <h2><i class="fas fa-cog"></i> Game Settings</h2>
+            <div class="input-group">
+                <label for="heapCount">Number of Piles (1-10):</label>
+                <input type="number" id="heapCount" min="1" max="10" value="3">
+                <button onclick="generateHeaps()"><i class="fas fa-plus-circle"></i> Generate Piles</button>
+            </div>
+            <div id="heapConfigs"></div>
+            <button class="start-btn" onclick="startGame()"><i class="fas fa-play"></i> Start Game</button>
+        </div>
+
+        <!-- Turn Selection (hidden initially) -->
+        <div id="turnSelection" style="display:none;">
+            <h3><i class="fas fa-users"></i> Who starts the game?</h3>
+            <button onclick="initGame(true)"><i class="fas fa-user"></i> Player First</button>
+            <button onclick="initGame(false)"><i class="fas fa-robot"></i> AI First</button>
+        </div>
+        
+        <!-- Game Board (hidden initially) -->
+        <div id="gameBoard" style="display:none;">
+            <h3 id="turnIndicator"><i class="fas fa-user"></i> Your Turn</h3>
+            <div class="heaps" id="heapsContainer"></div>
+            <button id="endTurnBtn" onclick="endTurn()" style="display:none; margin-top:20px;">
+                <i class="fas fa-flag-checkered"></i> End Turn
+            </button>
+        </div>
+        
+        <!-- Result Panel -->
+        <div id="resultPanel"></div>
+    </div>
+
+    <!-- Rules Button -->
+    <button class="rules-btn" onclick="showRules()"><i class="fas fa-question"></i></button>
+
+    <!-- Rules Modal -->
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-book"></i> Nim Game Rules</h2>
+                <button class="close-btn" onclick="hideRules()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3><i class="fas fa-bullseye"></i> Objective</h3>
+                <p>The goal of Nim is to be the player who removes the last object from the game board.</p>
+                
+                <h3><i class="fas fa-gamepad"></i> Gameplay</h3>
+                <ul>
+                    <li>The game starts with several piles (heaps) of objects</li>
+                    <li>Players alternate turns, removing one or more objects from a single pile</li>
+                    <li>On each turn, a player must remove at least one object</li>
+                    <li>All objects removed must come from the same pile</li>
+                    <li>The player who removes the last object wins the game</li>
+                </ul>
+                
+                <h3><i class="fas fa-chess"></i> Strategy</h3>
+                <p>Nim has a known mathematical strategy based on binary digital sums (Nim-sum). A player can always win from a winning position if they play optimally.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Study Assistant Pro | Nim Game | Copyright &copy; 2025 Steven Hsieh (StevenVrp) | Licensed under the MIT License.
+    </footer>
+
+    <script>
+        // Game state variables
+        let gameHeaps = [];
+        let playerTurn = true;
+        let selectedItems = [];
+        let gameActive = false;
+
+        // DOM elements
+        const settingsPanel = document.getElementById('settingsPanel');
+        const turnSelection = document.getElementById('turnSelection');
+        const gameBoard = document.getElementById('gameBoard');
+        const heapsContainer = document.getElementById('heapsContainer');
+        const resultPanel = document.getElementById('resultPanel');
+        const turnIndicator = document.getElementById('turnIndicator');
+        const endTurnBtn = document.getElementById('endTurnBtn');
+
+        // Generate heap configuration inputs
+        function generateHeaps() {
+            const count = parseInt(document.getElementById('heapCount').value) || 3;
+            let html = '';
+            
+            for(let i = 1; i <= count; i++) {
+                html += `
+                    <div class="heap-input">
+                        <label><i class="fas fa-layer-group"></i> Pile ${i} Items (1-15):</label>
+                        <input type="number" min="1" max="15" value="${Math.min(15, 3+i)}">
+                    </div>
+                `;
+            }
+            document.getElementById('heapConfigs').innerHTML = html;
+        }
+
+        // Start the game with current settings
+        function startGame() {
+            const inputs = document.querySelectorAll('#heapConfigs input');
+            gameHeaps = Array.from(inputs).map(input => 
+                Math.min(15, Math.max(1, parseInt(input.value) || 1))
+            );
+            
+            settingsPanel.style.display = 'none';
+            turnSelection.style.display = 'block';
+        }
+
+        // Initialize game with turn selection
+        function initGame(playerStarts) {
+            playerTurn = playerStarts;
+            turnSelection.style.display = 'none';
+            gameBoard.style.display = 'block';
+            gameActive = true;
+            
+            renderGameBoard();
+            
+            if (!playerTurn) {
+                aiMove();
+            }
+        }
+
+        // Render the game board
+        function renderGameBoard() {
+            let html = '';
+            
+            gameHeaps.forEach((count, index) => {
+                html += `
+                    <div class="heap ${playerTurn ? 'player-turn' : 'ai-turn'}">
+                        <div class="heap-title">Pile ${index + 1}</div>
+                        <div class="items">
+                            ${Array(count).fill().map((_, i) => `
+                                <div class="item ${selectedItems.includes(`${index}-${i}`) ? 'selected' : ''}" 
+                                     onclick="selectItem(${index}, ${i})">
+                                    ${i + 1}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            heapsContainer.innerHTML = html;
+            turnIndicator.innerHTML = playerTurn ? 
+                '<i class="fas fa-user"></i> Your Turn' : 
+                '<i class="fas fa-robot"></i> AI Thinking...';
+            
+            endTurnBtn.style.display = selectedItems.length > 0 ? 'block' : 'none';
+        }
+
+        // Select an item
+        function selectItem(heapIndex, itemIndex) {
+            if (!gameActive || !playerTurn) return;
+            
+            const key = `${heapIndex}-${itemIndex}`;
+            const itemPos = selectedItems.indexOf(key);
+            
+            // Clear previous selections from other heaps
+            if (selectedItems.length > 0 && !selectedItems.some(i => i.startsWith(heapIndex))) {
+                selectedItems = [];
+            }
+            
+            // Toggle selection
+            if (itemPos === -1) {
+                // Select this and all items above it in the heap
+                selectedItems = [];
+                for (let i = 0; i <= itemIndex; i++) {
+                    selectedItems.push(`${heapIndex}-${i}`);
+                }
+            } else {
+                selectedItems = selectedItems.filter((_, i) => i <= itemPos);
+            }
+            
+            renderGameBoard();
+        }
+
+        // End player's turn
+        function endTurn() {
+            if (!gameActive || !playerTurn || selectedItems.length === 0) return;
+            
+            // Find which heap was selected
+            const heapIndex = parseInt(selectedItems[0].split('-')[0]);
+            const itemsToRemove = selectedItems.length;
+            
+            // Update game state
+            gameHeaps[heapIndex] -= itemsToRemove;
+            if (gameHeaps[heapIndex] < 0) gameHeaps[heapIndex] = 0;
+            
+            // Check for win condition
+            const totalItems = gameHeaps.reduce((sum, val) => sum + val, 0);
+            if (totalItems === 0) {
+                gameOver(true);
+                return;
+            }
+            
+            // Switch turns
+            playerTurn = false;
+            selectedItems = [];
+            renderGameBoard();
+            
+            // AI move after short delay
+            setTimeout(aiMove, 1000);
+        }
+
+        // AI move logic
+        function aiMove() {
+            if (!gameActive || playerTurn) return;
+
+            // Simulate AI thinking with a delay
+            setTimeout(() => {
+                // Calculate Nim-sum
+                const nimSum = gameHeaps.reduce((a, b) => a ^ b, 0);
+
+                let moveFound = false;
+
+                // Try to make an optimal move
+                gameHeaps.some((heap, i) => {
+                    if (heap === 0) return false;
+                    const target = heap ^ nimSum;
+                    if (target < heap) {
+                        gameHeaps[i] = target;
+                        moveFound = true;
+                        return true;
+                    }
+                });
+
+                // If no optimal move is found, make a random valid move
+                if (!moveFound) {
+                    const nonEmptyHeaps = gameHeaps.map((count, i) => ({ count, i })).filter(h => h.count > 0);
+                    const randomHeap = nonEmptyHeaps[Math.floor(Math.random() * nonEmptyHeaps.length)];
+                    const itemsToRemove = Math.min(randomHeap.count, Math.floor(Math.random() * randomHeap.count) + 1);
+                    gameHeaps[randomHeap.i] -= itemsToRemove;
+                }
+
+                // Check for game over
+                const totalItems = gameHeaps.reduce((sum, val) => sum + val, 0);
+                if (totalItems === 0) {
+                    gameOver(false);
+                    return;
+                }
+
+                // Switch back to player
+                playerTurn = true;
+                renderGameBoard();
+            }, 1000); // 1-second delay
+        }
+        // Game over handler
+        function gameOver(playerWon) {
+            gameActive = false;
+            
+            // Add game-over class to all heaps
+            document.querySelectorAll('.heap').forEach(heap => {
+                heap.classList.add('game-over');
+                heap.classList.remove('player-turn', 'ai-turn');
+            });
+            
+            if (playerWon) {
+                resultPanel.innerHTML = `
+                    <p class="success"><i class="fas fa-trophy"></i> Congratulations! You won!</p>
+                    <button onclick="resetGame()"><i class="fas fa-redo"></i> Play Again</button>
+                `;
+            } else {
+                resultPanel.innerHTML = `
+                    <p class="warning"><i class="fas fa-robot"></i> The AI won this time!</p>
+                    <button onclick="resetGame()"><i class="fas fa-redo"></i> Play Again</button>
+                `;
+            }
+            
+            resultPanel.style.display = 'block';
+            endTurnBtn.style.display = 'none';
+        }
+
+        // Reset the game
+        function resetGame() {
+            settingsPanel.style.display = 'block';
+            gameBoard.style.display = 'none';
+            turnSelection.style.display = 'none';
+            resultPanel.style.display = 'none';
+            
+            gameHeaps = [];
+            playerTurn = true;
+            selectedItems = [];
+            gameActive = false;
+        }
+
+        // Rules modal functions
+        function showRules() {
+            document.getElementById('rulesModal').style.display = 'flex';
+        }
+        
+        function hideRules() {
+            document.getElementById('rulesModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('rulesModal');
+            if (event.target == modal) {
+                hideRules();
+            }
+        }
+        
+        // Initialize the game settings on load
+        window.onload = function() {
+            generateHeaps();
+        };
+    </script>
+</body>
+</html>
