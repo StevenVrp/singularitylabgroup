@@ -404,39 +404,50 @@
             }
         }
 
-        // 在 welcome.html 中修复头像上传
         document.getElementById('avatar-upload').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            if (!file.type.startsWith('image/')) {
 
-                showMessage(
-                    'Please upload a valid image.',
-                    'error'
-                );
-            
-                return;
-            }
-            
-            if (file.size > 5 * 1024 * 1024) {
-            
-                showMessage(
-                    'Image must be smaller than 5MB.',
-                    'error'
-                );
-            
-                return;
-            }
-            
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) return;
+            const file = e.target.files[0];
         
-            // 生成唯一文件名，包含用户ID
+            if (!file) return;
+        
+            // Instant local preview
+            const previewUrl = URL.createObjectURL(file);
+            document.getElementById('avatar-preview').src = previewUrl;
+        
+            if (!file.type.startsWith('image/')) {
+        
+                showMessage('Please upload a valid image.', 'error');
+        
+                return;
+            }
+        
+            if (file.size > 5 * 1024 * 1024) {
+        
+                showMessage('Image must be smaller than 5MB.', 'error');
+        
+                return;
+            }
+        
+            const {
+                data: { session }
+            } = await supabaseClient.auth.getSession();
+        
+            if (!session) {
+        
+                showMessage('Session expired.', 'error');
+        
+                return;
+            }
+        
             const fileExt = file.name.split('.').pop();
-            const fileName = `${session.user.id}/${Date.now()}.${fileExt}`;
-            
-            // 上传到 Supabase Storage
-            const { data: uploadData, error: uploadError } = await supabaseClient.storage
+        
+            const fileName =
+                `${session.user.id}-${Date.now()}.${fileExt}`;
+        
+            const {
+                data,
+                error: uploadError
+            } = await supabaseClient.storage
                 .from('avatars')
                 .upload(fileName, file, {
                     cacheControl: '3600',
@@ -444,28 +455,51 @@
                 });
         
             if (uploadError) {
-                showMessage('Upload failed: ' + uploadError.message, 'error');
+        
+                console.error(uploadError);
+        
+                showMessage(
+                    'Upload failed: ' + uploadError.message,
+                    'error'
+                );
+        
                 return;
             }
         
-            // 获取公共URL
-            const { data: urlData } = supabaseClient.storage
-                .from('avatars')
-                .getPublicUrl(fileName);
+            const { data: urlData } =
+                supabaseClient.storage
+                    .from('avatars')
+                    .getPublicUrl(fileName);
         
-            // 更新用户 metadata
-            const { error: updateError } = await supabaseClient.auth.updateUser({
-                data: { avatar_url: urlData.publicUrl }
-            });
+            const avatarUrl = urlData.publicUrl;
+        
+            const { error: updateError } =
+                await supabaseClient.auth.updateUser({
+                    data: {
+                        avatar_url: avatarUrl
+                    }
+                });
         
             if (updateError) {
-                showMessage('Failed to update profile: ' + updateError.message, 'error');
-            } else {
-                document.getElementById('avatar-preview').src = urlData.publicUrl;
-                showMessage('Avatar uploaded successfully!', 'success');
+        
+                console.error(updateError);
+        
+                showMessage(
+                    'Failed to save avatar.',
+                    'error'
+                );
+        
+                return;
             }
+        
+            document.getElementById('avatar-preview').src =
+                avatarUrl;
+        
+            showMessage(
+                'Avatar uploaded successfully!',
+                'success'
+            );
         });
-
        // 在 welcome.html 中修复性别选择
         function toggleCustomGender() {
 
