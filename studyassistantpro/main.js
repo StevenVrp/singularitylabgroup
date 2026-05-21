@@ -1007,10 +1007,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let offsetX, offsetY;
 
     floatingTimer.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+    
         if (e.target === floatingTimer || e.target.classList.contains('timer-header')) {
             isDragging = true;
+    
+            document.body.style.userSelect = 'none';
+    
             offsetX = e.clientX - floatingTimer.getBoundingClientRect().left;
             offsetY = e.clientY - floatingTimer.getBoundingClientRect().top;
+    
             floatingTimer.style.cursor = 'grabbing';
         }
     });
@@ -1025,6 +1031,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseup', () => {
         isDragging = false;
         floatingTimer.style.cursor = 'move';
+        document.body.style.userSelect = '';
     });
 
     // Timer visibility toggle
