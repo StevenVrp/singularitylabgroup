@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let timerInterval;
     let timerRunning = false;
     let totalSeconds = 0;
+    let timerVisible = true;
 
     // Voice control variables
     let isListening = false;
