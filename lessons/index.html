@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +27,12 @@
                         'singularity-dark': '#000000',
                     },
                     fontFamily: {
-                        'singularity': ['SF Pro Display', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        'singularity': [
+                            'SF Pro Display',
+                            'Helvetica Neue',
+                            'Arial',
+                            'sans-serif'
+                        ],
                     },
                 }
             }
@@ -37,6 +41,7 @@
 
     <style type="text/tailwindcss">
         @layer utilities {
+
             .pro-badge {
                 background: linear-gradient(
                     90deg,
@@ -73,13 +78,9 @@
             color: #1a1a1a;
         }
 
-        .lesson-scroll::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .lesson-scroll::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.12);
-            border-radius: 999px;
+        .glass-panel {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(20px);
         }
 
         .timeline-line {
@@ -89,6 +90,7 @@
             bottom: 0;
             width: 4px;
             border-radius: 999px;
+
             background: linear-gradient(
                 to bottom,
                 #2563eb,
@@ -105,36 +107,43 @@
             border: 4px solid #2563eb;
             transition: all 0.3s ease;
             position: relative;
-            z-index: 5;
+            z-index: 10;
             flex-shrink: 0;
         }
 
         .lesson-node:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 0 10px rgba(37,99,235,0.12);
+            transform: scale(1.12);
+
+            box-shadow:
+                0 0 0 10px rgba(37,99,235,0.12);
         }
 
         .lesson-node.active {
             background: #2563eb;
+
             box-shadow:
-                0 0 30px rgba(37,99,235,0.45),
-                0 0 60px rgba(37,99,235,0.15);
+                0 0 30px rgba(37,99,235,0.35),
+                0 0 60px rgba(37,99,235,0.12);
         }
 
         .lesson-item:hover .lesson-title {
             color: #2563eb;
         }
 
-        .glass-panel {
-            background: rgba(255,255,255,0.82);
-            backdrop-filter: blur(20px);
+        .lesson-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .lesson-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.12);
+            border-radius: 999px;
         }
 
         .hero-overlay {
             background: linear-gradient(
                 to top,
-                rgba(0,0,0,0.65),
-                rgba(0,0,0,0.15),
+                rgba(0,0,0,0.72),
+                rgba(0,0,0,0.2),
                 transparent
             );
         }
@@ -144,15 +153,38 @@
         }
 
         @keyframes fadeIn {
+
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(10px);
             }
 
             to {
                 opacity: 1;
                 transform: translateY(0px);
             }
+        }
+
+        .curriculum-btn.active {
+
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #1d4ed8
+            );
+
+            color: white;
+
+            box-shadow:
+                0 10px 30px rgba(37,99,235,0.22);
+        }
+
+        .curriculum-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-4px) scale(1.01);
         }
     </style>
 </head>
@@ -168,13 +200,17 @@
 
             <!-- Logo -->
             <div class="flex items-center">
+
                 <a href="/" class="text-2xl font-bold">
+
                     <img
                         src="/Images/Logo2.png"
                         alt="Singularity Lab Logo"
                         class="h-10"
                     >
+
                 </a>
+
             </div>
 
             <!-- Desktop Menu -->
@@ -281,7 +317,7 @@
 
         <div class="container mx-auto px-6">
 
-            <!-- TOP HERO -->
+            <!-- HERO -->
             <div class="mb-10 rounded-[2.5rem] overflow-hidden relative bg-black shadow-2xl">
 
                 <img
@@ -311,41 +347,48 @@
 
             </div>
 
-            <!-- LESSON LAYOUT -->
+            <!-- CONTENT -->
             <div class="grid xl:grid-cols-[380px_1fr] gap-8 items-start">
 
-                <!-- LEFT PANEL -->
+                <!-- LEFT -->
                 <div class="glass-panel rounded-[2.5rem] shadow-2xl p-8 sticky top-28 h-[calc(100vh-9rem)] overflow-hidden">
 
-                    <div class="mb-10">
+                    <div class="mb-8">
 
-                        <div class="flex items-center justify-between mb-5">
+                        <p class="uppercase tracking-[0.3em] text-xs text-gray-400 mb-3">
+                            Curriculum
+                        </p>
 
-                            <div>
+                        <h2 class="text-4xl font-bold mb-6">
+                            Lessons
+                        </h2>
 
-                                <p class="uppercase tracking-[0.3em] text-xs text-gray-400 mb-2">
-                                    Curriculum
-                                </p>
+                        <!-- TOGGLE -->
+                        <div class="flex gap-3 mb-8">
 
-                                <h2 class="text-4xl font-bold">
-                                    Lessons
-                                </h2>
+                            <button
+                                id="core-btn"
+                                class="curriculum-btn active px-5 py-3 rounded-2xl bg-blue-600 text-white font-semibold transition-all"
+                            >
+                                Core Curriculum
+                            </button>
 
-                            </div>
+                            <button
+                                id="explore-btn"
+                                class="curriculum-btn px-5 py-3 rounded-2xl bg-gray-100 text-gray-600 font-semibold transition-all"
+                            >
+                                Exploration Pathways
+                            </button>
 
-                            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl">
-                                <i class="fa-solid fa-book-open"></i>
-                            </div>
-
-                        </div>
-
-                        <div class="bg-blue-50 border border-blue-100 rounded-2xl px-5 py-4 text-sm text-blue-700 leading-relaxed">
-                            Follow the pathway below and select any lesson to open its media, notes, and learning resources.
                         </div>
 
                     </div>
 
-                    <div id="timeline" class="lesson-scroll overflow-y-auto h-[calc(100%-11rem)] relative pl-3 pr-2 space-y-10">
+                    <!-- TIMELINE -->
+                    <div
+                        id="timeline"
+                        class="lesson-scroll overflow-y-auto h-[calc(100%-11rem)] relative pl-3 pr-2 space-y-10"
+                    >
 
                         <div class="timeline-line"></div>
 
@@ -353,14 +396,17 @@
 
                 </div>
 
-                <!-- RIGHT PANEL -->
-                <div id="lesson-display" class="glass-panel rounded-[2.5rem] shadow-2xl overflow-hidden min-h-[850px] fade-in">
+                <!-- RIGHT -->
+                <div
+                    id="lesson-display"
+                    class="glass-panel rounded-[2.5rem] shadow-2xl overflow-hidden min-h-[850px]"
+                >
 
-                    <div class="relative h-[340px] overflow-hidden bg-black">
+                    <div class="relative h-[420px] overflow-hidden bg-black">
 
                         <img
                             src="/Images/Background.jpg"
-                            class="w-full h-full object-cover opacity-40"
+                            class="absolute inset-0 w-full h-full object-cover opacity-40"
                         >
 
                         <div class="hero-overlay absolute inset-0"></div>
@@ -371,64 +417,36 @@
                                 Welcome
                             </p>
 
-                            <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight max-w-4xl">
+                            <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight max-w-4xl">
                                 Select a Lesson to Begin
-                            </h2>
+                            </h1>
 
-                            <p class="text-blue-100 text-lg max-w-2xl leading-relaxed">
-                                Choose a node from the curriculum pathway to explore videos, guided notes, presentations, and lesson resources.
+                            <p class="text-blue-100 text-lg leading-relaxed max-w-3xl">
+                                Choose a lesson node from the curriculum pathway
+                                to explore educational videos, downloadable notes,
+                                presentations, and STEM learning resources.
                             </p>
 
                         </div>
 
                     </div>
 
-                    <div class="p-10 md:p-14 grid md:grid-cols-3 gap-6">
+                    <div class="p-10 md:p-14">
 
-                        <div class="rounded-[2rem] bg-white shadow-lg border border-gray-100 p-8">
+                        <div class="max-w-3xl">
 
-                            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl mb-6">
-                                <i class="fa-solid fa-video"></i>
-                            </div>
-
-                            <h3 class="text-2xl font-bold mb-3">
-                                Video Lessons
-                            </h3>
-
-                            <p class="text-gray-500 leading-relaxed">
-                                Watch recorded walkthroughs and demonstrations.
+                            <p class="uppercase tracking-[0.3em] text-sm text-gray-400 mb-5">
+                                Curriculum Overview
                             </p>
 
-                        </div>
-
-                        <div class="rounded-[2rem] bg-white shadow-lg border border-gray-100 p-8">
-
-                            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl mb-6">
-                                <i class="fa-solid fa-file-powerpoint"></i>
-                            </div>
-
-                            <h3 class="text-2xl font-bold mb-3">
-                                Presentation Files
+                            <h3 class="text-4xl font-bold mb-6">
+                                Begin Your Learning Journey
                             </h3>
 
-                            <p class="text-gray-500 leading-relaxed">
-                                Download structured lesson slides and classroom resources.
-                            </p>
-
-                        </div>
-
-                        <div class="rounded-[2rem] bg-white shadow-lg border border-gray-100 p-8">
-
-                            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl mb-6">
-                                <i class="fa-solid fa-file-lines"></i>
-                            </div>
-
-                            <h3 class="text-2xl font-bold mb-3">
-                                Guided Notes
-                            </h3>
-
-                            <p class="text-gray-500 leading-relaxed">
-                                Access printable guided notes for independent learning.
+                            <p class="text-gray-500 text-lg leading-relaxed">
+                                Select any lesson node from the curriculum pathway
+                                to open videos, guided notes, classroom presentations,
+                                and downloadable learning materials.
                             </p>
 
                         </div>
@@ -450,7 +468,6 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
 
-                <!-- Resources -->
                 <div>
 
                     <h4 class="text-lg font-bold mb-4">
@@ -475,7 +492,6 @@
 
                 </div>
 
-                <!-- Community -->
                 <div>
 
                     <h4 class="text-lg font-bold mb-4">
@@ -485,20 +501,8 @@
                     <ul class="space-y-2">
 
                         <li>
-                            <a href="/home/#community" class="text-gray-400 hover:text-white transition-colors">
-                                FAQs
-                            </a>
-                        </li>
-
-                        <li>
                             <a href="/community/" class="text-gray-400 hover:text-white transition-colors">
                                 Discussion Forum
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="/community/" class="text-gray-400 hover:text-white transition-colors">
-                                Events
                             </a>
                         </li>
 
@@ -506,7 +510,6 @@
 
                 </div>
 
-                <!-- About -->
                 <div>
 
                     <h4 class="text-lg font-bold mb-4">
@@ -516,26 +519,8 @@
                     <ul class="space-y-2">
 
                         <li>
-                            <a href="/home/#partners" class="text-gray-400 hover:text-white transition-colors">
-                                Partners
-                            </a>
-                        </li>
-
-                        <li>
                             <a href="/home/#about" class="text-gray-400 hover:text-white transition-colors">
                                 Our Mission
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="/home/#members" class="text-gray-400 hover:text-white transition-colors">
-                                Meet the Team
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="/home/#join" class="text-gray-400 hover:text-white transition-colors">
-                                Join Us
                             </a>
                         </li>
 
@@ -543,14 +528,13 @@
 
                 </div>
 
-                <!-- Follow -->
                 <div>
 
                     <h4 class="text-lg font-bold mb-4">
                         Follow Us
                     </h4>
 
-                    <div class="flex space-x-4 mb-6">
+                    <div class="flex space-x-4">
 
                         <a
                             href="https://space.bilibili.com/1372845857"
@@ -568,48 +552,7 @@
                             <i class="fab fa-youtube-play"></i>
                         </a>
 
-                        <a
-                            href="mailto:singularitylabgroup@outlook.com"
-                            class="text-gray-400 hover:text-white transition-colors text-xl"
-                        >
-                            <i class="fa fa-envelope"></i>
-                        </a>
-
                     </div>
-
-                    <h4 class="text-lg font-bold mb-4">
-                        Language
-                    </h4>
-
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        English
-                    </a>
-
-                </div>
-
-            </div>
-
-            <!-- Bottom -->
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-
-                <p class="text-gray-500 text-sm mb-4 md:mb-0">
-                    <i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70"></i>
-                    2026 Singularity Lab. All rights reserved.
-                </p>
-
-                <div class="flex space-x-6">
-
-                    <a href="/legal/#privacy-policy" class="text-gray-500 hover:text-white text-sm transition-colors">
-                        Privacy Policy
-                    </a>
-
-                    <a href="/legal/#terms-of-use" class="text-gray-500 hover:text-white text-sm transition-colors">
-                        Terms of Use
-                    </a>
-
-                    <a href="/legal/#license" class="text-gray-500 hover:text-white text-sm transition-colors">
-                        License
-                    </a>
 
                 </div>
 
@@ -619,7 +562,7 @@
 
     </footer>
 
-    <!-- Supabase -->
+    <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
@@ -638,27 +581,38 @@
             );
 
         // Navbar Scroll
-        window.addEventListener('scroll', function () {
+        window.addEventListener(
+            'scroll',
+            function () {
 
-            const navbar =
-                document.getElementById('navbar');
+                const navbar =
+                    document.getElementById('navbar');
 
-            if (window.scrollY > 50) {
+                if (window.scrollY > 50) {
 
-                navbar.classList.add('nav-scrolled');
+                    navbar.classList.add(
+                        'nav-scrolled'
+                    );
 
-            } else {
+                } else {
 
-                navbar.classList.remove('nav-scrolled');
+                    navbar.classList.remove(
+                        'nav-scrolled'
+                    );
+                }
             }
-        });
+        );
 
         // Mobile Menu
         const mobileMenuButton =
-            document.getElementById('mobile-menu-button');
+            document.getElementById(
+                'mobile-menu-button'
+            );
 
         const mobileMenu =
-            document.getElementById('mobile-menu');
+            document.getElementById(
+                'mobile-menu'
+            );
 
         if (mobileMenuButton && mobileMenu) {
 
@@ -666,12 +620,14 @@
                 'click',
                 function () {
 
-                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle(
+                        'hidden'
+                    );
                 }
             );
         }
 
-        // Login Protection
+        // LOGIN PROTECTION
         document.addEventListener(
             'DOMContentLoaded',
             async () => {
@@ -736,9 +692,12 @@
             try {
 
                 const response =
-                    await fetch(url, {
-                        method: 'HEAD'
-                    });
+                    await fetch(
+                        url,
+                        {
+                            method: 'HEAD'
+                        }
+                    );
 
                 return response.ok;
 
@@ -748,7 +707,10 @@
             }
         }
 
-        async function detectFile(folder, extensions) {
+        async function detectFile(
+            folder,
+            extensions
+        ) {
 
             for (const ext of extensions) {
 
@@ -769,21 +731,108 @@
         async function initializeLessons() {
 
             const response =
-                await fetch('/lessons/files/lessons.json');
+                await fetch(
+                    '/lessons/files/lessons.json'
+                );
 
-            const lessons =
+            const lessonData =
                 await response.json();
 
-            const timeline =
-                document.getElementById('timeline');
+            renderLessons(
+                lessonData.core
+            );
 
-            lessons.forEach((folder, index) => {
+            document
+                .getElementById('core-btn')
+                .addEventListener(
+                    'click',
+                    () => {
+
+                        switchMode(
+                            'core',
+                            lessonData
+                        );
+                    }
+                );
+
+            document
+                .getElementById('explore-btn')
+                .addEventListener(
+                    'click',
+                    () => {
+
+                        switchMode(
+                            'exploration',
+                            lessonData
+                        );
+                    }
+                );
+        }
+
+        function switchMode(
+            mode,
+            lessonData
+        ) {
+
+            document
+                .querySelectorAll(
+                    '.curriculum-btn'
+                )
+                .forEach(btn => {
+
+                    btn.classList.remove(
+                        'active'
+                    );
+                });
+
+            if (mode === 'core') {
+
+                document
+                    .getElementById(
+                        'core-btn'
+                    )
+                    .classList.add(
+                        'active'
+                    );
+
+            } else {
+
+                document
+                    .getElementById(
+                        'explore-btn'
+                    )
+                    .classList.add(
+                        'active'
+                    );
+            }
+
+            renderLessons(
+                lessonData[mode]
+            );
+        }
+
+        function renderLessons(lessons) {
+
+            const timeline =
+                document.getElementById(
+                    'timeline'
+                );
+
+            timeline.innerHTML =
+                '<div class="timeline-line"></div>';
+
+            lessons.forEach((folder) => {
 
                 const lessonName =
-                    folder.replaceAll('_', ' ');
+                    folder.replaceAll(
+                        '_',
+                        ' '
+                    );
 
                 const item =
-                    document.createElement('div');
+                    document.createElement(
+                        'div'
+                    );
 
                 item.className =
                     'lesson-item flex items-start gap-5 cursor-pointer relative';
@@ -805,20 +854,32 @@
                     </div>
                 `;
 
-                item.addEventListener('click', async () => {
+                item.addEventListener(
+                    'click',
+                    async () => {
 
-                    document
-                        .querySelectorAll('.lesson-node')
-                        .forEach(node => {
-                            node.classList.remove('active');
-                        });
+                        document
+                            .querySelectorAll(
+                                '.lesson-node'
+                            )
+                            .forEach(node => {
 
-                    item
-                        .querySelector('.lesson-node')
-                        .classList.add('active');
+                                node.classList.remove(
+                                    'active'
+                                );
+                            });
 
-                    loadLesson(folder);
-                });
+                        item
+                            .querySelector(
+                                '.lesson-node'
+                            )
+                            .classList.add(
+                                'active'
+                            );
+
+                        loadLesson(folder);
+                    }
+                );
 
                 timeline.appendChild(item);
             });
@@ -827,19 +888,34 @@
         async function loadLesson(folder) {
 
             const title =
-                folder.replaceAll('_', ' ');
+                folder.replaceAll(
+                    '_',
+                    ' '
+                );
 
             const image =
-                await detectFile(folder, ['png', 'jpg', 'jpeg']);
+                await detectFile(
+                    folder,
+                    ['png', 'jpg', 'jpeg']
+                );
 
             const video =
-                await detectFile(folder, ['mp4', 'mov']);
+                await detectFile(
+                    folder,
+                    ['mp4', 'mov']
+                );
 
             const ppt =
-                await detectFile(folder, ['ppt', 'pptx']);
+                await detectFile(
+                    folder,
+                    ['ppt', 'pptx']
+                );
 
             const notes =
-                await detectFile(folder, ['doc', 'docx']);
+                await detectFile(
+                    folder,
+                    ['doc', 'docx']
+                );
 
             let description =
                 'No description available.';
@@ -847,16 +923,22 @@
             try {
 
                 const descResponse =
-                    await fetch(`/lessons/files/${folder}/description.txt`);
+                    await fetch(
+                        `/lessons/files/${folder}/description.txt`
+                    );
 
                 if (descResponse.ok) {
-                    description = await descResponse.text();
+
+                    description =
+                        await descResponse.text();
                 }
 
             } catch {}
 
             const display =
-                document.getElementById('lesson-display');
+                document.getElementById(
+                    'lesson-display'
+                );
 
             display.innerHTML = `
 
@@ -864,14 +946,16 @@
 
                     <div class="relative h-[420px] overflow-hidden bg-black">
 
-                        ${image ? `
-
-                            <img
-                                src="${image}"
-                                class="absolute inset-0 w-full h-full object-cover"
-                            >
-
-                        ` : ''}
+                        ${
+                            image
+                            ? `
+                                <img
+                                    src="${image}"
+                                    class="absolute inset-0 w-full h-full object-cover"
+                                >
+                            `
+                            : ''
+                        }
 
                         <div class="hero-overlay absolute inset-0"></div>
 
@@ -895,103 +979,109 @@
 
                     <div class="p-10 md:p-14 space-y-10">
 
-                        ${video ? `
+                        ${
+                            video
+                            ? `
+                                <div>
 
-                            <div>
+                                    <div class="flex items-center gap-4 mb-6">
 
-                                <div class="flex items-center gap-4 mb-6">
+                                        <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl">
+                                            <i class="fa-solid fa-play"></i>
+                                        </div>
 
-                                    <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl">
-                                        <i class="fa-solid fa-play"></i>
+                                        <div>
+
+                                            <h2 class="text-3xl font-bold">
+                                                Lesson Video
+                                            </h2>
+
+                                            <p class="text-gray-500 mt-1">
+                                                Watch the complete walkthrough and demonstration.
+                                            </p>
+
+                                        </div>
+
                                     </div>
 
-                                    <div>
+                                    <div class="overflow-hidden rounded-[2rem] shadow-2xl bg-black">
 
-                                        <h2 class="text-3xl font-bold">
-                                            Lesson Video
-                                        </h2>
-
-                                        <p class="text-gray-500 mt-1">
-                                            Watch the complete walkthrough and demonstration.
-                                        </p>
+                                        <video controls class="w-full">
+                                            <source src="${video}">
+                                        </video>
 
                                     </div>
 
                                 </div>
-
-                                <div class="overflow-hidden rounded-[2rem] shadow-2xl bg-black">
-
-                                    <video controls class="w-full">
-                                        <source src="${video}">
-                                    </video>
-
-                                </div>
-
-                            </div>
-
-                        ` : ''}
+                            `
+                            : ''
+                        }
 
                         <div class="grid md:grid-cols-2 gap-8">
 
-                            ${ppt ? `
+                            ${
+                                ppt
+                                ? `
+                                    <a
+                                        href="${ppt}"
+                                        download
+                                        class="resource-card transition-all duration-300 rounded-[2rem] overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white shadow-2xl"
+                                    >
 
-                                <a
-                                    href="${ppt}"
-                                    download
-                                    class="group rounded-[2rem] overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white shadow-2xl hover:scale-[1.02] transition-all duration-300"
-                                >
+                                        <div class="flex items-start justify-between mb-10">
 
-                                    <div class="flex items-start justify-between mb-10">
+                                            <div class="w-16 h-16 rounded-2xl bg-white/15 flex items-center justify-center text-3xl">
+                                                <i class="fa-solid fa-file-powerpoint"></i>
+                                            </div>
 
-                                        <div class="w-16 h-16 rounded-2xl bg-white/15 flex items-center justify-center text-3xl">
-                                            <i class="fa-solid fa-file-powerpoint"></i>
+                                            <i class="fa-solid fa-arrow-up-right-from-square text-xl opacity-70"></i>
+
                                         </div>
 
-                                        <i class="fa-solid fa-arrow-up-right-from-square text-xl opacity-70 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                                        <h3 class="text-3xl font-bold mb-4">
+                                            Presentation Slides
+                                        </h3>
 
-                                    </div>
+                                        <p class="text-blue-100 text-lg leading-relaxed">
+                                            Download the classroom presentation.
+                                        </p>
 
-                                    <h3 class="text-3xl font-bold mb-4">
-                                        Presentation Slides
-                                    </h3>
+                                    </a>
+                                `
+                                : ''
+                            }
 
-                                    <p class="text-blue-100 text-lg leading-relaxed">
-                                        Download the complete classroom presentation and visual materials.
-                                    </p>
+                            ${
+                                notes
+                                ? `
+                                    <a
+                                        href="${notes}"
+                                        download
+                                        class="resource-card transition-all duration-300 rounded-[2rem] overflow-hidden bg-black p-8 text-white shadow-2xl"
+                                    >
 
-                                </a>
+                                        <div class="flex items-start justify-between mb-10">
 
-                            ` : ''}
+                                            <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-3xl">
+                                                <i class="fa-solid fa-file-lines"></i>
+                                            </div>
 
-                            ${notes ? `
+                                            <i class="fa-solid fa-arrow-up-right-from-square text-xl opacity-70"></i>
 
-                                <a
-                                    href="${notes}"
-                                    download
-                                    class="group rounded-[2rem] overflow-hidden bg-black p-8 text-white shadow-2xl hover:scale-[1.02] transition-all duration-300"
-                                >
-
-                                    <div class="flex items-start justify-between mb-10">
-
-                                        <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-3xl">
-                                            <i class="fa-solid fa-file-lines"></i>
                                         </div>
 
-                                        <i class="fa-solid fa-arrow-up-right-from-square text-xl opacity-70 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                                        <h3 class="text-3xl font-bold mb-4">
+                                            Guided Notes
+                                        </h3>
 
-                                    </div>
+                                        <p class="text-gray-300 text-lg leading-relaxed">
+                                            Download printable lesson notes.
+                                        </p>
 
-                                    <h3 class="text-3xl font-bold mb-4">
-                                        Guided Notes
-                                    </h3>
-
-                                    <p class="text-gray-300 text-lg leading-relaxed">
-                                        Access printable guided notes and independent learning resources.
-                                    </p>
-
-                                </a>
-
-                            ` : ''}
+                                    </a>
+                                `
+                                : ''
+                            }
 
                         </div>
 
@@ -1005,4 +1095,3 @@
 
 </body>
 </html>
-
