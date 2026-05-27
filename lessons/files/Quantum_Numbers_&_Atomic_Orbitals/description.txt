@@ -1,1 +1,1 @@
-
+Delves into the quantum mechanical model of the atom, replacing classical orbits with probability clouds, detailing the four quantum numbers that define electron states, orbital shapes (s, p, d), and nodes, providing the theoretical foundation for electron behavior.
