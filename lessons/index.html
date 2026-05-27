@@ -1,9 +1,11 @@
+# /lessons/index.html
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon-16x16.png">
     <link rel="shortcut icon" href="/Images/favicon.ico">
@@ -17,9 +19,6 @@
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
         tailwind.config = {
             theme: {
@@ -29,13 +28,32 @@
                         'singularity-light-gray': '#f5f5f7',
                         'singularity-blue': '#0066cc',
                         'singularity-dark': '#000000',
-                    }
+                    },
+                    fontFamily: {
+                        'singularity': ['SF Pro Display', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
                 }
             }
         }
     </script>
 
-    <style>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .pro-badge {
+                background: linear-gradient(
+                    90deg,
+                    #ff6b6b,
+                    #feca57,
+                    #48dbfb,
+                    #ff9ff3
+                );
+
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 700;
+            }
+        }
 
         body {
             font-family:
@@ -57,665 +75,945 @@
             color: #1a1a1a;
         }
 
-        .timeline-line {
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(
-                to bottom,
-                #3b82f6,
-                #60a5fa,
-                #93c5fd
-            );
+        .lesson-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .lesson-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.12);
             border-radius: 999px;
         }
 
+        .timeline-line {
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 999px;
+            background: linear-gradient(
+                to bottom,
+                #2563eb,
+                #60a5fa,
+                #93c5fd
+            );
+        }
+
         .lesson-node {
-            position: relative;
-            z-index: 2;
-            width: 32px;
-            height: 32px;
+            width: 2rem;
+            height: 2rem;
             border-radius: 999px;
             background: white;
-            border: 3px solid #3b82f6;
+            border: 4px solid #2563eb;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 5;
             flex-shrink: 0;
         }
 
         .lesson-node:hover {
             transform: scale(1.15);
-            box-shadow:
-                0 0 0 8px rgba(59,130,246,0.12);
+            box-shadow: 0 0 0 10px rgba(37,99,235,0.12);
         }
 
         .lesson-node.active {
-            background: #3b82f6;
+            background: #2563eb;
             box-shadow:
-                0 0 25px rgba(59,130,246,0.6);
+                0 0 30px rgba(37,99,235,0.45),
+                0 0 60px rgba(37,99,235,0.15);
         }
 
-        .lesson-card {
-            transition:
-                transform 0.3s ease,
-                box-shadow 0.3s ease;
+        .lesson-item:hover .lesson-title {
+            color: #2563eb;
         }
 
-        .lesson-card:hover {
-            transform: translateY(-2px);
+        .glass-panel {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(20px);
         }
 
-        .glass {
-            backdrop-filter: blur(18px);
-            background: rgba(255,255,255,0.7);
+        .hero-overlay {
+            background: linear-gradient(
+                to top,
+                rgba(0,0,0,0.65),
+                rgba(0,0,0,0.15),
+                transparent
+            );
         }
 
-        video::-webkit-media-controls-panel {
-            background: rgba(255,255,255,0.9);
+        .fade-in {
+            animation: fadeIn 0.45s ease;
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0px);
+            }
+        }
     </style>
 </head>
 
-<body class="bg-singularity-light-gray text-singularity-gray">
+<body class="bg-white text-singularity-gray">
 
-<!-- NAVBAR -->
-<nav
-    id="navbar"
-    class="fixed top-0 left-0 w-full z-50 py-4 bg-white shadow-sm"
->
-    <div class="container mx-auto px-6 flex items-center justify-between">
-
-        <a href="/">
-            <img
-                src="/Images/Logo2.png"
-                class="h-10"
-                alt="Logo"
-            >
-        </a>
-
-        <div class="hidden md:flex space-x-8">
-
-            <a href="/home/#partners" class="nav-link text-black hover:text-gray-600">
-                Partners
-            </a>
-
-            <a href="/lessons/" class="nav-link text-black font-semibold">
-                Lessons
-            </a>
-
-            <a href="/community/" class="nav-link text-black hover:text-gray-600">
-                Community
-            </a>
-
-            <a href="/home/#about" class="nav-link text-black hover:text-gray-600">
-                About
-            </a>
-
-        </div>
-
-        <div class="flex items-center space-x-5">
-
-            <a href="/welcome/" class="nav-link text-black">
-                <i class="fa fa-user text-lg"></i>
-            </a>
-
-            <button
-                id="mobile-menu-button"
-                class="md:hidden text-black"
-            >
-                <i class="fa fa-bars text-xl"></i>
-            </button>
-
-        </div>
-    </div>
-
-    <!-- Mobile -->
-    <div
-        id="mobile-menu"
-        class="hidden md:hidden bg-white shadow-lg"
+    <!-- NAVBAR -->
+    <nav
+        id="navbar"
+        class="fixed top-0 left-0 w-full z-50 py-4 bg-white shadow-sm"
     >
-        <div class="px-6 py-5 flex flex-col space-y-4">
+        <div class="container mx-auto px-6 flex items-center justify-between">
 
-            <a href="/lessons/">Lessons</a>
-            <a href="/community/">Community</a>
-            <a href="/home/#about">About</a>
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="/" class="text-2xl font-bold">
+                    <img
+                        src="/Images/Logo2.png"
+                        alt="Singularity Lab Logo"
+                        class="h-10"
+                    >
+                </a>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+
+                <a href="/home/#partners" class="nav-link text-black hover:text-gray-600 transition-colors">
+                    Partners
+                </a>
+
+                <a href="/home/#lessons" class="nav-link text-black hover:text-gray-600 transition-colors font-semibold">
+                    Singularity Lessons
+                </a>
+
+                <a href="/home/#study-assistant" class="nav-link text-black hover:text-gray-600 transition-colors">
+                    Study Assistant <span class="pro-badge">Pro</span>
+                </a>
+
+                <a href="/community/" class="nav-link text-black hover:text-gray-600 transition-colors">
+                    Community
+                </a>
+
+                <a href="/home/#about" class="nav-link text-black hover:text-gray-600 transition-colors">
+                    About Us
+                </a>
+
+                <a href="/home/#members" class="nav-link text-black hover:text-gray-600 transition-colors">
+                    Meet the Team
+                </a>
+
+                <a href="/home/#join" class="nav-link text-black hover:text-gray-600 transition-colors">
+                    Join Us
+                </a>
+
+                <a href="/legal/" class="nav-link text-black hover:text-gray-600 transition-colors">
+                    Legal
+                </a>
+
+            </div>
+
+            <!-- Right -->
+            <div class="flex items-center space-x-6">
+
+                <a href="/welcome/" class="nav-link text-black hover:text-gray-600 transition-colors">
+                    <i class="fa fa-user"></i>
+                </a>
+
+                <!-- Mobile Button -->
+                <button
+                    id="mobile-menu-button"
+                    class="md:hidden nav-link text-black hover:text-gray-600 transition-colors"
+                >
+                    <i class="fa fa-bars"></i>
+                </button>
+
+            </div>
 
         </div>
-    </div>
-</nav>
 
-<!-- MAIN -->
-<section class="pt-32 pb-20 min-h-screen">
+        <!-- Mobile Menu -->
+        <div
+            id="mobile-menu"
+            class="md:hidden hidden bg-white absolute top-full left-0 w-full shadow-lg"
+        >
+            <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
 
-    <div class="container mx-auto px-6">
+                <a href="/home/#partners" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
+                    Partners
+                </a>
 
-        <div class="grid lg:grid-cols-[360px_1fr] gap-10">
+                <a href="/home/#lessons" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
+                    Singularity Lessons
+                </a>
 
-            <!-- LEFT SIDEBAR -->
-            <div
-                class="bg-white rounded-[2rem] shadow-xl p-8 relative overflow-hidden"
-            >
+                <a href="/home/#study-assistant" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
+                    Study Assistant <span class="pro-badge">Pro</span>
+                </a>
 
-                <div class="mb-8">
+                <a href="/community/" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
+                    Community
+                </a>
 
-                    <p class="uppercase tracking-[0.3em] text-sm text-gray-400 mb-3">
-                        Singularity Lessons
+                <a href="/home/#about" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
+                    About Us
+                </a>
+
+                <a href="/home/#members" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
+                    Meet the Team
+                </a>
+
+                <a href="/home/#join" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
+                    Join Us
+                </a>
+
+                <a href="/legal/" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
+                    Legal
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <section class="pt-32 pb-20 bg-gradient-to-b from-[#f5f7fb] to-[#eef4ff] min-h-screen overflow-hidden">
+
+        <div class="container mx-auto px-6">
+
+            <!-- TOP HERO -->
+            <div class="mb-10 rounded-[2.5rem] overflow-hidden relative bg-black shadow-2xl">
+
+                <img
+                    src="/Images/Background.jpg"
+                    class="absolute inset-0 w-full h-full object-cover opacity-30"
+                >
+
+                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-blue-900/70"></div>
+
+                <div class="relative z-10 px-10 md:px-16 py-16 md:py-24 text-white">
+
+                    <p class="uppercase tracking-[0.35em] text-blue-200 text-sm mb-5">
+                        SINGULARITY EDUCATION PLATFORM
                     </p>
 
-                    <h1 class="text-4xl font-bold leading-tight">
-                        Learning Path
+                    <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6 max-w-4xl">
+                        Interactive Learning Pathways
                     </h1>
 
-                </div>
-
-                <div
-                    id="timeline"
-                    class="relative pl-2 space-y-10"
-                >
-
-                    <div class="timeline-line"></div>
-
-                    <!-- JS GENERATED -->
+                    <p class="text-blue-100 text-lg md:text-xl max-w-3xl leading-relaxed">
+                        Explore guided STEM lessons, experiment walkthroughs,
+                        downloadable presentations, educational videos,
+                        and collaborative learning resources.
+                    </p>
 
                 </div>
 
             </div>
 
-            <!-- RIGHT CONTENT -->
-            <div
-                id="lesson-display"
-                class="bg-white rounded-[2rem] shadow-xl p-10 min-h-[750px] glass"
-            >
+            <!-- LESSON LAYOUT -->
+            <div class="grid xl:grid-cols-[380px_1fr] gap-8 items-start">
 
-                <!-- DEFAULT -->
-                <div
-                    id="welcome-screen"
-                    class="h-full flex flex-col items-center justify-center text-center"
-                >
+                <!-- LEFT PANEL -->
+                <div class="glass-panel rounded-[2.5rem] shadow-2xl p-8 sticky top-28 h-[calc(100vh-9rem)] overflow-hidden">
 
-                    <div
-                        class="w-28 h-28 rounded-full bg-blue-50 flex items-center justify-center mb-8"
-                    >
-                        <i class="fa-solid fa-graduation-cap text-5xl text-blue-600"></i>
+                    <div class="mb-10">
+
+                        <div class="flex items-center justify-between mb-5">
+
+                            <div>
+
+                                <p class="uppercase tracking-[0.3em] text-xs text-gray-400 mb-2">
+                                    Curriculum
+                                </p>
+
+                                <h2 class="text-4xl font-bold">
+                                    Lessons
+                                </h2>
+
+                            </div>
+
+                            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+
+                        </div>
+
+                        <div class="bg-blue-50 border border-blue-100 rounded-2xl px-5 py-4 text-sm text-blue-700 leading-relaxed">
+                            Follow the pathway below and select any lesson to open its media, notes, and learning resources.
+                        </div>
+
                     </div>
 
-                    <h2 class="text-5xl font-bold mb-6">
-                        Welcome to Lessons
-                    </h2>
+                    <div id="timeline" class="lesson-scroll overflow-y-auto h-[calc(100%-11rem)] relative pl-3 pr-2 space-y-10">
 
-                    <p class="text-gray-500 text-lg leading-relaxed max-w-2xl">
-                        Select a lesson from the learning pathway to begin
-                        exploring guided notes, videos, presentations,
-                        and educational resources.
-                    </p>
+                        <div class="timeline-line"></div>
+
+                    </div>
 
                 </div>
 
-            </div>
+                <!-- RIGHT PANEL -->
+                <div id="lesson-display" class="glass-panel rounded-[2.5rem] shadow-2xl overflow-hidden min-h-[850px] fade-in">
 
-        </div>
-
-    </div>
-
-</section>
-
-<script>
-
-    // =========================================
-    // SUPABASE
-    // =========================================
-
-    const SUPABASE_URL =
-        'https://wtfmsmibjktgajegflwp.supabase.co';
-
-    const SUPABASE_ANON_KEY =
-        'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ';
-
-    const supabaseClient =
-        supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
-        );
-
-    // =========================================
-    // LOGIN PROTECTION
-    // =========================================
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        async () => {
-
-            const ONE_DAY =
-                24 * 60 * 60 * 1000;
-
-            const loginTime =
-                localStorage.getItem(
-                    'login_time'
-                );
-
-            if (!loginTime) {
-
-                window.location.href =
-                    '/login/';
-
-                return;
-            }
-
-            const expired =
-                Date.now() -
-                parseInt(loginTime)
-                > ONE_DAY;
-
-            if (expired) {
-
-                await supabaseClient.auth.signOut();
-
-                localStorage.removeItem(
-                    'login_time'
-                );
-
-                window.location.href =
-                    '/login/';
-
-                return;
-            }
-
-            const {
-                data: { session }
-            } = await supabaseClient.auth.getSession();
-
-            if (!session) {
-
-                localStorage.removeItem(
-                    'login_time'
-                );
-
-                window.location.href =
-                    '/login/';
-
-                return;
-            }
-
-            initializeLessons();
-        }
-    );
-
-    // =========================================
-    // NAVBAR
-    // =========================================
-
-    window.addEventListener(
-        'scroll',
-        function () {
-
-            const navbar =
-                document.getElementById(
-                    'navbar'
-                );
-
-            if (window.scrollY > 50) {
-
-                navbar.classList.add(
-                    'nav-scrolled'
-                );
-
-            } else {
-
-                navbar.classList.remove(
-                    'nav-scrolled'
-                );
-            }
-        }
-    );
-
-    // =========================================
-    // MOBILE MENU
-    // =========================================
-
-    const mobileMenuButton =
-        document.getElementById(
-            'mobile-menu-button'
-        );
-
-    const mobileMenu =
-        document.getElementById(
-            'mobile-menu'
-        );
-
-    mobileMenuButton.addEventListener(
-        'click',
-        () => {
-
-            mobileMenu.classList.toggle(
-                'hidden'
-            );
-        }
-    );
-
-    // =========================================
-    // FILE HELPERS
-    // =========================================
-
-    async function fileExists(url) {
-
-        try {
-
-            const response =
-                await fetch(url, {
-                    method: 'HEAD'
-                });
-
-            return response.ok;
-
-        } catch {
-
-            return false;
-        }
-    }
-
-    async function detectFile(
-        folder,
-        lessonName,
-        extensions
-    ) {
-
-        for (const ext of extensions) {
-
-            const path =
-                `/lessons/files/${folder}/${lessonName}.${ext}`;
-
-            const exists =
-                await fileExists(path);
-
-            if (exists) {
-
-                return path;
-            }
-        }
-
-        return null;
-    }
-
-    // =========================================
-    // LESSON SYSTEM
-    // =========================================
-
-    async function initializeLessons() {
-
-        const response =
-            await fetch(
-                '/lessons/files/lessons.json'
-            );
-
-        const lessons =
-            await response.json();
-
-        const timeline =
-            document.getElementById(
-                'timeline'
-            );
-
-        for (const folder of lessons) {
-
-            const title =
-                folder.replaceAll(
-                    '_',
-                    ' '
-                );
-
-            const item =
-                document.createElement(
-                    'div'
-                );
-
-            item.className =
-                'flex items-center gap-5 relative cursor-pointer group';
-
-            item.innerHTML = `
-                <div class="lesson-node"></div>
-
-                <div>
-                    <h3 class="text-lg font-semibold group-hover:text-blue-600 transition-colors">
-                        ${title}
-                    </h3>
-
-                    <p class="text-sm text-gray-400">
-                        Click to open lesson
-                    </p>
-                </div>
-            `;
-
-            item.addEventListener(
-                'click',
-                async () => {
-
-                    document
-                        .querySelectorAll(
-                            '.lesson-node'
-                        )
-                        .forEach(node =>
-                            node.classList.remove(
-                                'active'
-                            )
-                        );
-
-                    item.querySelector(
-                        '.lesson-node'
-                    ).classList.add(
-                        'active'
-                    );
-
-                    loadLesson(folder);
-                }
-            );
-
-            timeline.appendChild(item);
-        }
-    }
-
-    // =========================================
-    // LOAD LESSON
-    // =========================================
-
-    async function loadLesson(folder) {
-
-        const lessonName = folder;
-
-        const title =
-            folder.replaceAll(
-                '_',
-                ' '
-            );
-
-        const image =
-            await detectFile(
-                folder,
-                lessonName,
-                ['png', 'jpg', 'jpeg']
-            );
-
-        const video =
-            await detectFile(
-                folder,
-                lessonName,
-                ['mp4', 'mov']
-            );
-
-        const ppt =
-            await detectFile(
-                folder,
-                lessonName,
-                ['ppt', 'pptx']
-            );
-
-        const notes =
-            await detectFile(
-                folder,
-                lessonName,
-                ['doc', 'docx']
-            );
-
-        let description =
-            'No lesson description available.';
-
-        try {
-
-            const descResponse =
-                await fetch(
-                    `/lessons/files/${folder}/description.txt`
-                );
-
-            if (descResponse.ok) {
-
-                description =
-                    await descResponse.text();
-            }
-
-        } catch {}
-
-        const display =
-            document.getElementById(
-                'lesson-display'
-            );
-
-        display.innerHTML = `
-            <div class="space-y-10 animate-fadeIn">
-
-                ${
-                    image
-                    ?
-                    `
-                    <div class="overflow-hidden rounded-[2rem] shadow-lg">
+                    <div class="relative h-[340px] overflow-hidden bg-black">
 
                         <img
-                            src="${image}"
-                            class="w-full h-[380px] object-cover"
+                            src="/Images/Background.jpg"
+                            class="w-full h-full object-cover opacity-40"
                         >
 
-                    </div>
-                    `
-                    :
-                    ''
-                }
+                        <div class="hero-overlay absolute inset-0"></div>
 
-                <div>
+                        <div class="absolute inset-0 flex flex-col justify-end p-10 md:p-14 text-white">
 
-                    <p class="uppercase tracking-[0.3em] text-sm text-gray-400 mb-4">
-                        Lesson
-                    </p>
+                            <p class="uppercase tracking-[0.35em] text-blue-200 text-sm mb-4">
+                                Welcome
+                            </p>
 
-                    <h1 class="text-5xl font-bold mb-6">
-                        ${title}
-                    </h1>
+                            <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight max-w-4xl">
+                                Select a Lesson to Begin
+                            </h2>
 
-                    <p class="text-lg text-gray-600 leading-relaxed whitespace-pre-line">
-                        ${description}
-                    </p>
-
-                </div>
-
-                ${
-                    video
-                    ?
-                    `
-                    <div class="space-y-4">
-
-                        <h2 class="text-2xl font-bold">
-                            Lesson Video
-                        </h2>
-
-                        <div class="overflow-hidden rounded-[2rem] shadow-lg">
-
-                            <video
-                                controls
-                                class="w-full"
-                            >
-                                <source src="${video}">
-                            </video>
+                            <p class="text-blue-100 text-lg max-w-2xl leading-relaxed">
+                                Choose a node from the curriculum pathway to explore videos, guided notes, presentations, and lesson resources.
+                            </p>
 
                         </div>
 
                     </div>
-                    `
-                    :
-                    ''
-                }
 
-                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-10 md:p-14 grid md:grid-cols-3 gap-6">
 
-                    ${
-                        ppt
-                        ?
-                        `
-                        <a
-                            href="${ppt}"
-                            download
-                            class="lesson-card bg-blue-600 text-white rounded-[2rem] p-8 flex items-center gap-5 shadow-lg hover:bg-blue-700"
-                        >
+                        <div class="rounded-[2rem] bg-white shadow-lg border border-gray-100 p-8">
 
-                            <div class="text-4xl">
+                            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl mb-6">
+                                <i class="fa-solid fa-video"></i>
+                            </div>
+
+                            <h3 class="text-2xl font-bold mb-3">
+                                Video Lessons
+                            </h3>
+
+                            <p class="text-gray-500 leading-relaxed">
+                                Watch recorded walkthroughs and demonstrations.
+                            </p>
+
+                        </div>
+
+                        <div class="rounded-[2rem] bg-white shadow-lg border border-gray-100 p-8">
+
+                            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl mb-6">
                                 <i class="fa-solid fa-file-powerpoint"></i>
                             </div>
 
-                            <div>
+                            <h3 class="text-2xl font-bold mb-3">
+                                Presentation Files
+                            </h3>
 
-                                <h3 class="text-2xl font-bold">
-                                    Presentation
-                                </h3>
+                            <p class="text-gray-500 leading-relaxed">
+                                Download structured lesson slides and classroom resources.
+                            </p>
 
-                                <p class="opacity-80">
-                                    Download lesson slides
-                                </p>
+                        </div>
 
-                            </div>
+                        <div class="rounded-[2rem] bg-white shadow-lg border border-gray-100 p-8">
 
-                        </a>
-                        `
-                        :
-                        ''
-                    }
-
-                    ${
-                        notes
-                        ?
-                        `
-                        <a
-                            href="${notes}"
-                            download
-                            class="lesson-card bg-gray-900 text-white rounded-[2rem] p-8 flex items-center gap-5 shadow-lg hover:bg-black"
-                        >
-
-                            <div class="text-4xl">
+                            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl mb-6">
                                 <i class="fa-solid fa-file-lines"></i>
                             </div>
 
-                            <div>
+                            <h3 class="text-2xl font-bold mb-3">
+                                Guided Notes
+                            </h3>
 
-                                <h3 class="text-2xl font-bold">
-                                    Guided Notes
-                                </h3>
+                            <p class="text-gray-500 leading-relaxed">
+                                Access printable guided notes for independent learning.
+                            </p>
 
-                                <p class="opacity-80">
-                                    Download lesson notes
-                                </p>
+                        </div>
 
-                            </div>
-
-                        </a>
-                        `
-                        :
-                        ''
-                    }
+                    </div>
 
                 </div>
 
             </div>
-        `;
-    }
 
-</script>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black text-white py-12">
+
+        <div class="container mx-auto px-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+
+                <!-- Resources -->
+                <div>
+
+                    <h4 class="text-lg font-bold mb-4">
+                        Resources
+                    </h4>
+
+                    <ul class="space-y-2">
+
+                        <li>
+                            <a href="/home/#lessons" class="text-gray-400 hover:text-white transition-colors">
+                                Singularity Lessons
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/home/#study-assistant" class="text-gray-400 hover:text-white transition-colors">
+                                Study Assistant Pro
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <!-- Community -->
+                <div>
+
+                    <h4 class="text-lg font-bold mb-4">
+                        Community
+                    </h4>
+
+                    <ul class="space-y-2">
+
+                        <li>
+                            <a href="/home/#community" class="text-gray-400 hover:text-white transition-colors">
+                                FAQs
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/community/" class="text-gray-400 hover:text-white transition-colors">
+                                Discussion Forum
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/community/" class="text-gray-400 hover:text-white transition-colors">
+                                Events
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <!-- About -->
+                <div>
+
+                    <h4 class="text-lg font-bold mb-4">
+                        About
+                    </h4>
+
+                    <ul class="space-y-2">
+
+                        <li>
+                            <a href="/home/#partners" class="text-gray-400 hover:text-white transition-colors">
+                                Partners
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/home/#about" class="text-gray-400 hover:text-white transition-colors">
+                                Our Mission
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/home/#members" class="text-gray-400 hover:text-white transition-colors">
+                                Meet the Team
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/home/#join" class="text-gray-400 hover:text-white transition-colors">
+                                Join Us
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <!-- Follow -->
+                <div>
+
+                    <h4 class="text-lg font-bold mb-4">
+                        Follow Us
+                    </h4>
+
+                    <div class="flex space-x-4 mb-6">
+
+                        <a
+                            href="https://space.bilibili.com/1372845857"
+                            target="_blank"
+                            class="text-gray-400 hover:text-white transition-colors text-xl"
+                        >
+                            <i class="fab fa-bilibili"></i>
+                        </a>
+
+                        <a
+                            href="https://www.youtube.com/@SingularityLab123"
+                            target="_blank"
+                            class="text-gray-400 hover:text-white transition-colors text-xl"
+                        >
+                            <i class="fab fa-youtube-play"></i>
+                        </a>
+
+                        <a
+                            href="mailto:singularitylabgroup@outlook.com"
+                            class="text-gray-400 hover:text-white transition-colors text-xl"
+                        >
+                            <i class="fa fa-envelope"></i>
+                        </a>
+
+                    </div>
+
+                    <h4 class="text-lg font-bold mb-4">
+                        Language
+                    </h4>
+
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        English
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Bottom -->
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    <i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70"></i>
+                    2026 Singularity Lab. All rights reserved.
+                </p>
+
+                <div class="flex space-x-6">
+
+                    <a href="/legal/#privacy-policy" class="text-gray-500 hover:text-white text-sm transition-colors">
+                        Privacy Policy
+                    </a>
+
+                    <a href="/legal/#terms-of-use" class="text-gray-500 hover:text-white text-sm transition-colors">
+                        Terms of Use
+                    </a>
+
+                    <a href="/legal/#license" class="text-gray-500 hover:text-white text-sm transition-colors">
+                        License
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+
+        // Supabase Config
+        const SUPABASE_URL =
+            'https://wtfmsmibjktgajegflwp.supabase.co';
+
+        const SUPABASE_ANON_KEY =
+            'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ';
+
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+        // Navbar Scroll
+        window.addEventListener('scroll', function () {
+
+            const navbar =
+                document.getElementById('navbar');
+
+            if (window.scrollY > 50) {
+
+                navbar.classList.add('nav-scrolled');
+
+            } else {
+
+                navbar.classList.remove('nav-scrolled');
+            }
+        });
+
+        // Mobile Menu
+        const mobileMenuButton =
+            document.getElementById('mobile-menu-button');
+
+        const mobileMenu =
+            document.getElementById('mobile-menu');
+
+        if (mobileMenuButton && mobileMenu) {
+
+            mobileMenuButton.addEventListener(
+                'click',
+                function () {
+
+                    mobileMenu.classList.toggle('hidden');
+                }
+            );
+        }
+
+        // Login Protection
+        document.addEventListener(
+            'DOMContentLoaded',
+            async () => {
+
+                const ONE_DAY =
+                    24 * 60 * 60 * 1000;
+
+                const loginTime =
+                    localStorage.getItem(
+                        'login_time'
+                    );
+
+                if (!loginTime) {
+
+                    window.location.href =
+                        '/login/';
+
+                    return;
+                }
+
+                const expired =
+                    Date.now() -
+                    parseInt(loginTime)
+                    > ONE_DAY;
+
+                if (expired) {
+
+                    await supabaseClient.auth.signOut();
+
+                    localStorage.removeItem(
+                        'login_time'
+                    );
+
+                    window.location.href =
+                        '/login/';
+
+                    return;
+                }
+
+                const {
+                    data: { session }
+                } = await supabaseClient.auth.getSession();
+
+                if (!session) {
+
+                    localStorage.removeItem(
+                        'login_time'
+                    );
+
+                    window.location.href =
+                        '/login/';
+
+                    return;
+                }
+
+                initializeLessons();
+            }
+        );
+
+        async function fileExists(url) {
+
+            try {
+
+                const response =
+                    await fetch(url, {
+                        method: 'HEAD'
+                    });
+
+                return response.ok;
+
+            } catch {
+
+                return false;
+            }
+        }
+
+        async function detectFile(folder, extensions) {
+
+            for (const ext of extensions) {
+
+                const path =
+                    `/lessons/files/${folder}/${folder}.${ext}`;
+
+                const exists =
+                    await fileExists(path);
+
+                if (exists) {
+                    return path;
+                }
+            }
+
+            return null;
+        }
+
+        async function initializeLessons() {
+
+            const response =
+                await fetch('/lessons/files/lessons.json');
+
+            const lessons =
+                await response.json();
+
+            const timeline =
+                document.getElementById('timeline');
+
+            lessons.forEach((folder, index) => {
+
+                const lessonName =
+                    folder.replaceAll('_', ' ');
+
+                const item =
+                    document.createElement('div');
+
+                item.className =
+                    'lesson-item flex items-start gap-5 cursor-pointer relative';
+
+                item.innerHTML = `
+
+                    <div class="lesson-node"></div>
+
+                    <div class="pt-0.5">
+
+                        <div class="lesson-title text-xl font-bold transition-colors duration-300">
+                            ${lessonName}
+                        </div>
+
+                        <div class="text-sm text-gray-400 mt-1">
+                            Interactive lesson module
+                        </div>
+
+                    </div>
+                `;
+
+                item.addEventListener('click', async () => {
+
+                    document
+                        .querySelectorAll('.lesson-node')
+                        .forEach(node => {
+                            node.classList.remove('active');
+                        });
+
+                    item
+                        .querySelector('.lesson-node')
+                        .classList.add('active');
+
+                    loadLesson(folder);
+                });
+
+                timeline.appendChild(item);
+            });
+        }
+
+        async function loadLesson(folder) {
+
+            const title =
+                folder.replaceAll('_', ' ');
+
+            const image =
+                await detectFile(folder, ['png', 'jpg', 'jpeg']);
+
+            const video =
+                await detectFile(folder, ['mp4', 'mov']);
+
+            const ppt =
+                await detectFile(folder, ['ppt', 'pptx']);
+
+            const notes =
+                await detectFile(folder, ['doc', 'docx']);
+
+            let description =
+                'No description available.';
+
+            try {
+
+                const descResponse =
+                    await fetch(`/lessons/files/${folder}/description.txt`);
+
+                if (descResponse.ok) {
+                    description = await descResponse.text();
+                }
+
+            } catch {}
+
+            const display =
+                document.getElementById('lesson-display');
+
+            display.innerHTML = `
+
+                <div class="fade-in">
+
+                    <div class="relative h-[420px] overflow-hidden bg-black">
+
+                        ${image ? `
+
+                            <img
+                                src="${image}"
+                                class="absolute inset-0 w-full h-full object-cover"
+                            >
+
+                        ` : ''}
+
+                        <div class="hero-overlay absolute inset-0"></div>
+
+                        <div class="absolute inset-0 flex flex-col justify-end p-10 md:p-14 text-white">
+
+                            <p class="uppercase tracking-[0.35em] text-blue-200 text-sm mb-4">
+                                Lesson Module
+                            </p>
+
+                            <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight max-w-4xl">
+                                ${title}
+                            </h1>
+
+                            <p class="text-blue-100 text-lg leading-relaxed max-w-3xl whitespace-pre-line">
+                                ${description}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="p-10 md:p-14 space-y-10">
+
+                        ${video ? `
+
+                            <div>
+
+                                <div class="flex items-center gap-4 mb-6">
+
+                                    <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-2xl">
+                                        <i class="fa-solid fa-play"></i>
+                                    </div>
+
+                                    <div>
+
+                                        <h2 class="text-3xl font-bold">
+                                            Lesson Video
+                                        </h2>
+
+                                        <p class="text-gray-500 mt-1">
+                                            Watch the complete walkthrough and demonstration.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="overflow-hidden rounded-[2rem] shadow-2xl bg-black">
+
+                                    <video controls class="w-full">
+                                        <source src="${video}">
+                                    </video>
+
+                                </div>
+
+                            </div>
+
+                        ` : ''}
+
+                        <div class="grid md:grid-cols-2 gap-8">
+
+                            ${ppt ? `
+
+                                <a
+                                    href="${ppt}"
+                                    download
+                                    class="group rounded-[2rem] overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white shadow-2xl hover:scale-[1.02] transition-all duration-300"
+                                >
+
+                                    <div class="flex items-start justify-between mb-10">
+
+                                        <div class="w-16 h-16 rounded-2xl bg-white/15 flex items-center justify-center text-3xl">
+                                            <i class="fa-solid fa-file-powerpoint"></i>
+                                        </div>
+
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-xl opacity-70 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+
+                                    </div>
+
+                                    <h3 class="text-3xl font-bold mb-4">
+                                        Presentation Slides
+                                    </h3>
+
+                                    <p class="text-blue-100 text-lg leading-relaxed">
+                                        Download the complete classroom presentation and visual materials.
+                                    </p>
+
+                                </a>
+
+                            ` : ''}
+
+                            ${notes ? `
+
+                                <a
+                                    href="${notes}"
+                                    download
+                                    class="group rounded-[2rem] overflow-hidden bg-black p-8 text-white shadow-2xl hover:scale-[1.02] transition-all duration-300"
+                                >
+
+                                    <div class="flex items-start justify-between mb-10">
+
+                                        <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-3xl">
+                                            <i class="fa-solid fa-file-lines"></i>
+                                        </div>
+
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-xl opacity-70 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+
+                                    </div>
+
+                                    <h3 class="text-3xl font-bold mb-4">
+                                        Guided Notes
+                                    </h3>
+
+                                    <p class="text-gray-300 text-lg leading-relaxed">
+                                        Access printable guided notes and independent learning resources.
+                                    </p>
+
+                                </a>
+
+                            ` : ''}
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+        }
+
+    </script>
 
 </body>
 </html>
+```
+
+# /lessons/files/lessons.json
+
+```json
+[
+    "Flame_Test",
+    "Acids_and_Bases"
+]
+```
