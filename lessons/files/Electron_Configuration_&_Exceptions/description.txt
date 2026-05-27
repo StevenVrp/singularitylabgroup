@@ -1,0 +1,1 @@
+Applies quantum rules to determine how electrons fill orbitals, covering Aufbau principle, Hund's rule, Pauli exclusion, noble gas shorthand, and notable exceptions like chromium and copper that arise from extra stability of half-filled or filled d-subshells.
