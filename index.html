@@ -370,7 +370,13 @@
                     REDIRECT TO REAL HOME PAGE
                     */
 
-                    window.location.href = "/home/";
+                    const params =
+                        new URLSearchParams(window.location.search);
+                    
+                    const redirectTarget =
+                        params.get('redirect') || '/home/';
+                    
+                    window.location.href = redirectTarget;
 
                 }, 1200);
             }
@@ -458,7 +464,13 @@
 
         setTimeout(() => {
 
-            window.location.href = "/home/";
+            const params =
+                new URLSearchParams(window.location.search);
+            
+            const redirectTarget =
+                params.get('redirect') || '/home/';
+            
+            window.location.href = redirectTarget;
 
         }, 1200000);
 
