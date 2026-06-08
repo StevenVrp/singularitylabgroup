@@ -291,9 +291,6 @@
 
             "Initializing Discovery Engine",
             "Synchronizing Neural Systems",
-            "Rendering Molecular Structures",
-            "Analyzing Scientific Data",
-            "Preparing Laboratory Interface",
             "Loading Educational Modules",
             "Establishing Quantum Link",
             "Finalizing Visual Pipeline"
@@ -318,7 +315,7 @@
         const assets = [
 
             // HERO VIDEO
-            "/Images/Hero.mov",
+            // "/Images/Hero.mov",
 
             // LOGOS
             "/Images/Logo1.png",
@@ -404,28 +401,28 @@
            VIDEO PRELOAD
         ========================================== */
 
-        function preloadVideo(src) {
+        // function preloadVideo(src) {
 
-            return new Promise((resolve, reject) => {
+        //     return new Promise((resolve, reject) => {
 
-                const video =
-                    document.createElement('video');
+        //         const video =
+        //             document.createElement('video');
 
-                video.src = src;
+        //         video.src = src;
 
-                video.preload = "auto";
+        //         video.preload = "auto";
 
-                video.muted = true;
+        //         video.muted = true;
 
-                video.oncanplaythrough = () =>
-                    resolve(src);
+        //         video.oncanplaythrough = () =>
+        //             resolve(src);
 
-                video.onerror = () =>
-                    reject(src);
+        //         video.onerror = () =>
+        //             reject(src);
 
-                video.load();
-            });
-        }
+        //         video.load();
+        //     });
+        // }
 
         /* =========================================
            MAIN PRELOAD
@@ -435,17 +432,17 @@
 
             const promises = assets.map(src => {
 
-                const isVideo =
-                    src.endsWith(".mp4")
-                    || src.endsWith(".mov")
-                    || src.endsWith(".webm");
+                // const isVideo =
+                //     src.endsWith(".mp4")
+                //     || src.endsWith(".mov")
+                //     || src.endsWith(".webm");
 
-                if (isVideo) {
+                // if (isVideo) {
 
-                    return preloadVideo(src)
-                        .then(updateProgress)
-                        .catch(updateProgress);
-                }
+                //     return preloadVideo(src)
+                //         .then(updateProgress)
+                //         .catch(updateProgress);
+                // }
 
                 return preloadImage(src)
                     .then(updateProgress)
