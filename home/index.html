@@ -237,30 +237,21 @@
                     <!-- <div class="h-[5rem] flex items-center"> -->
                         <!-- <span>Meet</span>
                         <!-- <span class="mx-4 opacity-30">/</span> -->
-                        <span id="dynamic-lab" class="text-blue-600">slOS 2</span>
-                    </div> -->
-                    <div class="h-[5rem] flex items-center gap-3 px-5">
-    
-    <!-- 左侧文字 -->
-                        <span class="text-[1.75rem] font-semibold text-gray-900 tracking-tight">
+                        <!-- <span id="dynamic-lab" class="text-blue-600">slOS 2</span>
+                    </div> --> -->
+                    <!-- Step 1: Singularity -->
+                    <div class="h-[5rem] flex items-center justify-center gap-4">
+                        <span class="text-white/90 text-6xl font-medium tracking-tight">
                             Meet
                         </span>
                     
-                        <!-- 动态标签（Apple 风格胶囊） -->
                         <span
                             id="dynamic-lab"
                             class="
-                                relative
-                                inline-flex items-center
-                                px-5 py-2
-                                text-[1.75rem] font-semibold
-                                rounded-full
-                                bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600
-                                text-white
-                                shadow-md
-                                ring-1 ring-white/20
-                                backdrop-blur-sm
-                                transition-all duration-500
+                                text-6xl font-black tracking-tight
+                                bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600
+                                bg-clip-text text-transparent
+                                drop-shadow-sm
                             "
                         >
                             slOS 2
@@ -340,10 +331,10 @@
             </div>
         </div>
         
-        <!-- 向下滚动提示 -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-            <i class="fa fa-chevron-down text-2xl" src="/home/#partners"></i>
-        </div>
+        <a href="/home/#partners"
+           class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <i class="fa fa-chevron-down text-2xl"></i>
+        </a>
     </section>
 
     <!-- ✅ FIXED PARTNERS SECTION: Clean, Centered, All 5 Icons Per Brand -->
@@ -756,9 +747,9 @@
 
         <!-- 志愿者 / 贡献者 -->
         <div class="text-center">
-        <h3 class="text-2xl font-bold mb-8">Other Contributors</h3>
+        <h3 class="text-2xl font-bold mb-8">Contributors</h3>
         <div class="flex flex-wrap justify-center gap-6">
-            <img src="/Images/Avatar1.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+            <!-- <img src="/Images/Avatar1.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
             <img src="/Images/Avatar2.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
             <img src="/Images/Avatar3.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
             <img src="/Images/Avatar4.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
@@ -769,7 +760,58 @@
             <img src="/Images/Avatar9.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
             <img src="/Images/Avatar10.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
             <img src="/Images/Avatar11.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar12.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+            <img src="/Images/Avatar12.png" class="w-14 h-14 rounded-full object-cover shadow-sm"> -->
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar1.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Lecture</span>
+                <span class="text-[10px] font-medium text-gray-500">Film</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar2.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Video</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar3.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Film</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar4.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Trivia</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar5.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Lecture</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar6.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Lecture</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar7.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Trivia</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar8.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Video</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar9.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Video</span>
+                <span class="text-[10px] font-medium text-gray-500">Film</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar10.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Lecture</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar11.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Lecture</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+                <img src="/Images/Avatar12.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                <span class="text-[10px] font-medium text-gray-500">Trivia</span>
+            </div>
+            
         </div>
         <p class="text-gray-500 mt-6 text-sm">
             15+ members across curriculum, design, development, and outreach.
