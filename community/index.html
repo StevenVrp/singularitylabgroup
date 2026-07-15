@@ -306,23 +306,35 @@
 
         /* ---------- Submit New Post ---------- */
         submitBtn.onclick = async () => {
+            if (!currentUser) {
+                alert('You must be signed in to publish.');
+                window.location.href = '/login/';
+                return;
+            }
+        
             const title = document.getElementById('post-title').value.trim();
             const content = document.getElementById('post-content').value.trim();
             const isQuestion = document.getElementById('post-is-question').checked;
-
+        
             if (!title || !content) {
                 alert('Title and content are required.');
                 return;
             }
-
-            await supabase.from('community_posts').insert({
+        
+            const { error } = await supabase.from('community_posts').insert({
                 author_id: currentUser.id,
                 author_name: currentUser.email,
                 title,
                 content,
                 is_question: isQuestion
             });
-
+        
+            if (error) {
+                console.error(error);
+                alert('Publish failed: ' + error.message);
+                return;
+            }
+        
             document.getElementById('post-title').value = '';
             document.getElementById('post-content').value = '';
             document.getElementById('post-is-question').checked = false;
