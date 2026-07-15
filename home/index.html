@@ -1,5 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>
+(async () => {
+    const banner = document.getElementById('notification-banner');
+    const text = document.getElementById('notification-text');
+    const closeBtn = document.getElementById('notification-close');
+
+    // Don't show again if user closed it
+    if (localStorage.getItem('notification-dismissed') === 'true') {
+        return;
+    }
+
+    try {
+        const res = await fetch('/Images/notification.md', { cache: 'no-store' });
+
+        if (res.ok) {
+            const markdown = await res.text();
+            const firstLine = markdown.trim().split('\n')[0];
+
+            if (firstLine) {
+                text.textContent = firstLine;
+                banner.classList.remove('hidden');
+            }
+        }
+    } catch (err) {
+        // Silently fail (file missing = no notification)
+    }
+
+    // Close button logic
+    closeBtn.addEventListener('click', () => {
+        banner.classList.add('hidden');
+        localStorage.setItem('notification-dismissed', 'true');
+    });
+})();
+</script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -150,40 +184,7 @@
         @keyframes drift-in { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<script>
-(async () => {
-    const banner = document.getElementById('notification-banner');
-    const text = document.getElementById('notification-text');
-    const closeBtn = document.getElementById('notification-close');
 
-    // Don't show again if user closed it
-    if (localStorage.getItem('notification-dismissed') === 'true') {
-        return;
-    }
-
-    try {
-        const res = await fetch('/Images/notification.md', { cache: 'no-store' });
-
-        if (res.ok) {
-            const markdown = await res.text();
-            const firstLine = markdown.trim().split('\n')[0];
-
-            if (firstLine) {
-                text.textContent = firstLine;
-                banner.classList.remove('hidden');
-            }
-        }
-    } catch (err) {
-        // Silently fail (file missing = no notification)
-    }
-
-    // Close button logic
-    closeBtn.addEventListener('click', () => {
-        banner.classList.add('hidden');
-        localStorage.setItem('notification-dismissed', 'true');
-    });
-})();
-</script>
 <body class="bg-white text-singularity-gray">
     <!-- Notification Banner -->
     <div id="notification-banner" class="hidden fixed top-[72px] left-0 w-full z-40">
