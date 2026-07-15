@@ -8,14 +8,9 @@
     <link rel="shortcut icon" href="/Images/favicon.ico">
     <title>Singularity Lab - Community</title>
 
-    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <script>
@@ -27,369 +22,313 @@
                         'singularity-light-gray': '#f5f5f7',
                         'singularity-blue': '#0066cc',
                         'singularity-dark': '#000000',
+                        'navy': '#0a1628',
                     },
                 }
             }
         }
     </script>
 
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .pro-badge {
-                background: linear-gradient(90deg,#ff6b6b,#feca57,#48dbfb,#ff9ff3);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                font-weight: 700;
-            }
-        }
-
+    <style>
         body {
             font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
             scroll-behavior: smooth;
         }
-
-        .nav-scrolled {
-            background-color: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        .pro-badge {
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
         }
-
-        .nav-scrolled .nav-link {
-            color: #1a1a1a;
-        }
-
-        /* Markdown content */
         .prose img { border-radius: 1rem; margin: 1.5rem 0; }
-        .prose pre { background: #f1f5f9; padding: 1rem; border-radius: 0.75rem; overflow-x: auto; }
+        .prose pre { background: #1a1a2e; padding: 1rem; border-radius: 0.75rem; overflow-x: auto; color: #e2e8f0; }
+        .prose code { background: #1a1a2e; color: #7dd3fc; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.875em; }
+        .prose pre code { background: none; color: inherit; padding: 0; }
     </style>
 </head>
 
-<body class="bg-white text-singularity-gray">
+<body class="bg-navy text-white">
 
-<!-- ✅ YOUR NAVBAR (UNTOUCHED STRUCTURE) -->
-<nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 bg-white shadow-sm">
-    <div class="container mx-auto px-6 flex items-center justify-between">
-        <div class="flex items-center">
-            <a href="/" class="text-2xl font-bold">
-                <img src="/Images/Logo2.png" alt="Singularity Lab Logo" class="h-10">
+    <!-- MINIMAL NAV (Logo Only) -->
+    <nav class="fixed top-0 left-0 w-full z-50 py-4">
+        <div class="container mx-auto px-6">
+            <a href="/" class="inline-block">
+                <img src="/Images/Logo2.png" alt="Singularity Lab" class="h-10">
             </a>
         </div>
+    </nav>
 
-        <div class="hidden md:flex space-x-8">
-            <a href="/?redirect=/home/#partners" class="nav-link text-black hover:text-gray-600 transition-colors">Partners</a>
-            <a href="/lessons/" class="nav-link text-black hover:text-gray-600 transition-colors">Singularity Lessons</a>
-            <a href="/studyassistantpro/" class="nav-link text-black hover:text-gray-600 transition-colors">
-                Study Assistant <span class="pro-badge">Pro</span>
-            </a>
-            <a href="/community/" class="nav-link text-black hover:text-gray-600 transition-colors">Community</a>
-            <a href="/?redirect=/home/#about" class="nav-link text-black hover:text-gray-600 transition-colors">About Us</a>
-            <a href="/?redirect=/home/#members" class="nav-link text-black hover:text-gray-600 transition-colors">Meet the Team</a>
-            <a href="/?redirect=/home/#join" class="nav-link text-black hover:text-gray-600 transition-colors">Join Us</a>
-            <a href="/legal/" class="nav-link text-black hover:text-gray-600 transition-colors">Legal</a>
-        </div>
+    <!-- MAIN CONTENT -->
+    <main class="pt-32 pb-20 min-h-screen">
+        <div class="container mx-auto px-6 max-w-4xl">
 
-        <div class="flex items-center space-x-6">
-            <a href="/welcome/" class="nav-link text-black hover:text-gray-600 transition-colors">
-                <i class="fa fa-user"></i>
-            </a>
-            <button id="mobile-menu-button" class="md:hidden nav-link text-black hover:text-gray-600 transition-colors">
-                <i class="fa fa-bars"></i>
-            </button>
-        </div>
-    </div>
-
-    <div id="mobile-menu" class="md:hidden hidden bg-white absolute top-full left-0 w-full shadow-lg">
-        <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
-            <a href="/?redirect=/home/#partners" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Partners</a>
-            <a href="/?redirect=/home/#lessons" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Singularity Lessons</a>
-            <a href="/?redirect=/home/#study-assistant" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
-                Study Assistant <span class="pro-badge">Pro</span>
-            </a>
-            <a href="/community/" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Community</a>
-            <a href="/?redirect=/home/#about" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">About Us</a>
-            <a href="/?redirect=/home/#members" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Meet the Team</a>
-            <a href="/?redirect=/home/#join" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Join Us</a>
-            <a href="/legal/" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Legal</a>
-        </div>
-    </div>
-</nav>
-
-<!-- ✅ COMMUNITY CONTENT (ONLY THING NEW) -->
-<main class="pt-32 pb-20 bg-singularity-light-gray min-h-screen">
-<div class="container mx-auto px-6 max-w-4xl">
-
-    <!-- Header -->
-    <div class="mb-12 text-center">
-        <p class="uppercase tracking-[0.3em] text-sm text-gray-400 mb-4">Community</p>
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Discussions & Articles</h1>
-        <p class="text-gray-600 text-lg">Ask questions, share insights, and explore physical science together.</p>
-    </div>
-
-    <!-- New Post (visible only when logged in) -->
-    <div id="new-post-form" class="hidden mb-16 bg-white p-8 rounded-3xl shadow-sm">
-        <h2 class="text-xl font-bold mb-6">New Post</h2>
-        <div class="space-y-4">
-            <input id="post-title" type="text" placeholder="Title"
-                class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-singularity-blue">
-            <label class="flex items-center gap-2 text-sm text-gray-600">
-                <input id="post-is-question" type="checkbox" class="rounded">
-                This is a question
-            </label>
-            <textarea id="post-content" rows="8" placeholder="Markdown supported…"
-                class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-singularity-blue"></textarea>
-            <button id="post-submit"
-                class="bg-singularity-blue text-white px-8 py-3 rounded-full font-medium hover:bg-blue-700 transition">
-                Publish
-            </button>
-        </div>
-    </div>
-
-    <!-- Posts Feed -->
-    <div id="posts-feed" class="space-y-8">
-        <!-- Posts render here -->
-    </div>
-
-</div>
-</main>
-
-<!-- ✅ YOUR FOOTER (UNTOUCHED STRUCTURE) -->
-<footer class="bg-black text-white py-12">
-    <div class="container mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            <div>
-                <h4 class="text-lg font-bold mb-4">Resources</h4>
-                <ul class="space-y-2">
-                    <li><a href="/lessons/" class="text-gray-400 hover:text-white transition-colors">Singularity Lessons</a></li>
-                    <li><a href="/studyassistantpro/" class="text-gray-400 hover:text-white transition-colors">Study Assistant Pro</a></li>
-                </ul>
+            <!-- Header -->
+            <div class="mb-12 text-center">
+                <p class="uppercase tracking-[0.3em] text-sm text-white/50 mb-4">Community</p>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Discussions & Articles</h1>
+                <p class="text-white/60 text-lg">Ask questions, share insights, and explore physical science together.</p>
             </div>
-            <div>
-                <h4 class="text-lg font-bold mb-4">Community</h4>
-                <ul class="space-y-2">
-                    <li><a href="/?redirect=/home/#community" class="text-gray-400 hover:text-white transition-colors">FAQs</a></li>
-                    <li><a href="/community/" class="text-gray-400 hover:text-white transition-colors">Discussion Forum</a></li>
-                    <li><a href="/community/" class="text-gray-400 hover:text-white transition-colors">Events</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-lg font-bold mb-4">About</h4>
-                <ul class="space-y-2">
-                    <li><a href="/?redirect=/home/#partners" class="text-gray-400 hover:text-white transition-colors">Partners</a></li>
-                    <li><a href="/?redirect=/home/#about" class="text-gray-400 hover:text-white transition-colors">Our Mission</a></li>
-                    <li><a href="/?redirect=/home/#members" class="text-gray-400 hover:text-white transition-colors">Meet the Team</a></li>
-                    <li><a href="/?redirect=/home/#join" class="text-gray-400 hover:text-white transition-colors">Join Us</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-lg font-bold mb-4">Follow Us</h4>
-                <div class="flex space-x-4 mb-6">
-                    <a href="https://space.bilibili.com/1372845857" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xl"><i class="fab fa-bilibili"></i></a>
-                    <a href="https://www.youtube.com/@SingularityLab123" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xl"><i class="fab fa-youtube-play"></i></a>
-                    <a href="mailto:singularitylabgroup@outlook.com" class="text-gray-400 hover:text-white transition-colors text-xl"><i class="fa fa-envelope"></i></a>
+
+            <!-- New Post Form -->
+            <div id="new-post-form" class="hidden mb-16 bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
+                <h2 class="text-xl font-bold mb-6">New Post</h2>
+                <div class="space-y-4">
+                    <input id="post-title" type="text" placeholder="Title"
+                        class="w-full px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-singularity-blue">
+                    <label class="flex items-center gap-2 text-sm text-white/70">
+                        <input id="post-is-question" type="checkbox" class="rounded bg-white/10 border-white/20">
+                        This is a question
+                    </label>
+                    <textarea id="post-content" rows="8" placeholder="Write in Markdown..."
+                        class="w-full px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-singularity-blue"></textarea>
+                    <button id="post-submit"
+                        class="bg-singularity-blue text-white px-8 py-3 rounded-full font-medium hover:bg-blue-700 transition">
+                        Publish
+                    </button>
                 </div>
-                <h4 class="text-lg font-bold mb-4">Language</h4>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">English</a>
+            </div>
+
+            <!-- Posts Feed -->
+            <div id="posts-feed" class="space-y-8"></div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER (Dark Blue) -->
+    <footer class="bg-singularity-blue text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/lessons/" class="text-white/70 hover:text-white transition-colors">Singularity Lessons</a></li>
+                        <li><a href="/studyassistantpro/" class="text-white/70 hover:text-white transition-colors">Study Assistant Pro</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Community</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/community/" class="text-white/70 hover:text-white transition-colors">Discussion Forum</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">About</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/?redirect=/home/#partners" class="text-white/70 hover:text-white transition-colors">Partners</a></li>
+                        <li><a href="/?redirect=/home/#about" class="text-white/70 hover:text-white transition-colors">Our Mission</a></li>
+                        <li><a href="/?redirect=/home/#members" class="text-white/70 hover:text-white transition-colors">Meet the Team</a></li>
+                        <li><a href="/?redirect=/home/#join" class="text-white/70 hover:text-white transition-colors">Join Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4 mb-6">
+                        <a href="https://space.bilibili.com/1372845857" target="_blank" class="text-white/70 hover:text-white transition-colors text-xl">
+                            <i class="fab fa-bilibili"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@SingularityLab123" target="_blank" class="text-white/70 hover:text-white transition-colors text-xl">
+                            <i class="fab fa-youtube-play"></i>
+                        </a>
+                        <a href="mailto:singularitylabgroup@outlook.com" class="text-white/70 hover:text-white transition-colors text-xl">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                    <h4 class="text-lg font-bold mb-4">Language</h4>
+                    <a href="#" class="text-white/70 hover:text-white transition-colors">English</a>
+                </div>
+            </div>
+
+            <div class="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-white/60 text-sm mb-4 md:mb-0">
+                    <i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70"></i>
+                    2026 Singularity Lab. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="/legal/#privacy-policy" class="text-white/60 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="/legal/#terms-of-use" class="text-white/60 hover:text-white text-sm transition-colors">Terms of Use</a>
+                    <a href="/legal/#license" class="text-white/60 hover:text-white text-sm transition-colors">License</a>
+                </div>
             </div>
         </div>
-        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p class="text-gray-500 text-sm mb-4 md:mb-0">
-                <i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70"></i>
-                2026 Singularity Lab. All rights reserved.
-            </p>
-            <div class="flex space-x-6">
-                <a href="/legal/#privacy-policy" class="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
-                <a href="/legal/#terms-of-use" class="text-gray-500 hover:text-white text-sm transition-colors">Terms of Use</a>
-                <a href="/legal/#license" class="text-gray-500 hover:text-white text-sm transition-colors">License</a>
-            </div>
-        </div>
-    </div>
-</footer>
+    </footer>
 
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabase = window.supabase.createClient(
+            'https://wtfmsmibjktgajegflwp.supabase.co',
+            'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ'
+        );
 
-<script>
-const supabase = window.supabase.createClient(
-    'https://wtfmsmibjktgajegflwp.supabase.co',
-    'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ'
-);
+        const feed = document.getElementById('posts-feed');
+        const form = document.getElementById('new-post-form');
+        const submitBtn = document.getElementById('post-submit');
 
-const feed = document.getElementById('posts-feed');
-const form = document.getElementById('new-post-form');
+        let currentUser = null;
 
-let currentUser = null;
+        /* ---------- Entry-only login check ---------- */
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabase.auth.getSession();
 
-/* ---------- Load Posts ---------- */
-async function loadPosts() {
-    const { data: posts } = await supabase
-        .from('community_posts')
-        .select(`*, community_replies(*), community_upvotes(user_id)`)
-        .order('is_pinned', { ascending: false })
-        .order('created_at', { ascending: false });
+            if (!session) {
+                window.location.href = '/login/';
+                return;
+            }
 
-    feed.innerHTML = '';
+            currentUser = session.user;
+            form.classList.remove('hidden');
+            loadPosts();
+        });
 
-    if (!posts.length) {
-        feed.innerHTML = `
-            <div class="text-center py-20 text-gray-400">
-                <i class="fa fa-comments text-5xl mb-4"></i>
-                <p>No posts yet. Be the first to start a discussion.</p>
-            </div>`;
-        return;
-    }
+        /* ---------- Load Posts ---------- */
+        async function loadPosts() {
+            const { data: posts, error } = await supabase
+                .from('community_posts')
+                .select('*, community_replies(*), community_upvotes(user_id)')
+                .order('is_pinned', { ascending: false })
+                .order('created_at', { ascending: false });
 
-    posts.forEach(renderPost);
-}
+            if (error) {
+                feed.innerHTML = '<p class="text-red-400 text-center py-10">Failed to load posts.</p>';
+                return;
+            }
 
-/* ---------- Render Single Post ---------- */
-function renderPost(post) {
-    const el = document.createElement('article');
-    el.className = 'bg-white p-8 rounded-3xl shadow-sm';
+            if (!posts.length) {
+                feed.innerHTML = `
+                    <div class="text-center py-20 text-white/40">
+                        <i class="fa fa-comments text-5xl mb-4"></i>
+                        <p>No posts yet. Be the first to start a discussion.</p>
+                    </div>`;
+                return;
+            }
 
-    const upvoted = post.community_upvotes.some(u => u.user_id === currentUser?.id);
-    const upvotes = post.community_upvotes.length;
-
-    el.innerHTML = `
-        <header class="mb-4">
-            <div class="flex items-center gap-2 mb-1">
-                ${post.is_pinned ? '<i class="fa fa-thumb-tack text-singularity-blue"></i>' : ''}
-                ${post.is_question ? '<span class="text-xs font-bold uppercase tracking-wide text-blue-600">Question</span>' : ''}
-                <h2 class="text-xl font-bold">${post.title}</h2>
-            </div>
-            <p class="text-sm text-gray-400 mb-2">
-                ${new Date(post.created_at).toLocaleDateString()} • ${post.author_name}
-            </p>
-            <div class="prose max-w-none">${marked.parse(post.content)}</div>
-        </header>
-
-        <div class="flex items-center gap-6 text-sm mb-6">
-            <button class="upvote flex items-center gap-2 ${upvoted ? 'text-singularity-blue' : 'text-gray-400'}">
-                <i class="fa fa-arrow-up"></i> ${upvotes}
-            </button>
-            <button class="reply-toggle text-gray-400 hover:text-singularity-blue">
-                <i class="fa fa-comment"></i> Reply
-            </button>
-        </div>
-
-        <div class="replies space-y-4 pl-6 border-l border-gray-100"></div>
-
-        <div class="reply-box hidden mt-6">
-            <textarea rows="3" class="reply-input w-full px-4 py-3 rounded-xl border" placeholder="Write a reply…"></textarea>
-            <button class="submit-reply mt-3 bg-singularity-blue text-white px-6 py-2 rounded-full text-sm hover:bg-blue-700 transition">
-                Post Reply
-            </button>
-        </div>
-    `;
-
-    /* Upvote */
-    el.querySelector('.upvote').onclick = async () => {
-        if (!currentUser) return alert('Sign in to vote');
-        if (upvoted) {
-            await supabase.from('community_upvotes').delete().match({
-                post_id: post.id,
-                user_id: currentUser.id
-            });
-        } else {
-            await supabase.from('community_upvotes').insert({
-                post_id: post.id,
-                user_id: currentUser.id
-            });
+            feed.innerHTML = '';
+            posts.forEach(renderPost);
         }
-        loadPosts();
-    };
 
-    /* Reply toggle */
-    el.querySelector('.reply-toggle').onclick = () => {
-        el.querySelector('.reply-box').classList.toggle('hidden');
-    };
+        /* ---------- Render Post ---------- */
+        function renderPost(post) {
+            const el = document.createElement('article');
+            el.className = 'bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10';
 
-    /* Submit reply */
-    el.querySelector('.submit-reply').onclick = async () => {
-        if (!currentUser) return alert('Sign in to reply');
-        const input = el.querySelector('.reply-input');
-        const content = input.value.trim();
-        if (!content) return;
+            const upvoted = post.community_upvotes.some(u => u.user_id === currentUser?.id);
+            const upvotes = post.community_upvotes.length;
 
-        await supabase.from('community_replies').insert({
-            post_id: post.id,
-            author_id: currentUser.id,
-            author_name: currentUser.email,
-            content
-        });
+            el.innerHTML = `
+                <header class="mb-4">
+                    <div class="flex items-center gap-2 mb-1">
+                        ${post.is_pinned ? '<i class="fa fa-thumb-tack text-singularity-blue"></i>' : ''}
+                        ${post.is_question ? '<span class="text-xs font-bold uppercase tracking-wide text-blue-400">Question</span>' : ''}
+                        <h2 class="text-xl font-bold">${post.title}</h2>
+                    </div>
+                    <p class="text-sm text-white/40 mb-2">
+                        ${new Date(post.created_at).toLocaleDateString()} • ${post.author_name}
+                    </p>
+                    <div class="prose max-w-none text-white/80">${marked.parse(post.content)}</div>
+                </header>
 
-        input.value = '';
-        loadPosts();
-    };
+                <div class="flex items-center gap-6 text-sm mb-6">
+                    <button class="upvote flex items-center gap-2 ${upvoted ? 'text-singularity-blue' : 'text-white/40'} hover:text-singularity-blue transition">
+                        <i class="fa fa-arrow-up"></i> ${upvotes}
+                    </button>
+                    <button class="reply-toggle text-white/40 hover:text-singularity-blue transition">
+                        <i class="fa fa-comment"></i> Reply
+                    </button>
+                </div>
 
-    /* Render replies */
-    const repliesEl = el.querySelector('.replies');
-    post.community_replies.forEach(r => {
-        const d = document.createElement('div');
-        d.className = 'text-sm';
-        d.innerHTML = `
-            <p class="font-medium">${r.author_name}</p>
-            <div class="prose prose-sm">${marked.parse(r.content)}</div>
-        `;
-        repliesEl.appendChild(d);
-    });
+                <div class="replies space-y-4 pl-6 border-l border-white/10"></div>
 
-    feed.appendChild(el);
-}
+                <div class="reply-box hidden mt-6">
+                    <textarea rows="3" class="reply-input w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-singularity-blue"></textarea>
+                    <button class="submit-reply mt-3 bg-singularity-blue text-white px-6 py-2 rounded-full text-sm hover:bg-blue-700 transition">
+                        Post Reply
+                    </button>
+                </div>
+            `;
 
-/* ---------- Auth-aware UI ---------- */
-document.addEventListener('DOMContentLoaded', async () => {
-    const ONE_DAY = 24 * 60 * 60 * 1000;
+            /* Upvote */
+            el.querySelector('.upvote').onclick = async () => {
+                if (upvoted) {
+                    await supabase.from('community_upvotes').delete().match({
+                        post_id: post.id,
+                        user_id: currentUser.id
+                    });
+                } else {
+                    await supabase.from('community_upvotes').insert({
+                        post_id: post.id,
+                        user_id: currentUser.id
+                    });
+                }
+                loadPosts();
+            };
 
-    const loginTime = localStorage.getItem('login_time');
-    if (!loginTime || Date.now() - parseInt(loginTime) > ONE_DAY) {
-        window.location.href = '/login/';
-        return;
-    }
+            /* Reply toggle */
+            el.querySelector('.reply-toggle').onclick = () => {
+                el.querySelector('.reply-box').classList.toggle('hidden');
+            };
 
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-        localStorage.removeItem('login_time');
-        window.location.href = '/login/';
-        return;
-    }
+            /* Submit reply */
+            el.querySelector('.submit-reply').onclick = async () => {
+                const input = el.querySelector('.reply-input');
+                const content = input.value.trim();
+                if (!content) return;
 
-    currentUser = session.user;
-    form.classList.remove('hidden');
-    loadPosts();
+                await supabase.from('community_replies').insert({
+                    post_id: post.id,
+                    author_id: currentUser.id,
+                    author_name: currentUser.email,
+                    content
+                });
 
-    /* Submit new post */
-    document.getElementById('post-submit').onclick = async () => {
-        const title = document.getElementById('post-title').value.trim();
-        const content = document.getElementById('post-content').value.trim();
-        if (!title || !content) return alert('Title and content required');
+                input.value = '';
+                loadPosts();
+            };
 
-        await supabase.from('community_posts').insert({
-            author_id: currentUser.id,
-            author_name: currentUser.email,
-            title,
-            content,
-            is_question: document.getElementById('post-is-question').checked
-        });
+            /* Render replies */
+            const repliesEl = el.querySelector('.replies');
+            post.community_replies.forEach(r => {
+                const d = document.createElement('div');
+                d.className = 'text-sm';
+                d.innerHTML = `
+                    <p class="font-medium text-white/70">${r.author_name}</p>
+                    <div class="prose prose-sm max-w-none text-white/60">${marked.parse(r.content)}</div>
+                `;
+                repliesEl.appendChild(d);
+            });
 
-        document.getElementById('post-title').value = '';
-        document.getElementById('post-content').value = '';
-        document.getElementById('post-is-question').checked = false;
-        loadPosts();
-    };
-});
+            feed.appendChild(el);
+        }
 
-/* ---------- Navbar scroll ---------- */
-window.addEventListener('scroll', () => {
-    const navbar = document.getElementById('navbar');
-    navbar.classList.toggle('nav-scrolled', window.scrollY > 50);
-});
+        /* ---------- Submit New Post ---------- */
+        submitBtn.onclick = async () => {
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            const isQuestion = document.getElementById('post-is-question').checked;
 
-/* ---------- Mobile menu ---------- */
-document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
-    document.getElementById('mobile-menu').classList.toggle('hidden');
-});
-</script>
+            if (!title || !content) {
+                alert('Title and content are required.');
+                return;
+            }
+
+            await supabase.from('community_posts').insert({
+                author_id: currentUser.id,
+                author_name: currentUser.email,
+                title,
+                content,
+                is_question: isQuestion
+            });
+
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            document.getElementById('post-is-question').checked = false;
+            loadPosts();
+        };
+    </script>
 
 </body>
 </html>
