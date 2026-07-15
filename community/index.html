@@ -157,190 +157,189 @@
         </div>
     </footer>
 
-    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const supabase = window.supabase.createClient(
-            'https://wtfmsmibjktgajegflwp.supabase.co',
-            'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ'
-        );
+<script>
+    /* ✅ Namespaced client (no collision) */
+    const supabaseClient = window.supabase.createClient(
+        'https://wtfmsmibjktgajegflwp.supabase.co',
+        'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ'
+    );
 
-        const feed = document.getElementById('posts-feed');
-        const form = document.getElementById('new-post-form');
-        const submitBtn = document.getElementById('post-submit');
+    const feed = document.getElementById('posts-feed');
+    const form = document.getElementById('new-post-form');
+    const submitBtn = document.getElementById('post-submit');
 
-        let currentUser = null;
+    let currentUser = null;
 
-        /* ---------- Entry-only login check ---------- */
-        document.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabase.auth.getSession();
+    /* ---------- Entry-only login check ---------- */
+    document.addEventListener('DOMContentLoaded', async () => {
+        const { data: { session } } = await supabaseClient.auth.getSession();
 
-            if (!session) {
-                window.location.href = '/login/';
-                return;
-            }
-
-            currentUser = session.user;
-            form.classList.remove('hidden');
-            loadPosts();
-        });
-
-        /* ---------- Load Posts ---------- */
-        async function loadPosts() {
-            const { data: posts, error } = await supabase
-                .from('community_posts')
-                .select('*, community_replies(*), community_upvotes(user_id)')
-                .order('is_pinned', { ascending: false })
-                .order('created_at', { ascending: false });
-
-            if (error) {
-                feed.innerHTML = '<p class="text-red-400 text-center py-10">Failed to load posts.</p>';
-                return;
-            }
-
-            if (!posts.length) {
-                feed.innerHTML = `
-                    <div class="text-center py-20 text-white/40">
-                        <i class="fa fa-comments text-5xl mb-4"></i>
-                        <p>No posts yet. Be the first to start a discussion.</p>
-                    </div>`;
-                return;
-            }
-
-            feed.innerHTML = '';
-            posts.forEach(renderPost);
+        if (!session) {
+            window.location.href = '/login/';
+            return;
         }
 
-        /* ---------- Render Post ---------- */
-        function renderPost(post) {
-            const el = document.createElement('article');
-            el.className = 'bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10';
+        currentUser = session.user;
+        loadPosts();
+    });
 
-            const upvoted = post.community_upvotes.some(u => u.user_id === currentUser?.id);
-            const upvotes = post.community_upvotes.length;
+    /* ---------- Load Posts ---------- */
+    async function loadPosts() {
+        const { data: posts, error } = await supabaseClient
+            .from('community_posts')
+            .select('*, community_replies(*), community_upvotes(user_id)')
+            .order('is_pinned', { ascending: false })
+            .order('created_at', { ascending: false });
 
-            el.innerHTML = `
-                <header class="mb-4">
-                    <div class="flex items-center gap-2 mb-1">
-                        ${post.is_pinned ? '<i class="fa fa-thumb-tack text-singularity-blue"></i>' : ''}
-                        ${post.is_question ? '<span class="text-xs font-bold uppercase tracking-wide text-blue-400">Question</span>' : ''}
-                        <h2 class="text-xl font-bold">${post.title}</h2>
-                    </div>
-                    <p class="text-sm text-white/40 mb-2">
-                        ${new Date(post.created_at).toLocaleDateString()} • ${post.author_name}
-                    </p>
-                    <div class="prose max-w-none text-white/80">${marked.parse(post.content)}</div>
-                </header>
+        if (error) {
+            feed.innerHTML = '<p class="text-red-400 text-center py-10">Failed to load posts.</p>';
+            return;
+        }
 
-                <div class="flex items-center gap-6 text-sm mb-6">
-                    <button class="upvote flex items-center gap-2 ${upvoted ? 'text-singularity-blue' : 'text-white/40'} hover:text-singularity-blue transition">
-                        <i class="fa fa-arrow-up"></i> ${upvotes}
-                    </button>
-                    <button class="reply-toggle text-white/40 hover:text-singularity-blue transition">
-                        <i class="fa fa-comment"></i> Reply
-                    </button>
+        if (!posts.length) {
+            feed.innerHTML = `
+                <div class="text-center py-20 text-white/40">
+                    <i class="fa fa-comments text-5xl mb-4"></i>
+                    <p>No posts yet. Be the first to start a discussion.</p>
+                </div>`;
+            return;
+        }
+
+        feed.innerHTML = '';
+        posts.forEach(renderPost);
+    }
+
+    /* ---------- Render Post ---------- */
+    function renderPost(post) {
+        const el = document.createElement('article');
+        el.className = 'bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10';
+
+        const upvoted = post.community_upvotes.some(u => u.user_id === currentUser?.id);
+        const upvotes = post.community_upvotes.length;
+
+        el.innerHTML = `
+            <header class="mb-4">
+                <div class="flex items-center gap-2 mb-1">
+                    ${post.is_pinned ? '<i class="fa fa-thumb-tack text-singularity-blue"></i>' : ''}
+                    ${post.is_question ? '<span class="text-xs font-bold uppercase tracking-wide text-blue-400">Question</span>' : ''}
+                    <h2 class="text-xl font-bold">${post.title}</h2>
                 </div>
+                <p class="text-sm text-white/40 mb-2">
+                    ${new Date(post.created_at).toLocaleDateString()} • ${post.author_name}
+                </p>
+                <div class="prose max-w-none text-white/80">${marked.parse(post.content)}</div>
+            </header>
 
-                <div class="replies space-y-4 pl-6 border-l border-white/10"></div>
+            <div class="flex items-center gap-6 text-sm mb-6">
+                <button class="upvote flex items-center gap-2 ${upvoted ? 'text-singularity-blue' : 'text-white/40'} hover:text-singularity-blue transition">
+                    <i class="fa fa-arrow-up"></i> ${upvotes}
+                </button>
+                <button class="reply-toggle text-white/40 hover:text-singularity-blue transition">
+                    <i class="fa fa-comment"></i> Reply
+                </button>
+            </div>
 
-                <div class="reply-box hidden mt-6">
-                    <textarea rows="3" class="reply-input w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-singularity-blue"></textarea>
-                    <button class="submit-reply mt-3 bg-singularity-blue text-white px-6 py-2 rounded-full text-sm hover:bg-blue-700 transition">
-                        Post Reply
-                    </button>
-                </div>
-            `;
+            <div class="replies space-y-4 pl-6 border-l border-white/10"></div>
 
-            /* Upvote */
-            el.querySelector('.upvote').onclick = async () => {
-                if (upvoted) {
-                    await supabase.from('community_upvotes').delete().match({
-                        post_id: post.id,
-                        user_id: currentUser.id
-                    });
-                } else {
-                    await supabase.from('community_upvotes').insert({
-                        post_id: post.id,
-                        user_id: currentUser.id
-                    });
-                }
-                loadPosts();
-            };
+            <div class="reply-box hidden mt-6">
+                <textarea rows="3" class="reply-input w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-singularity-blue"></textarea>
+                <button class="submit-reply mt-3 bg-singularity-blue text-white px-6 py-2 rounded-full text-sm hover:bg-blue-700 transition">
+                    Post Reply
+                </button>
+            </div>
+        `;
 
-            /* Reply toggle */
-            el.querySelector('.reply-toggle').onclick = () => {
-                el.querySelector('.reply-box').classList.toggle('hidden');
-            };
-
-            /* Submit reply */
-            el.querySelector('.submit-reply').onclick = async () => {
-                const input = el.querySelector('.reply-input');
-                const content = input.value.trim();
-                if (!content) return;
-
-                await supabase.from('community_replies').insert({
+        /* Upvote */
+        el.querySelector('.upvote').onclick = async () => {
+            if (upvoted) {
+                await supabaseClient.from('community_upvotes').delete().match({
                     post_id: post.id,
-                    author_id: currentUser.id,
-                    author_name: currentUser.email,
-                    content
+                    user_id: currentUser.id
                 });
-
-                input.value = '';
-                loadPosts();
-            };
-
-            /* Render replies */
-            const repliesEl = el.querySelector('.replies');
-            post.community_replies.forEach(r => {
-                const d = document.createElement('div');
-                d.className = 'text-sm';
-                d.innerHTML = `
-                    <p class="font-medium text-white/70">${r.author_name}</p>
-                    <div class="prose prose-sm max-w-none text-white/60">${marked.parse(r.content)}</div>
-                `;
-                repliesEl.appendChild(d);
-            });
-
-            feed.appendChild(el);
-        }
-
-        /* ---------- Submit New Post ---------- */
-        submitBtn.onclick = async () => {
-            if (!currentUser) {
-                alert('You must be signed in to publish.');
-                window.location.href = '/login/';
-                return;
+            } else {
+                await supabaseClient.from('community_upvotes').insert({
+                    post_id: post.id,
+                    user_id: currentUser.id
+                });
             }
-        
-            const title = document.getElementById('post-title').value.trim();
-            const content = document.getElementById('post-content').value.trim();
-            const isQuestion = document.getElementById('post-is-question').checked;
-        
-            if (!title || !content) {
-                alert('Title and content are required.');
-                return;
-            }
-        
-            const { error } = await supabase.from('community_posts').insert({
-                author_id: currentUser.id,
-                author_name: currentUser.email,
-                title,
-                content,
-                is_question: isQuestion
-            });
-        
-            if (error) {
-                console.error(error);
-                alert('Publish failed: ' + error.message);
-                return;
-            }
-        
-            document.getElementById('post-title').value = '';
-            document.getElementById('post-content').value = '';
-            document.getElementById('post-is-question').checked = false;
             loadPosts();
         };
-    </script>
+
+        /* Reply toggle */
+        el.querySelector('.reply-toggle').onclick = () => {
+            el.querySelector('.reply-box').classList.toggle('hidden');
+        };
+
+        /* Submit reply */
+        el.querySelector('.submit-reply').onclick = async () => {
+            const input = el.querySelector('.reply-input');
+            const content = input.value.trim();
+            if (!content) return;
+
+            await supabaseClient.from('community_replies').insert({
+                post_id: post.id,
+                author_id: currentUser.id,
+                author_name: currentUser.email,
+                content
+            });
+
+            input.value = '';
+            loadPosts();
+        };
+
+        /* Render replies */
+        const repliesEl = el.querySelector('.replies');
+        post.community_replies.forEach(r => {
+            const d = document.createElement('div');
+            d.className = 'text-sm';
+            d.innerHTML = `
+                <p class="font-medium text-white/70">${r.author_name}</p>
+                <div class="prose prose-sm max-w-none text-white/60">${marked.parse(r.content)}</div>
+            `;
+            repliesEl.appendChild(d);
+        });
+
+        feed.appendChild(el);
+    }
+
+    /* ---------- Submit New Post ---------- */
+    submitBtn.onclick = async () => {
+        if (!currentUser) {
+            alert('You must be signed in to publish.');
+            window.location.href = '/login/';
+            return;
+        }
+
+        const title = document.getElementById('post-title').value.trim();
+        const content = document.getElementById('post-content').value.trim();
+        const isQuestion = document.getElementById('post-is-question').checked;
+
+        if (!title || !content) {
+            alert('Title and content are required.');
+            return;
+        }
+
+        const { error } = await supabaseClient.from('community_posts').insert({
+            author_id: currentUser.id,
+            author_name: currentUser.email,
+            title,
+            content,
+            is_question: isQuestion
+        });
+
+        if (error) {
+            console.error(error);
+            alert('Publish failed: ' + error.message);
+            return;
+        }
+
+        document.getElementById('post-title').value = '';
+        document.getElementById('post-content').value = '';
+        document.getElementById('post-is-question').checked = false;
+        loadPosts();
+    };
+</script>
 
 </body>
 </html>
