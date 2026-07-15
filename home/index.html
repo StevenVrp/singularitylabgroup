@@ -203,115 +203,29 @@
         </div>
     </nav>
 
-    <!-- 英雄区域 - 视频背景 -->
     <section class="relative h-screen flex items-center justify-center overflow-hidden">
-        <!-- 视频背景 - 替换为您的实际服务学习小组介绍视频 -->
-        <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=116921508829367&bvid=BV12kNY6nEjM&cid=39958874803&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        <!-- <div class="absolute inset-0 -z-10">
-            <img 
-                src="/Images/hero.png" 
-                alt="Singularity Lab"
-                class="w-full h-full object-cover"
-            >
-        </div> -->
+        <!-- 视频背景 -->
+        <iframe 
+            class="absolute top-0 left-0 w-full h-full"
+            src="//player.bilibili.com/player.html?isOutside=true&aid=116921508829367&bvid=BV12kNY6nEjM&cid=39958874803&p=1"
+            scrolling="no"
+            border="0"
+            frameborder="no"
+            framespacing="0"
+            allowfullscreen="true">
+        </iframe>
+    
+        <!-- 暗色遮罩 -->
         <div class="absolute inset-0 bg-black/50"></div>
-        
+    
         <!-- 英雄内容 -->
         <div class="relative z-10 text-center text-white px-6">
-            
             <p class="text-[clamp(2.2rem,5.5vw,3.5rem)] mb-10 max-w-3xl mx-auto font-light tracking-widest uppercase flex items-center justify-center gap-6">
                 <span>Endless</span>
-                
                 <span class="font-bold">Discovery</span>
             </p>
-            <!-- HERO SLOGAN WITH PERFECT SCROLLING ANIMATION -->
-
-<!-- Increased height to h-[5rem] to accommodate larger text-6xl -->
-            <!-- Added overflow-y-hidden instead of overflow-hidden -->
-            <!-- <div class="relative w-full max-w-none h-[5rem] overflow-y-visible overflow-x-visible mb-10"> -->
-                <!-- Added pr-8 for italic lean room and whitespace-nowrap -->
-                <!-- <div class="absolute top-0 left-0 w-full pr-8 whitespace-nowrap transition-transform duration-700 ease-in-out text-6xl font-black tracking-tighter">
-                    <!-- Step 1: Singularity --> -->
-                    <!-- <div class="h-[5rem] flex items-center"> 
-                        <span>Meet</span>
-                        <span class="mx-4 opacity-30">/</span>
-                        <span id="dynamic-lab" class="text-blue-600">slOS 2</span>
-                    </div> -->
-                    <!-- Step 1: Singularity -->
-                    <!-- <div class="h-[5rem] flex items-center justify-center items-baseline gap-5">
-                        <span class="text-white/90 text-7xl font-medium tracking-tight">
-                            Endless Discovery with
-                        </span>
-
-                        
-                        <span
-                            id="dynamic-lab" class="text-8xl font-black tracking-tight bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 bg-clip-text text-transparent drop-shadow-sm">
-                            slOS 2
-                        </span>
-                    </div> -->
-
-                    <!-- Step 2: Steven -->
-                    <!-- <div class="h-[5rem] flex items-center">
-                        <span>Steven</span>
-                        <span class="mx-4 opacity-30">/</span>
-                        <span id="dynamic-vrp" class="text-green-600">Vrp</span>
-                    </div> -->
-
-                    <!-- Step 3: Endless -->
-                    <!-- <div class="h-[5rem] flex items-center -ml-15">
-                        <span>Endless</span>
-                        <span class="mx-4 opacity-30">/</span>
-                        <span class="text-blue-600">Discovery</span>
-                    </div> -->
-                <!-- </div>
-            </div> -->
-
-            <!-- <script>
-                const reel = document.getElementById('text-reel');
-                const labText = document.getElementById('dynamic-lab');
-                const vrpText = document.getElementById('dynamic-vrp');
-
-                // Added more words for a longer, more chaotic "flicker" effect
-                const labWords = ["Atom", "Core", "Data", "Flow", "Logic", "Neural", "Pulse", "Synthetix", "Lab"];
-                const vrpWords = ["Node", "Grid", "Matrix", "Nexus", "Vector", "System", "Vertex", "World"];
-
-                function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-                async function runCycle() {
-                    // Reset to top
-                    reel.style.transition = "none";
-                    reel.style.transform = "translateY(0)";
-                    await sleep(50);
-                    reel.style.transition = "transform 0.7s ease-in-out";
-
-                    // 1. Flicker Singularity words
-                    for (let word of labWords) {
-                        await sleep(80); // Slightly slower than 100ms for better visibility
-                        labText.innerText = word;
-                    }
-                    await sleep(1500); 
-
-                    // 2. Scroll to Steven
-                    reel.style.transform = "translateY(-5rem)";
-                    await sleep(800);
-
-                    // 3. Flicker Steven words
-                    for (let word of vrpWords) {
-                        await sleep(80);
-                        vrpText.innerText = word;
-                    }
-                    await sleep(1500); 
-
-                    // 4. Scroll to Endless
-                    reel.style.transform = "translateY(-10rem)";
-                    await sleep(2500); // Hold on the final discovery
-
-                    
-                }
-
-                // Initial Kickoff
-                setTimeout(runCycle, 1000);
-            </script> -->
+        </div>
+        <div>
 
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="#lessons" class="bg-white text-singularity-dark px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors">
