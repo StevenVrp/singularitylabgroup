@@ -85,7 +85,7 @@
                 <div class="flex items-center gap-4">
                     <label class="cursor-pointer bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full text-sm transition">
                         <i class="fa fa-image mr-2"></i> Upload Image
-                        <input id="image-upload" type="file" accept="image/*" class="hidden">
+                        <input id="image-upload" type="file" accept="image/png,image/jpeg,image/jpg,image/webp" class="hidden">
                     </label>
                     <span id="upload-status" class="text-sm text-gray-400"></span>
                 </div>
@@ -191,20 +191,30 @@ function displayName(first, last, email) {
     return full || email || 'Anonymous';
 }
 
-/* ---------- Image Upload ---------- */
+/* ---------- Image Upload (PNG/JPG/JPEG/WEBP) ---------- */
 imageUpload?.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file || !currentUser) return;
+
+    const allowed = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+    if (!allowed.includes(file.type)) {
+        uploadStatus.textContent = 'Only PNG, JPG, JPEG, WEBP allowed';
+        return;
+    }
 
     uploadStatus.textContent = 'Uploading...';
     const fileName = `${currentUser.id}/${Date.now()}-${file.name}`;
 
     const { error } = await supabaseClient.storage
         .from('posts')
-        .upload(fileName, file);
+        .upload(fileName, file, {
+            cacheControl: '3600',
+            upsert: false
+        });
 
     if (error) {
         uploadStatus.textContent = 'Upload failed';
+        console.error(error);
         return;
     }
 
@@ -215,6 +225,7 @@ imageUpload?.addEventListener('change', async (e) => {
     document.getElementById('post-content').value += `\n\n![Image](${publicUrl})\n`;
     uploadStatus.textContent = 'Image uploaded!';
     setTimeout(() => uploadStatus.textContent = '', 3000);
+    e.target.value = '';
 });
 
 /* ---------- Auth ---------- */
@@ -234,7 +245,7 @@ async function refreshAll() {
     await Promise.all([loadPosts(), loadSidebar()]);
 }
 
-/* ---------- Load Posts (NO JOIN) ---------- */
+/* ---------- Load Posts ---------- */
 async function loadPosts() {
     const { data: posts, error } = await supabaseClient
         .from('community_posts')
@@ -307,19 +318,21 @@ function renderPost(post) {
         <div class="replies space-y-4 pl-6 border-l border-gray-200"></div>
 
         <div class="reply-box hidden mt-6">
-            <textarea rows="3" class="reply-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-singularity-blue" placeholder="Write a reply…"></textarea>
+            <textarea rows="3" class="reply-input w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-singularity-blue" placeholder="Write a reply..."></textarea>
             <button class="submit-reply mt-3 bg-singularity-blue text-white px-6 py-2 rounded-full text-sm hover:bg-blue-700 transition">
                 Post Reply
             </button>
         </div>
     `;
 
+    /* Delete Post */
     el.querySelector('.delete-post')?.addEventListener('click', async () => {
         if (!confirm('Delete this post and all replies?')) return;
         await supabaseClient.from('community_posts').delete().eq('id', post.id);
         await refreshAll();
     });
 
+    /* Upvote */
     el.querySelector('.upvote').onclick = async () => {
         if (upvoted) {
             await supabaseClient.from('community_upvotes').delete().match({ post_id: post.id, user_id: currentUser.id });
@@ -329,10 +342,12 @@ function renderPost(post) {
         await refreshAll();
     };
 
+    /* Reply toggle */
     el.querySelector('.reply-toggle').onclick = () => {
         el.querySelector('.reply-box').classList.toggle('hidden');
     };
 
+    /* Submit reply */
     el.querySelector('.submit-reply').onclick = async () => {
         const input = el.querySelector('.reply-input');
         const content = input.value.trim();
@@ -353,6 +368,7 @@ function renderPost(post) {
         await refreshAll();
     };
 
+    /* Render replies */
     const repliesEl = el.querySelector('.replies');
     post.community_replies.forEach(r => {
         const rName = displayName(r.author_first, r.author_last, r.author_name);
@@ -367,7 +383,7 @@ function renderPost(post) {
                     <img src="${rAvatar}" onerror="this.src='/Images/default-avatar.png'" class="avatar-sm bg-gray-200">
                     <p class="font-medium text-gray-700">${rName}</p>
                 </div>
-                ${isReplyOwner ? `<button class="delete-reply text-gray-400 hover:text-red-500 transition text-xs" data-id="${r.id}"><i class="fa fa-trash"></i></button>` : ''}
+                ${isReplyOwner ? `<button class="delete-reply text-gray-400 hover:text-red-500 transition text-xs"><i class="fa fa-trash"></i></button>` : ''}
             </div>
             <div class="prose prose-sm max-w-none text-gray-600">${marked.parse(r.content)}</div>
         `;
@@ -417,7 +433,7 @@ submitBtn.onclick = async () => {
 async function loadSidebar() {
     const { data: posts } = await supabaseClient
         .from('community_posts')
-        .select('author_id, author_first, author_last, author_name, author_avatar, community_replies(author_first, author_last, author_name, author_avatar)');
+        .select('author_id, author_first, author_last, author_name, author_avatar, community_replies(author_id, author_first, author_last, author_name, author_avatar)');
 
     const userStats = {};
 
@@ -432,20 +448,18 @@ async function loadSidebar() {
             };
         }
         userStats[id].posts++;
-    });
 
-    posts?.forEach(p => {
         p.community_replies?.forEach(r => {
-            const id = r.author_id;
-            if (!userStats[id]) {
-                userStats[id] = {
+            const rid = r.author_id;
+            if (!userStats[rid]) {
+                userStats[rid] = {
                     name: displayName(r.author_first, r.author_last, r.author_name),
                     avatar: r.author_avatar || '/Images/default-avatar.png',
                     posts: 0,
                     replies: 0
                 };
             }
-            userStats[id].replies++;
+            userStats[rid].replies++;
         });
     });
 
@@ -465,6 +479,7 @@ async function loadSidebar() {
             </div>
         `).join('') || '<p class="text-gray-400 text-sm">No activity yet.</p>';
 
+    /* Top Posts */
     const { data: topPosts } = await supabaseClient
         .from('community_posts')
         .select('id, title, community_upvotes(user_id), community_replies(id)')
