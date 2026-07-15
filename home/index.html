@@ -57,22 +57,11 @@
         
         /* 导航栏样式 */
         .nav-scrolled {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: var(--color-singularity-dark);
             backdrop-filter: blur(20px);
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        
-        .nav-scrolled .nav-link {
-            color: #1a1a1a;
-        }
-        
-        .nav-scrolled .logo-white {
-            display: none;
-        }
-        
-        .nav-scrolled .logo-black {
-            display: block;
-        }
+
         
         /* 产品卡片悬停效果 */
         .lesson-card:hover .lesson-image {
@@ -659,7 +648,7 @@
                     </div>
                     <h3 class="text-xl font-bold mb-1">Bryce Lin</h3>
                     <p class="text-white/70 text-sm px-4 leading-relaxed">
-                        Engineers experiments to produce visually captivating footage, framing each reaction for maximum impact. Also participates in video production.
+                        Engineers experiments to produce visually captivating footage. Also participates in video production.
                     </p>
                 </div>
     
@@ -674,7 +663,7 @@
                     </div>
                     <h3 class="text-xl font-bold mb-1">Steven Hsieh</h3>
                     <p class="text-white/70 text-sm px-4 leading-relaxed">
-                        Focuses on overall management and the video production sector. He is also the developer of this website as well as study assistant pro, with source code available on GitHub.
+                        Focuses on overall management and the video production sector. He is also the developer of this website and study assistant pro, with source code available on GitHub.
                     </p>
                     <div class="flex justify-center gap-4 mt-4 text-white/60">
                         <a href="https://weixin.qq.com/" target="_blank" class="hover:text-white transition"><i class="fab fa-wechat"></i></a>
@@ -909,11 +898,11 @@
             const navbarHeight = navbar.offsetHeight;
         
             // 当 partners 顶部触达 navbar 底部时触发
-            // if (partnersTop <= navbarHeight) {
-            //     navbar.classList.add('nav-scrolled');
-            // } else {
-            //     navbar.classList.remove('nav-scrolled');
-            // }
+            if (partnersTop <= navbarHeight) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
         });
         
         // 页面刷新时也要判断一次（防止刷新不在顶部）
