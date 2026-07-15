@@ -186,16 +186,9 @@ const uploadStatus = document.getElementById('upload-status');
 
 let currentUser = null;
 
-/* ---------- Helpers ---------- */
-function displayName(meta) {
-    const first = meta?.first_name || '';
-    const last = meta?.last_name || '';
-    const full = `${first} ${last}`.trim();
-    return full || meta?.email || 'Anonymous';
-}
-
-function avatarUrl(meta) {
-    return meta?.avatar_url || '/Images/default-avatar.png';
+function displayName(first, last, email) {
+    const full = `${first || ''} ${last || ''}`.trim();
+    return full || email || 'Anonymous';
 }
 
 /* ---------- Image Upload ---------- */
@@ -237,40 +230,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     await refreshAll();
 });
 
-/* ---------- Refresh All ---------- */
 async function refreshAll() {
-    await Promise.all([
-        loadPosts(),
-        loadSidebar()
-    ]);
+    await Promise.all([loadPosts(), loadSidebar()]);
 }
 
-/* ---------- Load Posts ---------- */
+/* ---------- Load Posts (NO JOIN) ---------- */
 async function loadPosts() {
     const { data: posts, error } = await supabaseClient
         .from('community_posts')
         .select(`
             *,
-            author:auth.users!author_id (
-                id,
-                email,
-                user_metadata
-            ),
-            community_replies (
-                *,
-                author:auth.users!author_id (
-                    id,
-                    email,
-                    user_metadata
-                )
-            ),
+            community_replies(*),
             community_upvotes(user_id)
         `)
         .order('is_pinned', { ascending: false })
         .order('created_at', { ascending: false });
 
     if (error) {
-        feed.innerHTML = '<p class="text-red-400 text-center py-10">Failed to load posts.</p>';
+        feed.innerHTML = `<p class="text-red-500 text-center py-10">Failed to load posts.<br>${error.message}</p>`;
         return;
     }
 
@@ -292,15 +269,16 @@ function renderPost(post) {
     el.className = 'bg-white p-8 rounded-3xl border border-gray-200 shadow-sm';
     el.id = `post-${post.id}`;
 
-    const meta = post.author?.user_metadata || {};
     const upvoted = post.community_upvotes.some(u => u.user_id === currentUser.id);
     const isOwner = post.author_id === currentUser.id;
+    const name = displayName(post.author_first, post.author_last, post.author_name);
+    const avatar = post.author_avatar || '/Images/default-avatar.png';
 
     el.innerHTML = `
         <header class="mb-4">
             <div class="flex items-start justify-between mb-2">
                 <div class="flex items-center gap-3">
-                    <img src="${avatarUrl(meta)}" onerror="this.src='/Images/default-avatar.png'" class="avatar-img bg-gray-200">
+                    <img src="${avatar}" onerror="this.src='/Images/default-avatar.png'" class="avatar-img bg-gray-200">
                     <div>
                         <div class="flex items-center gap-2">
                             ${post.is_pinned ? '<i class="fa fa-thumb-tack text-singularity-blue"></i>' : ''}
@@ -308,7 +286,7 @@ function renderPost(post) {
                             <h2 class="text-xl font-bold">${post.title}</h2>
                         </div>
                         <p class="text-sm text-gray-400">
-                            ${new Date(post.created_at).toLocaleDateString()} • ${displayName(meta)}
+                            ${new Date(post.created_at).toLocaleDateString()} • ${name}
                         </p>
                     </div>
                 </div>
@@ -336,14 +314,12 @@ function renderPost(post) {
         </div>
     `;
 
-    /* Delete Post */
     el.querySelector('.delete-post')?.addEventListener('click', async () => {
         if (!confirm('Delete this post and all replies?')) return;
         await supabaseClient.from('community_posts').delete().eq('id', post.id);
         await refreshAll();
     });
 
-    /* Upvote */
     el.querySelector('.upvote').onclick = async () => {
         if (upvoted) {
             await supabaseClient.from('community_upvotes').delete().match({ post_id: post.id, user_id: currentUser.id });
@@ -353,20 +329,23 @@ function renderPost(post) {
         await refreshAll();
     };
 
-    /* Reply toggle */
     el.querySelector('.reply-toggle').onclick = () => {
         el.querySelector('.reply-box').classList.toggle('hidden');
     };
 
-    /* Submit reply */
     el.querySelector('.submit-reply').onclick = async () => {
         const input = el.querySelector('.reply-input');
         const content = input.value.trim();
         if (!content) return;
 
+        const meta = currentUser.user_metadata;
         await supabaseClient.from('community_replies').insert({
             post_id: post.id,
             author_id: currentUser.id,
+            author_name: currentUser.email,
+            author_first: meta?.first_name || '',
+            author_last: meta?.last_name || '',
+            author_avatar: meta?.avatar_url || '',
             content
         });
 
@@ -374,10 +353,10 @@ function renderPost(post) {
         await refreshAll();
     };
 
-    /* Render replies */
     const repliesEl = el.querySelector('.replies');
     post.community_replies.forEach(r => {
-        const rMeta = r.author?.user_metadata || {};
+        const rName = displayName(r.author_first, r.author_last, r.author_name);
+        const rAvatar = r.author_avatar || '/Images/default-avatar.png';
         const isReplyOwner = r.author_id === currentUser.id;
 
         const d = document.createElement('div');
@@ -385,8 +364,8 @@ function renderPost(post) {
         d.innerHTML = `
             <div class="flex items-start justify-between">
                 <div class="flex items-center gap-2 mb-1">
-                    <img src="${avatarUrl(rMeta)}" onerror="this.src='/Images/default-avatar.png'" class="avatar-sm bg-gray-200">
-                    <p class="font-medium text-gray-700">${displayName(rMeta)}</p>
+                    <img src="${rAvatar}" onerror="this.src='/Images/default-avatar.png'" class="avatar-sm bg-gray-200">
+                    <p class="font-medium text-gray-700">${rName}</p>
                 </div>
                 ${isReplyOwner ? `<button class="delete-reply text-gray-400 hover:text-red-500 transition text-xs" data-id="${r.id}"><i class="fa fa-trash"></i></button>` : ''}
             </div>
@@ -416,8 +395,13 @@ submitBtn.onclick = async () => {
         return;
     }
 
+    const meta = currentUser.user_metadata;
     await supabaseClient.from('community_posts').insert({
         author_id: currentUser.id,
+        author_name: currentUser.email,
+        author_first: meta?.first_name || '',
+        author_last: meta?.last_name || '',
+        author_avatar: meta?.avatar_url || '',
         title,
         content,
         is_question: isQuestion
@@ -433,17 +417,16 @@ submitBtn.onclick = async () => {
 async function loadSidebar() {
     const { data: posts } = await supabaseClient
         .from('community_posts')
-        .select(`author_id, author:auth.users!author_id(email, user_metadata), community_replies(author_id, author:auth.users!author_id(email, user_metadata))`);
+        .select('author_id, author_first, author_last, author_name, author_avatar, community_replies(author_first, author_last, author_name, author_avatar)');
 
     const userStats = {};
 
     posts?.forEach(p => {
-        const meta = p.author?.user_metadata || {};
         const id = p.author_id;
         if (!userStats[id]) {
             userStats[id] = {
-                name: displayName(meta),
-                avatar: avatarUrl(meta),
+                name: displayName(p.author_first, p.author_last, p.author_name),
+                avatar: p.author_avatar || '/Images/default-avatar.png',
                 posts: 0,
                 replies: 0
             };
@@ -453,12 +436,11 @@ async function loadSidebar() {
 
     posts?.forEach(p => {
         p.community_replies?.forEach(r => {
-            const meta = r.author?.user_metadata || {};
             const id = r.author_id;
             if (!userStats[id]) {
                 userStats[id] = {
-                    name: displayName(meta),
-                    avatar: avatarUrl(meta),
+                    name: displayName(r.author_first, r.author_last, r.author_name),
+                    avatar: r.author_avatar || '/Images/default-avatar.png',
                     posts: 0,
                     replies: 0
                 };
@@ -483,7 +465,6 @@ async function loadSidebar() {
             </div>
         `).join('') || '<p class="text-gray-400 text-sm">No activity yet.</p>';
 
-    /* Top Posts */
     const { data: topPosts } = await supabaseClient
         .from('community_posts')
         .select('id, title, community_upvotes(user_id), community_replies(id)')
