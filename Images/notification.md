@@ -7,17 +7,6 @@
 
 Between **June 30 and July 13**, Supabase experienced widespread capacity constraints across multiple regions. These issues directly affected **Singularity Lab’s authentication services**, resulting in intermittent **login failures** for some users.
 
-**We sincerely apologize.** Reliable access is fundamental, and we take full responsibility for the disruption this caused.
-
----
-
-## IMPACTED SERVICES
-
-- **Authentication & login**
-- Project creation
-- Database restarts and resizes
-- Branching and restore operations
-
 ---
 
 ## IMPACTED REGIONS
@@ -31,31 +20,12 @@ Between **June 30 and July 13**, Supabase experienced widespread capacity constr
 
 ---
 
-## TIMELINE
-
-**Jun 30**  
-Incident identified. Capacity gradually restored in most regions.
-
-**Jul 1–2**  
-Elevated error rates persisted. Retries recommended.
-
-**Jul 3–6**  
-Recovery advanced. Older Postgres versions faced tighter constraints.
-
-**Jul 8**  
-Authentication and core operations stabilized across most regions.
-
-**Jul 13**  
-Incident fully resolved. Capacity has remained stable since.
-
----
-
 ## MITIGATIONS
 
 - Existing running projects were unaffected unless **restarted, resized, upgraded, or authenticated** during the incident
 - Users who experienced login failures should now be able to sign in normally
 
-If issues persist, contact our support team.
+If issues persist, contact our support team. This notification will only be shown once.
 
 ---
 
