@@ -164,6 +164,10 @@
             </button>
         </div>
     </div>
+    
+    <!-- ✅ Load marked.js FIRST -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
     <script>
     (async () => {
         const banner = document.getElementById('notification-banner');
@@ -181,7 +185,8 @@
             if (res.ok) {
                 const markdown = await res.text();
     
-                if (firstLine) {
+                // ✅ FIXED: check markdown, not undefined firstLine
+                if (markdown.trim()) {
                     text.innerHTML = marked.parse(markdown);
                     banner.classList.remove('hidden');
                 }
@@ -191,10 +196,12 @@
         }
     
         // Close button logic
-        closeBtn.addEventListener('click', () => {
-            banner.classList.add('hidden');
-            localStorage.setItem('notification-dismissed', 'true');
-        });
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                banner.classList.add('hidden');
+                localStorage.setItem('notification-dismissed', 'true');
+            });
+        }
     })();
     </script>
     <!-- 导航栏 -->
