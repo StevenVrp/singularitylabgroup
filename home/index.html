@@ -180,10 +180,9 @@
     
             if (res.ok) {
                 const markdown = await res.text();
-                const firstLine = markdown.trim().split('\n')[0];
     
                 if (firstLine) {
-                    text.textContent = firstLine;
+                    text.innerHTML = marked.parse(markdown);
                     banner.classList.remove('hidden');
                 }
             }
