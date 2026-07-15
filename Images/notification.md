@@ -52,7 +52,6 @@ Incident fully resolved. Capacity has remained stable since.
 
 ## MITIGATIONS
 
-- Upgrading to **Postgres ≥ 17.6.1.121** unlocks additional machine types and significantly improves reliability
 - Existing running projects were unaffected unless **restarted, resized, upgraded, or authenticated** during the incident
 - Users who experienced login failures should now be able to sign in normally
 
