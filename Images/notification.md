@@ -5,7 +5,7 @@
 
 ## SUMMARY
 
-Between **June 30 and July 13**, Supabase experienced widespread capacity constraints across multiple regions. These issues directly affected **Singularity Lab’s authentication services**, resulting in intermittent **login failures** for some users.
+Between **June 30 and July 13**, Supabase experienced widespread capacity constraints across multiple regions. These issues directly affected **Singularity Lab’s authentication services**, resulting in intermittent **login failures** for some users. We are sincerely sorry for the inconvenience this has brought.
 
 ---
 
@@ -22,8 +22,8 @@ Between **June 30 and July 13**, Supabase experienced widespread capacity constr
 
 ## MITIGATIONS
 
-- Existing running projects were unaffected unless **restarted, resized, upgraded, or authenticated** during the incident
-- Users who experienced login failures should now be able to sign in normally
+- Existing running projects were unaffected unless **restarted, resized, upgraded, or authenticated** during the incident.
+- Users who experienced login failures should now be able to sign in normally.
 
 If issues persist, contact our support team. This notification will only be shown once.
 
