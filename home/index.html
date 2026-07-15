@@ -150,7 +150,53 @@
         @keyframes drift-in { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
+    <script>
+(async () => {
+    const banner = document.getElementById('notification-banner');
+    const text = document.getElementById('notification-text');
+    const closeBtn = document.getElementById('notification-close');
+
+    // Don't show again if user closed it
+    if (localStorage.getItem('notification-dismissed') === 'true') {
+        return;
+    }
+
+    try {
+        const res = await fetch('/Images/notification.md', { cache: 'no-store' });
+
+        if (res.ok) {
+            const markdown = await res.text();
+            const firstLine = markdown.trim().split('\n')[0];
+
+            if (firstLine) {
+                text.textContent = firstLine;
+                banner.classList.remove('hidden');
+            }
+        }
+    } catch (err) {
+        // Silently fail (file missing = no notification)
+    }
+
+    // Close button logic
+    closeBtn.addEventListener('click', () => {
+        banner.classList.add('hidden');
+        localStorage.setItem('notification-dismissed', 'true');
+    });
+})();
+</script>
 <body class="bg-white text-singularity-gray">
+    <!-- Notification Banner -->
+    <div id="notification-banner" class="hidden fixed top-[72px] left-0 w-full z-40">
+        <div class="bg-singularity-blue text-white px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa fa-bullhorn"></i>
+                <span id="notification-text" class="text-sm md:text-base"></span>
+            </div>
+            <button id="notification-close" class="text-white/80 hover:text-white transition">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
     <!-- 导航栏 -->
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4">
         <div class="container mx-auto px-6 flex items-center justify-between">
@@ -1110,4 +1156,5 @@
         });
     </script>
 </body>
+    
 </html>
