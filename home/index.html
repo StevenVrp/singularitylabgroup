@@ -458,77 +458,77 @@
         </div>
     </section>
 <!-- Study Assistant Pro Section (FINAL CLEAN VERSION) -->
-    <!-- Study Assistant Pro Section (Final: >>> on Button Right Edge) -->
-    <section id="study-assistant" class="py-20 bg-white relative overflow-hidden">
+    <!-- Study Assistant Pro Section -->
+    <section id="study-assistant" class="py-24 bg-singularity-dark text-white relative overflow-hidden">
         <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[520px] items-stretch">
-
-                <!-- LEFT IMAGE: 50% width + ROUNDED LEFT ONLY + soft blurred edge -->
-                <div class="relative h-[400px] lg:h-full overflow-hidden rounded-l-3xl">
+            <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[520px] items-stretch">
+    
+                <!-- LEFT IMAGE -->
+                <div class="relative h-[400px] lg:h-full overflow-hidden rounded-l-3xl group">
                     <img 
-                    src="/Images/SAP.png" 
-                    alt="Study Assistant Pro" 
-                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                        src="/Images/SAP.png" 
+                        alt="Study Assistant Pro"
+                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100 transition duration-700"
                     >
-                    <!-- Natural blurred boundary between image and text -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-transparent 65% to-white 95% backdrop-blur-sm z-10"></div>
+                    <!-- Soft edge blend -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-singularity-dark"></div>
                 </div>
-
-                <!-- RIGHT TEXT (unified styling) -->
-                <div class="flex flex-col justify-center px-6 lg:px-16 py-10 lg:py-0">
-                    
-                    <!-- PRO BADGE: Exact style from your main.html -->
-                    <div class="mb-5">
-                        <span class="text-xl font-semibold text-gray-800">Study Assistant</span>
-                        <span class="pro-badge text-xl">Pro</span>
+    
+                <!-- RIGHT CONTENT -->
+                <div class="flex flex-col justify-center px-8 lg:px-16 py-12 lg:py-0">
+    
+                    <!-- Badge -->
+                    <div class="mb-6">
+                        <span class="text-lg font-medium text-white/80">Study Assistant</span>
+                        <span class="pro-badge text-lg ml-2">Pro</span>
                     </div>
-
-                    <h2 class="text-[clamp(1.8rem,4vw,2.8rem)] font-bold mb-6 text-gray-800 leading-tight">
-                    All‑in‑One Student Productivity & Homework Tool
+    
+                    <!-- Headline -->
+                    <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                        All‑in‑One<br>
+                        Student Productivity
                     </h2>
-
-                    <p class="text-gray-600 text-lg mb-4 leading-relaxed">
-                    A powerful, intuitive study companion designed to help you organise tasks, stay focused, 
-                    and build consistent study habits. Built for students who want to work smarter, not harder.
+    
+                    <!-- Description -->
+                    <p class="text-white/70 text-lg mb-4 leading-relaxed">
+                        A focused, offline-first study companion built for deep work.
+                        Organise tasks, eliminate distractions, and build consistent habits —
+                        without ever touching the cloud.
                     </p>
-                    
-                    <p class="text-gray-600 text-lg mb-4 leading-relaxed">
-                    Enjoy seamless offline access, voice‑enabled task entry, and a distraction‑free workflow 
-                    that keeps your data private and stored locally. Simple, reliable, and tailored to fit 
-                    your daily study routine perfectly.
-                    </p>
-
-                    <!-- Feature list (unified alignment) -->
-                    <div class="space-y-3 mb-10">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
-                            <span class="text-gray-700 font-medium">Smart task management</span>
+    
+                    <!-- Feature List (tight, editorial) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mb-10">
+                        <div class="flex items-center gap-3 text-white/80">
+                            <i class="fas fa-check text-blue-500"></i>
+                            Smart task management
                         </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
-                            <span class="text-gray-700 font-medium">Voice control</span>
+                        <div class="flex items-center gap-3 text-white/80">
+                            <i class="fas fa-check text-blue-500"></i>
+                            Voice control
                         </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
-                            <span class="text-gray-700 font-medium">Pomodoro timer</span>
+                        <div class="flex items-center gap-3 text-white/80">
+                            <i class="fas fa-check text-blue-500"></i>
+                            Pomodoro timer
                         </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
-                            <span class="text-gray-700 font-medium">Gamification</span>
+                        <div class="flex items-center gap-3 text-white/80">
+                            <i class="fas fa-check text-blue-500"></i>
+                            Gamification
                         </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
-                            <span class="text-gray-700 font-medium">Offline support</span>
+                        <div class="flex items-center gap-3 text-white/80">
+                            <i class="fas fa-check text-blue-500"></i>
+                            Offline support
                         </div>
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-check-circle text-blue-600 text-lg"></i>
-                            <span class="text-gray-700 font-medium">100% private local storage</span>
+                        <div class="flex items-center gap-3 text-white/80">
+                            <i class="fas fa-check text-blue-500"></i>
+                            100% local storage
                         </div>
                     </div>
-
-                    <a href="/studyassistantpro/" class="inline-flex items-center justify-between bg-blue-600 text-white px-8 py-3 rounded-full font-medium hover:bg-blue-700 transition-all duration-300 min-w-[200px] group">
+    
+                    <!-- CTA -->
+                    <a href="/studyassistantpro/"
+                       class="inline-flex items-center justify-between bg-white text-singularity-dark px-8 py-4 rounded-full font-medium hover:bg-gray-100 transition w-max group">
                         Get Started
-                        <i class="fas fa-chevron-right text-sm opacity-70 transition-opacity duration-300 group-hover:opacity-100"></i>
+                        <i class="fas fa-chevron-right ml-4 opacity-60 group-hover:opacity-100 transition"></i>
                     </a>
                 </div>
             </div>
@@ -607,192 +607,233 @@
         </div>
     </section>
 
-    <!-- About Us 区域 -->
-    <section id="about" class="py-20 bg-white">
+    <!-- Community & FAQs -->
+    <section id="community" class="py-24 bg-singularity-dark text-white">
         <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row items-center gap-12 min-h-[500px]">
-                <div class="lg:w-1/2">
-                    <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">About Singularity Lab</h2>
-                    <p class="text-gray-600 mb-4 text-lg">Singularity Lab is a service learning group dedicated to making physical science accessible and exciting for everyone. We believe that science should be engaging, visual, and relevant to everyday life.</p>
-                    <p class="text-gray-600 mb-4 text-lg">Our mission is to spread physical science basics and spark people's interest in it through creating lectures, trivia, and videos posted on social media. We focus on exploring debated and visually appealing physical science topics that capture attention and inspire curiosity.</p>
-                    <p class="text-gray-600 mb-4 text-lg">Whether you're a student preparing for exams, someone writing an essay, or just a curious mind, our resources are designed to help you understand complex concepts in simple, enjoyable ways.</p>
-                    
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="text-center">
-                            <div class="text-4xl font-bold text-singularity-blue mb-2">10+</div>
-                            <p class="text-gray-600">Free Lessons</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-bold text-singularity-blue mb-2">150+</div>
-                            <p class="text-gray-600">Students Helped</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-bold text-singularity-blue mb-2">10+</div>
-                            <p class="text-gray-600">Video Tutorials</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-bold text-singularity-blue mb-2">15+</div>
-                            <p class="text-gray-600">Members</p>
-                        </div>
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <p class="text-sm uppercase tracking-widest text-white/50 mb-2">Community</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h2>
+                <p class="text-white/60 max-w-2xl mx-auto">
+                    Answers to common questions, and ways to connect with fellow physical science enthusiasts.
+                </p>
+            </div>
+    
+            <!-- FAQ Accordion -->
+            <div class="max-w-3xl mx-auto space-y-2">
+                <!-- FAQ Item -->
+                <div class="faq-item border-b border-white/10">
+                    <button class="faq-toggle w-full text-left py-5 flex justify-between items-center group">
+                        <span class="text-lg font-medium group-hover:text-white/90 transition">
+                            Are all Singularity Lessons free?
+                        </span>
+                        <i class="fa fa-chevron-down text-white/40 transition-transform duration-300 group-hover:text-white/70"></i>
+                    </button>
+                    <div class="faq-content hidden pb-6 text-white/60 leading-relaxed">
+                        Our core lessons are completely free, including in‑depth explanations, downloadable worksheets, and supporting resources.
                     </div>
                 </div>
-                <div class="lg:w-1/2 h-full">
-                    <!-- 替换为实际团队照片链接 -->
-                    <img src="/Images/team.png" alt="Singularity Lab Team" class="rounded-2xl shadow-2xl w-full h-full object-cover">
+    
+                <!-- FAQ Item -->
+                <div class="faq-item border-b border-white/10">
+                    <button class="faq-toggle w-full text-left py-5 flex justify-between items-center group">
+                        <span class="text-lg font-medium group-hover:text-white/90 transition">
+                            How can I request a specific physical science topic?
+                        </span>
+                        <i class="fa fa-chevron-down text-white/40 transition-transform duration-300 group-hover:text-white/70"></i>
+                    </button>
+                    <div class="faq-content hidden pb-6 text-white/60 leading-relaxed">
+                        We welcome topic suggestions. Email us at 
+                        <a href="mailto:stevenhsiehvrp@outlook.com" class="underline hover:text-white">stevenhsiehvrp@outlook.com</a>. 
+                        We prioritize topics that are highly requested and educationally valuable.
+                    </div>
                 </div>
+    
+                <!-- FAQ Item -->
+                <div class="faq-item border-b border-white/10">
+                    <button class="faq-toggle w-full text-left py-5 flex justify-between items-center group">
+                        <span class="text-lg font-medium group-hover:text-white/90 transition">
+                            Is Study Assistant Pro free to use?
+                        </span>
+                        <i class="fa fa-chevron-down text-white/40 transition-transform duration-300 group-hover:text-white/70"></i>
+                    </button>
+                    <div class="faq-content hidden pb-6 text-white/60 leading-relaxed">
+                        Yes. Study Assistant Pro is free, offline‑first, and fully local. No subscriptions, no tracking.
+                    </div>
+                </div>
+    
+                <!-- FAQ Item -->
+                <div class="faq-item border-b border-white/10">
+                    <button class="faq-toggle w-full text-left py-5 flex justify-between items-center group">
+                        <span class="text-lg font-medium group-hover:text-white/90 transition">
+                            Can I use Singularity Lab content in my own teaching?
+                        </span>
+                        <i class="fa fa-chevron-down text-white/40 transition-transform duration-300 group-hover:text-white/70"></i>
+                    </button>
+                    <div class="faq-content hidden pb-6 text-white/60 leading-relaxed">
+                        Yes. Free content is licensed under 
+                        <span class="italic">Creative Commons Attribution‑NonCommercial‑ShareAlike 4.0</span>. 
+                        You may use, adapt, and share it for non‑commercial educational purposes with proper attribution.
+                    </div>
+                </div>
+    
+                <!-- FAQ Item -->
+                <div class="faq-item border-b border-white/10">
+                    <button class="faq-toggle w-full text-left py-5 flex justify-between items-center group">
+                        <span class="text-lg font-medium group-hover:text-white/90 transition">
+                            How can I contribute to Singularity Lab?
+                        </span>
+                        <i class="fa fa-chevron-down text-white/40 transition-transform duration-300 group-hover:text-white/70"></i>
+                    </button>
+                    <div class="faq-content hidden pb-6 text-white/60 leading-relaxed">
+                        Contribute by creating lessons, designing posters, improving Study Assistant Pro on GitHub, sharing our content, or providing feedback. Visit <a href="#join" class="underline hover:text-white">Join Us</a> to get involved.
+                    </div>
+                </div>
+            </div>
+    
+            <!-- CTA -->
+            <div class="text-center mt-16">
+                <a href="/community/"
+                   class="inline-flex items-center gap-2 px-8 py-4 bg-white text-singularity-dark rounded-full font-medium hover:bg-gray-100 transition">
+                    View Full Community Page
+                    <i class="fa fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
     <!-- Team Members 区域 -->
-    <section id="members" class="py-20 bg-singularity-light-gray">
-    <div class="container mx-auto px-6">
-        
-        <!-- 标题 -->
-        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-center mb-4">
-        Meet the Team
-        </h2>
-        <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto">
-        Passionate students, educators, and creators working together to make physical science simple, visual, and inspiring.
-        </p>
-
-        <!-- 核心成员 -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-20">
-        
-
-        <!-- Member 2 -->
-        <div class="group text-center">
-            <div class="relative w-40 h-40 mx-auto mb-6">
-            <img 
-                src="/Images/Team2.jpg" 
-                alt="Team Member"
-                class="w-full h-full object-cover rounded-full shadow-lg"
-            >
+    <!-- Meet the Team -->
+    <section id="members" class="py-24 bg-singularity-dark text-white">
+        <div class="container mx-auto px-6">
+    
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <p class="text-sm uppercase tracking-widest text-white/50 mb-2">Team</p>
+                <h2 class="text-4xl md:text-5rem font-bold mb-4">Meet the Team</h2>
+                <p class="text-white/60 max-w-2xl mx-auto">
+                    Passionate students, educators, and creators working together to make physical science simple, visual, and inspiring.
+                </p>
             </div>
-            <h3 class="text-xl font-bold mb-1">Bryce Lin</h3>
-            <p class="text-singularity-blue font-medium mb-3">Photography Lead</p>
-            <p class="text-gray-600 text-sm px-4">
-            Engineers experiments to produce visually captivating footage, framing each reaction for maximum impact. Also participates in video topic decisions and advertises for Singularity Lab's activities.
-            </p>
+    
+            <!-- Core Team -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-24">
+    
+                <!-- Bryce Lin -->
+                <div class="group text-center">
+                    <div class="relative w-40 h-40 mx-auto mb-6">
+                        <img 
+                            src="/Images/Team2.jpg" 
+                            alt="Team Member"
+                            class="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition duration-500"
+                        >
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">Bryce Lin</h3>
+                    <p class="text-singularity-blue font-medium mb-3">Photography Lead</p>
+                    <p class="text-white/70 text-sm px-4 leading-relaxed">
+                        Engineers experiments to produce visually captivating footage, framing each reaction for maximum impact. Also participates in video topic decisions and advertises for Singularity Lab's activities.
+                    </p>
+                </div>
+    
+                <!-- Steven Hsieh -->
+                <div class="group text-center">
+                    <div class="relative w-40 h-40 mx-auto mb-6">
+                        <img 
+                            src="/Images/StevenWorld.png" 
+                            alt="Team Member"
+                            class="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition duration-500"
+                        >
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">Steven Hsieh</h3>
+                    <p class="text-singularity-blue font-medium mb-3">Overall Management & Video Production Lead</p>
+                    <p class="text-white/70 text-sm px-4 leading-relaxed">
+                        Focuses on building Study Assistant Pro, managing the video production sector, and designing the lab's original curriculum to make physical science visual and intuitive. He is also the developer of various projects, including this website, with source code available on GitHub.
+                    </p>
+                    <div class="flex justify-center gap-4 mt-4 text-white/60">
+                        <a href="https://weixin.qq.com/" target="_blank" class="hover:text-white transition"><i class="fab fa-wechat"></i></a>
+                        <a href="https://github.com/StevenVRP" target="_blank" class="hover:text-white transition"><i class="fab fa-github"></i></a>
+                        <a href="https://www.xiaohongshu.com/user/profile/5f40e82800000000010038b0" target="_blank" class="hover:text-white transition">
+                            <img class="w-5 h-5 object-contain" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAUKADAAQAAAABAAAAUAAAAAAx4ExPAAAHkklEQVR4Ae2ZW2xURRjH5zvdtggqiZB4oQ9Az7aU3bUgQSNCgsYHHtAEgyaGJ8BLjLeQyE1RNIr4YCKRFx5ANMoTCMZLUi8JPCiQKOHSXcveCiTlKoQ7tN09Z/zPtmd3zuzptgWhSL5JT+ab7/vmm5nfzsyZORWCExNgAkyACTABJsAEmAATYAJMgAkwASbABJgAE2ACTIAJMAEmwASYABNgAkyACTABJsAEmAATuD0J0PUMq6Eh0uxK2qfHkEK8kU3H1+q6gcj14egadOZNxbctk26KCbHZ0XTXLCL+O4j/kR7gyuXaEceO7bmi6wYrhwZb4Ub4NzU13Z/Li5f12BjsCh2ebUdXEYka3acP+Zd0Ov6rso2fEItVOfJFJeOHnapyPQ0f0fUpwOYsIdpdV/yZzcZ36nbbnhghojlSUiqTiW+GDWH86ZYA2J2vWgpgw4pdk+KvdCa+tVhWAolF6P0dPl1QgcRlqAsArbwYL0m8HuTWq3sF7RaoECjaDbEWS1gvpFL7j9bXPxgV5P6FNmvRNmyRyZlUYrkZC9WGNqnZh/75Zp9lUVlHb0ovpZzlSqfFtu1aqnLnos3aUrv0fEkuSUMOMJcPLUF3SrOPxPZUqvW3UhdvuhQlql0sXHGnr2UpDvrKvYUhBTh2bOQ+LCDf7CPpDs3s0+hgz5slLKm2gjN4TgmiFifv+Prpufe7B9rh2G4McrRXAXvCQbxlZ3vlSrndEF2ODWah7mMRzcYMK/yaoWprKWLr+1qnK6wn7XB0k1Yn5+TFTMSJSYxM6cmiJLLSj0/ia8yYD5SttkaeVblKmUzr91OmTCm8eM5d6FqCyr63MHxHnT07rBMvk5/gPlPVKSQSzdjvpkNe2avpM+sXIAZoo/YoLwIJuuDJ/edyJIZbr/u5Lg1X5XHjovcitvmrDjMHiQ18w6FD8ZOoop5CAmBP7MldeT6TSWT9ykJJ7tmzJ6ck2445gvDzaymfz+fUMQbx2qGeqZlKW4qmDBJLv2KQtUdnQJadfbuaFirztSynEC8UEnPgrc8+s7Iqdzs558Mgw62iM+AEdsv0uRjoFaCUUlwqrDnN5rpWlSrChsmsGYJEEusPHWo7EmTqT1ffEHvJUm30Jiz/RzzZy123ekE4HOuUJCcYJzwL+vlEbqK6WuxLJBLdXh0zN+GYdlU2fQYM0BJ0UZo9s6gQb+TI2vXnLnadAMq7VSMY7DSM9yUl96bOKsqt8gqDzUnKdViwRYCaVAwF+xq0X/grKnsEdEd+obbcrm6Rrm+MzM8mE38YPoWiCcf0UUu8WleiudN6ubIs/zHtUrqF/aV3b9rm2evDkYWl0SotrUsmk8c8+xDmYXLpZ9yEmnEbKdtnK+6B4XC0ER03fOSpgQ7GoUDfiWZ9dG4m1vMMTX9FurRaKw+1OAIUPg7qhAHHdJGTTA1JOm7q+ipbbrmvK8pjonPv+WJI2pjNHhjwD+Wre6MKUjwWFLriEnYFTfYvKywsEpmgQEG6urrRRzqOns7DVmwHM22y7ju+ITId29Djug7HjedxtHiooJPyBRxR/vbZB1AgIXvqF31pAbYf371YWnI6ObLsawyRNQa+X6Jq8fgGeUwxlCYUB6bpiiLglc1Ay7IGDHDHjh15gDiMgHYxqBATI5FIjfdmwxJ4S7N54j0QHsXz87XAU0HS6YTvMxvOgcfMc2BI5A8kM8mgl+Je9LsFYeapWJVSP0u4DOD5ZPLAkUoBA2z7DV11d7co7YOSFKig5LpVtDjIcDN0WClq5fSbKgMkudMXgWgXyq5P119Byt8Nl5M1Ndo2QGIL7Gq/U2/30kNiXfvB1laj7i1XrLiE8W1sGTb92eh14fCLi/72wY7AssR2FxuKl7AtvI/le8krZ1LxVyGr53+ZKgJUl/5wOLKh94Dbnc/TV4MdZSqV2I/j0J9gOBVPsm7M6PXpdE8UfA3+FkDPodRlxnUd57P29rY0/m3wML4WTzPsqFZKOO82ow393wHYA+Ofw0P76Ur+/6VUEaBqKJcTK0PVYh568o261Dc2Nj6AK9B3yob/hww3+4gbQNn/MFwSq3GP34pX+DL1YlF1bTvyFLJnlFyWpGgFvNegt9DGRtwiSntmmbO6btAM9E8/RyqvtXgGDBAvje3wt1VFlXATUS8yPantpSxV3gPhfvhw4oR05dyuq3ctUrUdxzmDXjXhmYpmImURhbXX1GVT8W24/D6dTbUWwMOOMVOfHwlwVHobPm59Q/RZ5BXhmW1dR1l9kanTHkwOLUnxu1Yqiv0CVJ7ZbKKlo2PXVSVnMpkuwPtEyWVJij/wDW53mR4KHEd+8PQA8xzkZq/syxEDy+9H6Cwc2t/12W5goTrkrED4wFkGvTrqBB23zGvawHqID6qrcFBdinmEjwFCLckLgPpTPi/nQoZYOVlSPgGPwLc5zpnLVW0scSxvfCXBpL/GR4UpJnxZUe2pvhafUChU7GtbW9txi6omwb4JTweeHIy4ddEWfASeFHQPhg8nJsAEmAATYAJMgAkwASbABJgAE2ACTIAJMAEmwASYABNgAkyACTABJsAEmAATYAJMgAkwASZw2xL4Fw91ZDS3M6yrAAAAAElFTkSuQmCC">
+                        </a>
+                    </div>
+                </div>
+    
+                <!-- Charles Xu -->
+                <div class="group text-center">
+                    <div class="relative w-40 h-40 mx-auto mb-6">
+                        <img 
+                            src="/Images/Team3.jpg" 
+                            alt="Team Member"
+                            class="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition duration-500"
+                        >
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">Charles Xu</h3>
+                    <p class="text-singularity-blue font-medium mb-3">Lecture & Trivia Lead</p>
+                    <p class="text-white/70 text-sm px-4 leading-relaxed">
+                        Organises lessons and trivias that take place every Thursday during self-study class.
+                    </p>
+                </div>
+    
+            </div>
+    
+            <!-- Contributors -->
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-8">Contributors</h3>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar1.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">Sean</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar2.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">James</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar3.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">Daniel</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar4.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">Feliz</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar5.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">Gary</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar6.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">William</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar7.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">John</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar8.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">Juno</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar9.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">Carlos</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar10.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">Taki</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar11.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">Nathan</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <img src="/Images/Avatar12.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
+                        <span class="text-[10px] font-medium text-white/60">Michael</span>
+                    </div>
+                </div>
+                <p class="text-white/50 mt-6 text-sm">
+                    15+ members across curriculum, design, development, and outreach.
+                </p>
+            </div>
+    
         </div>
-        <!-- <div class="group text-center p-8 rounded-3xl bg-white 
-            shadow-md"> -->
-            <!-- Member 2 -->
-        <div class="group text-center">
-            <div class="relative w-40 h-40 mx-auto mb-6">
-            <img 
-                src="/Images/StevenWorld.png" 
-                alt="Team Member"
-                class="w-full h-full object-cover rounded-full shadow-lg"
-            >
-            </div>
-            <h3 class="text-xl font-bold mb-1">Steven Hsieh</h3>
-            <p class="text-singularity-blue font-medium mb-3">Overall Management & Video Production Lead</p>
-            <p class="text-gray-600 text-sm px-4">
-            Focuses on building Study Assistant Pro, managing the video production sector, and designing the lab's original curriculum to make physical science visual and intuitive. He is also the developer of various projects, including this website, with source code available on GitHub.
-            </p>
-            <div class="flex justify-center gap-4 mt-4">
-            <a href="https://weixin.qq.com/" target="_blank" class="text-gray-400 hover:text-singularity-blue"><i class="fab fa-wechat"></i></a>
-            <a href="https://github.com/StevenVRP" target="_blank" class="text-gray-400 hover:text-singularity-blue"><i class="fab fa-github"></i></a>
-            <a href="https://www.xiaohongshu.com/user/profile/5f40e82800000000010038b0" target="_blank" class="text-gray-600 hover:text-gray-900 transition-colors"><img class="w-5 h-5 object-contain" src="data:image/png;base64,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"></a>
-
-            </div>
-        </div>
-  
-
-        
-        <!-- </div> -->
-
-        <!-- Member 3 -->
-        <div class="group text-center">
-            <div class="relative w-40 h-40 mx-auto mb-6">
-            <img 
-                src="/Images/Team3.jpg" 
-                alt="Team Member"
-                class="w-full h-full object-cover rounded-full shadow-lg"
-            >
-            </div>
-            <h3 class="text-xl font-bold mb-1">Charles Xu</h3>
-            <p class="text-singularity-blue font-medium mb-3">Lecture & Trivia Lead</p>
-            <p class="text-gray-600 text-sm px-4">
-            Organises lessons and trivias that take place every Thursday during self-study class. 
-            </p>
-            
-        </div>
-
-        </div>
-
-        <!-- 志愿者 / 贡献者 -->
-        <div class="text-center">
-        <h3 class="text-2xl font-bold mb-8">Contributors</h3>
-        <div class="flex flex-wrap justify-center gap-6">
-            <!-- <img src="/Images/Avatar1.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar2.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar3.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar4.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar5.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar6.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar7.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar8.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar9.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar10.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar11.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-            <img src="/Images/Avatar12.png" class="w-14 h-14 rounded-full object-cover shadow-sm"> -->
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar1.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">Sean</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar2.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">James</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar3.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">Daniel</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar4.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">Feliz</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar5.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">Gary</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar6.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">William</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar7.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">John</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar8.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">Juno</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar9.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">Carlos</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar10.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">Taki</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar11.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">Nathan</span>
-            </div>
-            <div class="flex flex-col items-center gap-1">
-                <img src="/Images/Avatar12.png" class="w-14 h-14 rounded-full object-cover shadow-sm">
-                <span class="text-[10px] font-medium text-gray-500">Michael</span>
-            </div>
-            
-        </div>
-        <p class="text-gray-500 mt-6 text-sm">
-            15+ members across curriculum, design, development, and outreach.
-        </p>
-        </div>
-
-    </div>
     </section>
 
     <!-- Join Us 区域 -->
