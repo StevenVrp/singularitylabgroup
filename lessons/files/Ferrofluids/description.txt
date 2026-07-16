@@ -1,3 +1,4 @@
 Why is a liquid able to transform into a solid-like spikey structure the moment it is introduced into a magnetic field? Follow us through the precise explanation of the history of this object and the principles behind it.
 
-Link: https://www.bilibili.com/video/BV1rXLh6wEf9/?spm_id_from=333.1387.homepage.video_card.click&vd_source=49c54bc96d4b31b21fd78eef8b3cb76c
+iframevideohere:
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=116612690614245&bvid=BV1rXLh6wEf9&cid=38505415671&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
