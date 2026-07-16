@@ -59,57 +59,70 @@
 <!-- APP -->
 <main id="app" class="pt-32"></main>
 
-<footer class="bg-singularity-dark text-white py-12">
-    <div class="container mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            <div>
-                <h4 class="text-lg font-bold mb-4">Resources</h4>
-                <ul class="space-y-2">
-                    <li><a href="/lessons/" class="text-white/70 hover:text-white transition-colors">Singularity Lessons</a></li>
-                    <li><a href="/studyassistantpro/" class="text-white/70 hover:text-white transition-colors">Study Assistant Pro</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-lg font-bold mb-4">Community</h4>
-                <ul class="space-y-2">
-                    <li><a href="/?redirect=/home/#community" class="text-gray-400 hover:text-white transition-colors">FAQs</a></li>
-                    <li><a href="/community/" class="text-gray-400 hover:text-white transition-colors">Discussion Forum</a></li>
-                    <li><a href="/community/" class="text-gray-400 hover:text-white transition-colors">Articles</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-lg font-bold mb-4">About</h4>
-                <ul class="space-y-2">
-                    <li><a href="/?redirect=/home/#partners" class="text-white/70 hover:text-white transition-colors">Partners</a></li>
-                    <li><a href="/?redirect=/home/#about" class="text-white/70 hover:text-white transition-colors">Our Mission</a></li>
-                    <li><a href="/?redirect=/home/#members" class="text-white/70 hover:text-white transition-colors">Meet the Team</a></li>
-                    <li><a href="/?redirect=/home/#join" class="text-white/70 hover:text-white transition-colors">Join Us</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-lg font-bold mb-4">Follow Us</h4>
-                <div class="flex space-x-4 mb-6">
-                    <a href="https://space.bilibili.com/1372845857" target="_blank" class="text-white/70 hover:text-white transition-colors text-xl"><i class="fab fa-bilibili"></i></a>
-                    <a href="https://www.youtube.com/@SingularityLab123" target="_blank" class="text-white/70 hover:text-white transition-colors text-xl"><i class="fab fa-youtube-play"></i></a>
-                    <a href="mailto:singularitylabgroup@outlook.com" class="text-white/70 hover:text-white transition-colors text-xl"><i class="fa fa-envelope"></i></a>
+<!-- 页脚 -->
+    <footer class="bg-black text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Resources -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/lessons/" class="text-gray-400 hover:text-white transition-colors">Singularity Lessons</a></li>
+                        <li><a href="/studyassistantpro/" class="text-gray-400 hover:text-white transition-colors">Study Assistant Pro</a></li>
+                    </ul>
                 </div>
-                <h4 class="text-lg font-bold mb-4">Language</h4>
-                <a href="#" class="text-white/70 hover:text-white transition-colors">English</a>
+                
+                <!-- Community -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Community</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/?redirect=/home/#community" class="text-gray-400 hover:text-white transition-colors">FAQs</a></li>
+                        <li><a href="/community/" class="text-gray-400 hover:text-white transition-colors">Discussion Forum</a></li>
+                        <li><a href="/community/" class="text-gray-400 hover:text-white transition-colors">Articles</a></li>
+                    </ul>
+                </div>
+                
+                <!-- About -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">About</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/?redirect=/home/#partners" class="text-gray-400 hover:text-white transition-colors">Partners</a></li>
+                        <li><a href="/?redirect=/home/#about" class="text-gray-400 hover:text-white transition-colors">Our Mission</a></li>
+                        <li><a href="/?redirect=/home/#members" class="text-gray-400 hover:text-white transition-colors">Meet the Team</a></li>
+                        <li><a href="/?redirect=/home/#join" class="text-gray-400 hover:text-white transition-colors">Join Us</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Follow Us -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4 mb-6">
+                        <a href="https://space.bilibili.com/1372845857" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xl">
+                            <i class="fab fa-bilibili"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@SingularityLab123" target="_blank" class="text-gray-400 hover:text-white transition-colors text-xl">
+                            <i class="fab fa-youtube-play"></i>
+                        </a>
+                        <a href="mailto:singularitylabgroup@outlook.com" class="text-gray-400 hover:text-white transition-colors text-xl">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                    <h4 class="text-lg font-bold mb-4">Language</h4>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">English</a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0"><i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70 hover:opacity-100 transition-opacity"></i> 2026 Singularity Lab. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#privacy-policy" class="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#terms-of-use" class="text-gray-500 hover:text-white text-sm transition-colors">Terms of Use</a>
+                    <a href="#license" class="text-gray-500 hover:text-white text-sm transition-colors">License</a>
+                </div>
             </div>
         </div>
-        <div class="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p class="text-white/60 text-sm mb-4 md:mb-0">
-                <i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70"></i>
-                2026 Singularity Lab. All rights reserved.
-            </p>
-            <div class="flex space-x-6">
-                <a href="/legal/#privacy-policy" class="text-white/60 hover:text-white text-sm transition-colors">Privacy Policy</a>
-                <a href="/legal/#terms-of-use" class="text-white/60 hover:text-white text-sm transition-colors">Terms of Use</a>
-                <a href="/legal/#license" class="text-white/60 hover:text-white text-sm transition-colors">License</a>
-            </div>
-        </div>
-    </div>
-</footer>
+    </footer>
+</body>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
