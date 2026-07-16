@@ -1,4 +1,6 @@
 Discover the stunning world of flame tests—where chemistry lights up in color! 🔥
 From vibrant blues and fiery reds to brilliant greens and soft violets, each metal salt creates its own unique visual symphony when introduced to a flame.
+iframevideohere:
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=116238105777595&bvid=BV1fpwEzTEVQ&cid=36738698189&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
-Link: https://www.bilibili.com/video/BV1fpwEzTEVQ/?spm_id_from=333.1387.homepage.video_card.click&vd_source=49c54bc96d4b31b21fd78eef8b3cb76c
+
