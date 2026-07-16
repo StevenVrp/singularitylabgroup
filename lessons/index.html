@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="icon" type="image/png" sizes="32x32" href="/Images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/Images/favicon-16x16.png">
     <link rel="shortcut icon" href="/Images/favicon.ico">
-
     <title>Singularity Lab - Lessons</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -25,501 +22,271 @@
                         'singularity-blue': '#2b7ce9',
                         'singularity-dark': '#000000',
                     },
-                    fontFamily: {
-                        'singularity': ['SF Pro Display', 'Helvetica Neue', 'Arial', 'sans-serif'],
-                    },
                 }
             }
         }
     </script>
 
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .pro-badge {
-                background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                font-weight: 700;
-            }
+    <style>
+        body { font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif; scroll-behavior: smooth; }
+        .pro-badge {
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
         }
-
-        body {
-            font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        .nav-scrolled {
-            background-color: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .nav-scrolled .nav-link {
-            color: #1a1a1a;
-        }
-
-        .timeline-scroll::-webkit-scrollbar { width: 8px; }
-        .timeline-scroll::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.12);
-            border-radius: 999px;
-        }
-
-        .timeline-line {
-            position: absolute;
-            left: 14px;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            border-radius: 999px;
-            background: linear-gradient(to bottom, #2563eb, #60a5fa, #93c5fd);
-        }
-
-        .explorer-line {
-            background: linear-gradient(to bottom, #9333ea, #c084fc, #e9d5ff);
-        }
-
-        .lesson-node {
-            width: 30px; height: 30px;
-            border-radius: 999px;
-            border: 4px solid #2563eb;
-            background: white;
-            position: relative;
-            z-index: 5;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-        }
-
-        .lesson-node:hover {
-            transform: scale(1.12);
-            box-shadow: 0 0 0 10px rgba(37,99,235,0.12);
-        }
-
-        .lesson-node.active {
-            background: #2563eb;
-            box-shadow: 0 0 30px rgba(37,99,235,0.35), 0 0 60px rgba(37,99,235,0.15);
-        }
-
+        .glass-nav { backdrop-filter: saturate(180%) blur(20px); background: rgba(255,255,255,.78); }
+        .timeline-line { position: absolute; left: 17px; top: 0; bottom: 0; width: 4px; border-radius: 999px; background: linear-gradient(to bottom, #2563eb, #60a5fa, #93c5fd); }
+        .timeline-line.explorer { background: linear-gradient(to bottom, #9333ea, #c084fc, #e9d5ff); }
+        .lesson-node { width: 34px; height: 34px; border-radius: 999px; border: 4px solid #2563eb; background: white; transition: all .35s ease; }
+        .lesson-node:hover { transform: scale(1.15); box-shadow: 0 0 0 10px rgba(37,99,235,.12); }
+        .lesson-node.active { background: #2563eb; box-shadow: 0 0 30px rgba(37,99,235,.45), 0 0 60px rgba(37,99,235,.2); }
         .explorer-node { border-color: #9333ea; }
-        .explorer-node.active {
-            background: #9333ea;
-            box-shadow: 0 0 30px rgba(147,51,234,0.35), 0 0 60px rgba(147,51,234,0.15);
-        }
-
-        .lesson-item:hover .lesson-title { color: #2563eb; }
-        .explorer-item:hover .lesson-title { color: #9333ea; }
-
-        .fade-in { animation: fadeIn 0.4s ease; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .curriculum-btn.active-standard { background: #2563eb; color: white; }
-        .curriculum-btn.active-explorer { background: #9333ea; color: white; }
-
-        .video-iframe {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border: none;
-            border-radius: 2rem;
-        }
+        .explorer-node.active { background: #9333ea; box-shadow: 0 0 30px rgba(147,51,234,.45), 0 0 60px rgba(147,51,234,.2); }
+        .fade-in { animation: fadeIn .45s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        .video-iframe { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 2rem; }
+        .resource-card { transition: all .35s ease; }
+        .resource-card:hover { transform: translateY(-6px); box-shadow: 0 30px 60px rgba(0,0,0,.12); }
+        .icon-box { width: 72px; height: 72px; border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
     </style>
 </head>
 
-<body class="bg-white text-singularity-gray">
+<body class="bg-singularity-light-gray text-singularity-gray">
 
-    <!-- NAVBAR -->
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 bg-white shadow-sm">
-        <div class="container mx-auto px-6 flex items-center justify-between">
-            <div class="flex items-center">
-                <a href="/" class="text-2xl font-bold">
-                    <img src="/Images/Logo2.png" alt="Singularity Lab Logo" class="h-10">
-                </a>
-            </div>
+<!-- NAVBAR -->
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 glass-nav shadow-sm">
+    <div class="container mx-auto px-6 flex items-center justify-between h-16">
+        <a href="/"><img src="/Images/Logo2.png" class="h-10"></a>
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="/?redirect=/home/#partners" class="hover:text-singularity-blue transition">Partners</a>
+            <a href="/?redirect=/home/#lessons" class="hover:text-singularity-blue transition">Lessons</a>
+            <a href="/?redirect=/home/#study-assistant" class="hover:text-singularity-blue transition">Study Assistant <span class="pro-badge">Pro</span></a>
+            <a href="/?redirect=/home/#community" class="hover:text-singularity-blue transition">Community</a>
+            <a href="/?redirect=/home/#about" class="hover:text-singularity-blue transition">About</a>
+            <a href="/?redirect=/home/#members" class="hover:text-singularity-blue transition">Team</a>
+            <a href="/?redirect=/home/#join" class="hover:text-singularity-blue transition">Join</a>
+            <a href="/legal/" class="hover:text-singularity-blue transition">Legal</a>
+            <a href="/welcome/" class="ml-4"><i class="fa fa-user"></i></a>
+        </div>
+        <button id="mobile-menu-button" class="md:hidden"><i class="fa fa-bars"></i></button>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+        <div class="px-6 py-4 flex flex-col gap-3">
+            <a href="/?redirect=/home/#lessons" class="py-2">Lessons</a>
+            <a href="/community/" class="py-2">Community</a>
+            <a href="/legal/" class="py-2">Legal</a>
+        </div>
+    </div>
+</nav>
 
-            <div class="hidden md:flex space-x-8">
-                <a href="/?redirect=/home/#partners" class="nav-link text-black hover:text-gray-600 transition-colors">Partners</a>
-                <a href="/?redirect=/home/#lessons" class="nav-link text-black hover:text-gray-600 transition-colors">Singularity Lessons</a>
-                <a href="/?redirect=/home/#study-assistant" class="nav-link text-black hover:text-gray-600 transition-colors">
-                    Study Assistant <span class="pro-badge">Pro</span>
-                </a>
-                <a href="/?redirect=/home/#community" class="nav-link text-black hover:text-gray-600 transition-colors">Community</a>
-                <a href="/?redirect=/home/#about" class="nav-link text-black hover:text-gray-600 transition-colors">About Us</a>
-                <a href="/?redirect=/home/#members" class="nav-link text-black hover:text-gray-600 transition-colors">Meet the Team</a>
-                <a href="/?redirect=/home/#join" class="nav-link text-black hover:text-gray-600 transition-colors">Join Us</a>
-                <a href="/legal/" class="nav-link text-black hover:text-gray-600 transition-colors">Legal</a>
-            </div>
+<!-- MAIN -->
+<section class="pt-32 min-h-screen">
+<div class="grid xl:grid-cols-[380px_1fr]">
 
-            <div class="flex items-center space-x-6">
-                <a href="/welcome/" class="nav-link text-black hover:text-gray-600 transition-colors">
-                    <i class="fa fa-user"></i>
-                </a>
-                <button id="mobile-menu-button" class="md:hidden nav-link text-black hover:text-gray-600 transition-colors">
-                    <i class="fa fa-bars"></i>
-                </button>
-            </div>
+    <!-- SIDEBAR -->
+    <aside class="sticky top-32 h-[calc(100vh-8rem)] overflow-hidden px-8 py-10 bg-white/70 backdrop-blur-xl border-r border-gray-200">
+        <p class="uppercase tracking-[0.35em] text-xs text-gray-400 mb-4">Curriculum</p>
+        <h1 class="text-4xl font-bold mb-6">Learning Paths</h1>
+        <p class="text-gray-500 mb-8 leading-relaxed">Structured modules designed for deep understanding.</p>
+
+        <div class="grid grid-cols-2 gap-3 mb-10">
+            <button id="standard-btn" class="py-3 rounded-2xl font-semibold bg-singularity-blue text-white shadow">Standard</button>
+            <button id="explorer-btn" class="py-3 rounded-2xl font-semibold bg-gray-100 hover:bg-gray-200 transition">Discovery</button>
         </div>
 
-        <div id="mobile-menu" class="md:hidden hidden bg-white absolute top-full left-0 w-full shadow-lg">
-            <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
-                <a href="/?redirect=/home/#partners" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Partners</a>
-                <a href="/?redirect=/home/#lessons" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Singularity Lessons</a>
-                <a href="/?redirect=/home/#study-assistant" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">
-                    Study Assistant <span class="pro-badge">Pro</span>
-                </a>
-                <a href="/?redirect=/home/#community" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Community</a>
-                <a href="/?redirect=/home/#about" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">About Us</a>
-                <a href="/?redirect=/home/#members" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Meet the Team</a>
-                <a href="/?redirect=/home/#join" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Join Us</a>
-                <a href="/legal/" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Legal</a>
+        <div id="timeline" class="relative overflow-y-auto h-[calc(100%-14rem)] pr-2 space-y-10">
+            <div class="timeline-line"></div>
+        </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main id="lesson-display" class="overflow-y-auto h-[calc(100vh-8rem)]">
+        <div class="relative h-[460px] bg-black overflow-hidden">
+            <img src="/Images/Background.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-blue-900/20"></div>
+            <div class="absolute inset-0 flex flex-col justify-end px-16 py-16 text-white">
+                <p class="uppercase tracking-[0.35em] text-blue-200 text-sm mb-5">Welcome</p>
+                <h2 class="text-6xl font-bold mb-6 max-w-4xl leading-tight">Select a Lesson</h2>
+                <p class="text-blue-100 text-xl max-w-3xl leading-relaxed">Videos, slides, and guided notes tailored for mastery.</p>
             </div>
         </div>
-    </nav>
+        <div id="lesson-body" class="px-16 py-16 space-y-16 bg-white"></div>
+    </main>
 
-    <!-- MAIN -->
-    <section class="pt-[50px] min-h-screen bg-gradient-to-b from-[#f5f7fb] via-[#eef4ff] to-[#ffffff]">
-        <div class="grid xl:grid-cols-[380px_1fr] min-h-screen">
+</div>
+</section>
 
-            <!-- LEFT SIDEBAR -->
-            <div class="bg-white border-r border-gray-200 px-8 py-10 sticky h-full overflow-hidden">
-                <div class="mb-8">
-                    <p class="uppercase tracking-[0.35em] text-xs text-gray-400 mb-3">SINGULARITY LESSONS</p>
-                    <h1 class="text-4xl font-bold leading-tight mb-5">Learning Pathways</h1>
-                    <p class="text-gray-500 leading-relaxed text-sm">
-                        Explore lesson modules, videos, guided notes, and downloadable classroom resources.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 mb-8">
-                    <button id="standard-btn" class="curriculum-btn active-standard rounded-2xl py-4 font-semibold transition-all duration-300">
-                        Standard
-                    </button>
-                    <button id="explorer-btn" class="curriculum-btn bg-gray-100 rounded-2xl py-4 font-semibold transition-all duration-300">
-                        Discovery
-                    </button>
-                </div>
-
-                <div id="timeline" class="timeline-scroll relative overflow-y-auto h-[calc(100%-15rem)] pr-2 pl-2 space-y-10">
-                    <div id="timeline-line" class="timeline-line"></div>
-                </div>
+<!-- FOOTER -->
+<footer class="bg-singularity-dark text-white py-16">
+    <div class="container mx-auto px-16">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
+            <div>
+                <h4 class="text-lg font-bold mb-5">Resources</h4>
+                <ul class="space-y-3 text-white/70">
+                    <li><a href="/?redirect=/home/#lessons" class="hover:text-white transition">Lessons</a></li>
+                    <li><a href="/?redirect=/home/#study-assistant" class="hover:text-white transition">Study Assistant Pro</a></li>
+                </ul>
             </div>
-
-            <!-- RIGHT DISPLAY -->
-            <div id="lesson-display" class="sticky h-full overflow-hidden h-[calc(100vh-6rem)] overflow-y-auto">
-                <div class="relative h-[420px] bg-black overflow-hidden">
-                    <img src="/Images/Background.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-blue-900/30"></div>
-                    <div class="absolute inset-0 flex flex-col justify-end px-10 md:px-16 py-14 text-white">
-                        <p class="uppercase tracking-[0.35em] text-blue-200 text-sm mb-5">WELCOME</p>
-                        <h2 class="text-5xl md:text-7xl font-bold mb-6 leading-tight max-w-5xl">Select a Lesson to Begin</h2>
-                        <p class="text-blue-100 text-lg md:text-xl max-w-3xl leading-relaxed">
-                            Choose a lesson node from the curriculum pathway to access videos, notes, presentations, and learning resources.
-                        </p>
-                    </div>
+            <div>
+                <h4 class="text-lg font-bold mb-5">Community</h4>
+                <ul class="space-y-3 text-white/70">
+                    <li><a href="/community/" class="hover:text-white transition">Forum</a></li>
+                    <li><a href="/community/" class="hover:text-white transition">Events</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-bold mb-5">About</h4>
+                <ul class="space-y-3 text-white/70">
+                    <li><a href="/?redirect=/home/#about" class="hover:text-white transition">Mission</a></li>
+                    <li><a href="/?redirect=/home/#members" class="hover:text-white transition">Team</a></li>
+                    <li><a href="/?redirect=/home/#join" class="hover:text-white transition">Join Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-bold mb-5">Connect</h4>
+                <div class="flex gap-5 mb-6 text-2xl">
+                    <a href="https://space.bilibili.com/1372845857" target="_blank" class="hover:text-singularity-blue transition"><i class="fab fa-bilibili"></i></a>
+                    <a href="https://www.youtube.com/@SingularityLab123" target="_blank" class="hover:text-singularity-blue transition"><i class="fab fa-youtube"></i></a>
+                    <a href="mailto:singularitylabgroup@outlook.com" class="hover:text-singularity-blue transition"><i class="fa fa-envelope"></i></a>
                 </div>
+                <p class="text-white/60 text-sm">English</p>
             </div>
         </div>
-    </section>
-
-    <!-- FOOTER (singularity-dark) -->
-    <footer class="bg-singularity-dark text-white py-12">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Resources</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/?redirect=/home/#lessons" class="text-white/70 hover:text-white transition-colors">Singularity Lessons</a></li>
-                        <li><a href="/?redirect=/home/#study-assistant" class="text-white/70 hover:text-white transition-colors">Study Assistant Pro</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Community</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/?redirect=/home/#community" class="text-white/70 hover:text-white transition-colors">FAQs</a></li>
-                        <li><a href="/community/" class="text-white/70 hover:text-white transition-colors">Discussion Forum</a></li>
-                        <li><a href="/community/" class="text-white/70 hover:text-white transition-colors">Events</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-4">About</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/?redirect=/home/#partners" class="text-white/70 hover:text-white transition-colors">Partners</a></li>
-                        <li><a href="/?redirect=/home/#about" class="text-white/70 hover:text-white transition-colors">Our Mission</a></li>
-                        <li><a href="/?redirect=/home/#members" class="text-white/70 hover:text-white transition-colors">Meet the Team</a></li>
-                        <li><a href="/?redirect=/home/#join" class="text-white/70 hover:text-white transition-colors">Join Us</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Follow Us</h4>
-                    <div class="flex space-x-4 mb-6">
-                        <a href="https://space.bilibili.com/1372845857" target="_blank" class="text-white/70 hover:text-white transition-colors text-xl"><i class="fab fa-bilibili"></i></a>
-                        <a href="https://www.youtube.com/@SingularityLab123" target="_blank" class="text-white/70 hover:text-white transition-colors text-xl"><i class="fab fa-youtube-play"></i></a>
-                        <a href="mailto:singularitylabgroup@outlook.com" class="text-white/70 hover:text-white transition-colors text-xl"><i class="fa fa-envelope"></i></a>
-                    </div>
-                    <h4 class="text-lg font-bold mb-4">Language</h4>
-                    <a href="#" class="text-white/70 hover:text-white transition-colors">English</a>
-                </div>
-            </div>
-            <div class="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-white/60 text-sm mb-4 md:mb-0">
-                    <i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70"></i>
-                    2026 Singularity Lab. All rights reserved.
-                </p>
-                <div class="flex space-x-6">
-                    <a href="/legal/#privacy-policy" class="text-white/60 hover:text-white text-sm transition-colors">Privacy Policy</a>
-                    <a href="/legal/#terms-of-use" class="text-white/60 hover:text-white text-sm transition-colors">Terms of Use</a>
-                    <a href="/legal/#license" class="text-white/60 hover:text-white text-sm transition-colors">License</a>
-                </div>
+        <div class="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center text-white/50 text-sm">
+            <p><i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70"></i> 2026 Singularity Lab. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="/legal/#privacy-policy" class="hover:text-white transition">Privacy</a>
+                <a href="/legal/#terms-of-use" class="hover:text-white transition">Terms</a>
+                <a href="/legal/#license" class="hover:text-white transition">License</a>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SUPABASE_URL = 'https://wtfmsmibjktgajegflwp.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseClient = window.supabase.createClient(
+    'https://wtfmsmibjktgajegflwp.supabase.co',
+    'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ'
+);
 
-        let currentMode = 'standard';
+let currentMode = 'standard';
 
-        /* ---------- Navbar scroll ---------- */
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) navbar.classList.add('nav-scrolled');
-            else navbar.classList.remove('nav-scrolled');
-        });
+/* ---------- Auth ---------- */
+document.addEventListener('DOMContentLoaded', async () => {
+    const loginTime = localStorage.getItem('login_time');
+    if (!loginTime || Date.now() - Number(loginTime) > 86400000) {
+        await supabaseClient.auth.signOut();
+        return location.href = '/login/';
+    }
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) return location.href = '/login/';
+    loadCurriculum('standard');
+});
 
-        /* ---------- Mobile menu ---------- */
-        document.getElementById('mobile-menu-button')?.addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
+/* ---------- Curriculum ---------- */
+document.getElementById('standard-btn').onclick = () => loadCurriculum('standard');
+document.getElementById('explorer-btn').onclick = () => loadCurriculum('discovery');
 
-        /* ---------- Auth check ---------- */
-        document.addEventListener('DOMContentLoaded', async () => {
-            const ONE_DAY = 24 * 60 * 60 * 1000;
-            const loginTime = localStorage.getItem('login_time');
-            if (!loginTime) { window.location.href = '/login/'; return; }
-            if (Date.now() - parseInt(loginTime) > ONE_DAY) {
-                await supabaseClient.auth.signOut();
-                localStorage.removeItem('login_time');
-                window.location.href = '/login/';
-                return;
-            }
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                localStorage.removeItem('login_time');
-                window.location.href = '/login/';
-                return;
-            }
-            initializeCurriculumButtons();
-            loadCurriculum('standard');
-        });
+async function loadCurriculum(mode) {
+    currentMode = mode;
+    const timeline = document.getElementById('timeline');
+    timeline.innerHTML = `<div class="timeline-line ${mode === 'discovery' ? 'explorer' : ''}"></div>`;
 
-        /* ---------- Curriculum buttons ---------- */
-        function initializeCurriculumButtons() {
-            document.getElementById('standard-btn').addEventListener('click', () => loadCurriculum('standard'));
-            document.getElementById('explorer-btn').addEventListener('click', () => loadCurriculum('discovery'));
-        }
+    document.getElementById('standard-btn').className = `py-3 rounded-2xl font-semibold ${mode === 'standard' ? 'bg-singularity-blue text-white shadow' : 'bg-gray-100'}`;
+    document.getElementById('explorer-btn').className = `py-3 rounded-2xl font-semibold ${mode === 'discovery' ? 'bg-purple-600 text-white shadow' : 'bg-gray-100'}`;
 
-        /* ---------- Load curriculum ---------- */
-        async function loadCurriculum(mode) {
-            currentMode = mode;
-            const timeline = document.getElementById('timeline');
-            timeline.innerHTML = `
-                <div id="timeline-line" class="timeline-line ${mode === 'discovery' ? 'explorer-line' : ''}"></div>
-            `;
+    const res = await fetch(`/lessons/files/${mode === 'standard' ? 'lessons.json' : 'discovery.json'}`);
+    const lessons = await res.json();
 
-            const standardBtn = document.getElementById('standard-btn');
-            const explorerBtn = document.getElementById('explorer-btn');
-            standardBtn.className = 'curriculum-btn rounded-2xl py-4 font-semibold transition-all duration-300';
-            explorerBtn.className = 'curriculum-btn rounded-2xl py-4 font-semibold transition-all duration-300';
-            if (mode === 'standard') {
-                standardBtn.classList.add('active-standard');
-                explorerBtn.classList.add('bg-gray-100');
-            } else {
-                explorerBtn.classList.add('active-explorer');
-                standardBtn.classList.add('bg-gray-100');
-            }
+    lessons.forEach(name => {
+        const item = document.createElement('div');
+        item.className = 'flex items-start gap-5 cursor-pointer relative';
+        item.innerHTML = `
+            <div class="lesson-node ${mode === 'discovery' ? 'explorer-node' : ''}"></div>
+            <div class="pt-1">
+                <div class="text-xl font-bold hover:text-singularity-blue transition">${name.replaceAll('_', ' ')}</div>
+                <div class="text-sm text-gray-400 mt-1">${mode === 'discovery' ? 'Exploration' : 'Core'}</div>
+            </div>`;
+        item.onclick = () => {
+            document.querySelectorAll('.lesson-node').forEach(n => n.classList.remove('active'));
+            item.querySelector('.lesson-node').classList.add('active');
+            loadLesson(name, mode);
+        };
+        timeline.appendChild(item);
+    });
+}
 
-            const fileName = mode === 'standard' ? 'lessons.json' : 'discovery.json';
-            const response = await fetch(`/lessons/files/${fileName}`);
-            const lessons = await response.json();
+/* ---------- Helpers ---------- */
+async function exists(url) {
+    try { return (await fetch(url, { method: 'HEAD' })).ok; } catch { return false; }
+}
+async function detect(folder, exts) {
+    for (const e of exts) { const p = `/lessons/files/${folder}/${folder}.${e}`; if (await exists(p)) return p; }
+    return null;
+}
+async function bilibiliSrc(folder) {
+    const r = await fetch(`/lessons/files/${folder}/description.txt`);
+    if (!r.ok) return null;
+    const t = await r.text();
+    const m = t.match(/iframevideohere:[\s\S]*?<iframe[^>]*src="([^"]+)"/i);
+    return m ? m[1] : null;
+}
 
-            lessons.forEach(folder => {
-                const title = folder.replaceAll('_', ' ');
-                const item = document.createElement('div');
-                item.className = `lesson-item ${mode === 'discovery' ? 'explorer-item' : ''} flex items-start gap-5 cursor-pointer relative`;
+/* ---------- Load Lesson ---------- */
+async function loadLesson(folder, mode) {
+    const [image, video, ppt, notes, bili, descRes] = await Promise.all([
+        detect(folder, ['png','jpg','jpeg']),
+        detect(folder, ['mp4','mov']),
+        detect(folder, ['ppt','pptx']),
+        detect(folder, ['doc','docx']),
+        bilibiliSrc(folder),
+        fetch(`/lessons/files/${folder}/description.txt`)
+    ]);
 
-                item.innerHTML = `
-                    <div class="lesson-node ${mode === 'discovery' ? 'explorer-node' : ''}"></div>
-                    <div class="pt-1">
-                        <div class="lesson-title text-2xl font-bold transition-colors duration-300">${title}</div>
-                        <div class="text-sm text-gray-400 mt-1">
-                            ${mode === 'discovery' ? 'Exploratory learning module' : 'Core curriculum module'}
-                        </div>
-                    </div>
-                `;
+    let description = 'No description.';
+    if (descRes.ok) {
+        description = (await descRes.text()).split('iframevideohere:')[0].trim();
+    }
 
-                item.addEventListener('click', async () => {
-                    document.querySelectorAll('.lesson-node').forEach(node => node.classList.remove('active'));
-                    item.querySelector('.lesson-node').classList.add('active');
-                    loadLesson(folder, mode);
-                });
-
-                timeline.appendChild(item);
-            });
-        }
-
-        /* ---------- Helpers ---------- */
-        async function fileExists(url) {
-            try {
-                const response = await fetch(url, { method: 'HEAD' });
-                return response.ok;
-            } catch { return false; }
-        }
-
-        async function detectFile(folder, extensions) {
-            for (const ext of extensions) {
-                const path = `/lessons/files/${folder}/${folder}.${ext}`;
-                if (await fileExists(path)) return path;
-            }
-            return null;
-        }
-
-        /**
-         * Detect Bilibili iframe URL from description.txt
-         * Expected format inside description.txt:
-         *   iframevideohere:
-         *   <iframe src="//player.bilibili.com/player.html?..."></iframe>
-         */
-        async function detectBilibili(folder) {
-            const path = `/lessons/files/${folder}/description.txt`;
-            try {
-                const response = await fetch(path);
-                if (!response.ok) return null;
-                const text = await response.text();
-
-                // Look for the marker line
-                const markerIndex = text.indexOf('iframevideohere:');
-                if (markerIndex === -1) return null;
-
-                const afterMarker = text.substring(markerIndex + 'iframevideohere:'.length);
-                // Extract the iframe tag
-                const iframeMatch = afterMarker.match(/<iframe[^>]*src="([^"]+)"[^>]*>/i);
-                if (iframeMatch) {
-                    return iframeMatch[1]; // Return the src URL
-                }
-                return null;
-            } catch { return null; }
-        }
-
-        /* ---------- Load lesson ---------- */
-        async function loadLesson(folder, mode) {
-            const title = folder.replaceAll('_', ' ');
-            const image = await detectFile(folder, ['png', 'jpg', 'jpeg']);
-            const video = await detectFile(folder, ['mp4', 'mov']);
-            const ppt = await detectFile(folder, ['ppt', 'pptx']);
-            const notes = await detectFile(folder, ['doc', 'docx']);
-            const bilibiliUrl = await detectBilibili(folder);
-
-            // Load description
-            let description = 'No description available.';
-            try {
-                const descResponse = await fetch(`/lessons/files/${folder}/description.txt`);
-                if (descResponse.ok) {
-                    description = await descResponse.text();
-                    // Strip the iframe marker if present for clean display
-                    const markerIdx = description.indexOf('iframevideohere:');
-                    if (markerIdx !== -1) {
-                        description = description.substring(0, markerIdx).trim();
-                    }
-                }
-            } catch {}
-
-            const display = document.getElementById('lesson-display');
-            display.innerHTML = `
-                <div class="fade-in">
-                    <div class="relative h-[460px] bg-black overflow-hidden">
-                        ${image ? `<img src="${image}" class="absolute inset-0 w-full h-full object-cover">` : ''}
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-${mode === 'discovery' ? 'purple' : 'blue'}-900/30"></div>
-                        <div class="absolute inset-0 flex flex-col justify-end px-10 md:px-16 py-14 text-white">
-                            <p class="uppercase tracking-[0.35em] ${mode === 'discovery' ? 'text-purple-200' : 'text-blue-200'} text-sm mb-5">
-                                ${mode === 'discovery' ? 'DISCOVERY PATHWAY' : 'STANDARD CURRICULUM'}
-                            </p>
-                            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight max-w-5xl">${title}</h1>
-                            <p class="text-lg md:text-xl max-w-4xl leading-relaxed whitespace-pre-line opacity-90">${description}</p>
-                        </div>
-                    </div>
-
-                    <div class="px-10 md:px-16 py-14 space-y-14 bg-white">
-                        ${video ? `
-                            <div>
-                                <div class="flex items-center gap-4 mb-8">
-                                    <div class="w-16 h-16 rounded-2xl ${mode === 'discovery' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'} flex items-center justify-center text-3xl">
-                                        <i class="fa-solid fa-play"></i>
-                                    </div>
-                                    <div>
-                                        <h2 class="text-4xl font-bold mb-2">Lesson Video</h2>
-                                        <p class="text-gray-500 text-lg">Watch the complete walkthrough and explanation.</p>
-                                    </div>
-                                </div>
-                                <div class="overflow-hidden rounded-[2rem] shadow-2xl bg-black">
-                                    <video controls class="w-full">
-                                        <source src="${video}">
-                                    </video>
-                                </div>
-                            </div>
-                        ` : bilibiliUrl ? `
-                            <div>
-                                <div class="flex items-center gap-4 mb-8">
-                                    <div class="w-16 h-16 rounded-2xl ${mode === 'discovery' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'} flex items-center justify-center text-3xl">
-                                        <i class="fa-solid fa-play"></i>
-                                    </div>
-                                    <div>
-                                        <h2 class="text-4xl font-bold mb-2">Lesson Video</h2>
-                                        <p class="text-gray-500 text-lg">Watch the complete walkthrough and explanation.</p>
-                                    </div>
-                                </div>
-                                <div class="overflow-hidden rounded-[2rem] shadow-2xl bg-black">
-                                    <iframe class="video-iframe" src="${bilibiliUrl}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-                                </div>
-                            </div>
-                        ` : ''}
-
-                        <div class="grid md:grid-cols-2 gap-10">
-                            ${ppt ? `
-                                <a href="${ppt}" download class="group border border-gray-200 rounded-[2rem] p-10 hover:border-${mode === 'discovery' ? 'purple' : 'blue'}-300 transition-all duration-300 hover:shadow-2xl">
-                                    <div class="w-20 h-20 rounded-[1.5rem] ${mode === 'discovery' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'} flex items-center justify-center text-4xl mb-8">
-                                        <i class="fa-solid fa-file-powerpoint"></i>
-                                    </div>
-                                    <h3 class="text-4xl font-bold mb-4">Presentation Slides</h3>
-                                    <p class="text-gray-500 text-lg leading-relaxed mb-8">Download classroom slides, diagrams, and instructional materials.</p>
-                                    <div class="inline-flex items-center gap-3 font-semibold ${mode === 'discovery' ? 'text-purple-600' : 'text-blue-600'}">
-                                        Download File
-                                        <i class="fa-solid fa-arrow-right"></i>
-                                    </div>
-                                </a>
-                            ` : ''}
-                            ${notes ? `
-                                <a href="${notes}" download class="group border border-gray-200 rounded-[2rem] p-10 hover:border-${mode === 'discovery' ? 'purple' : 'blue'}-300 transition-all duration-300 hover:shadow-2xl">
-                                    <div class="w-20 h-20 rounded-[1.5rem] ${mode === 'discovery' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'} flex items-center justify-center text-4xl mb-8">
-                                        <i class="fa-solid fa-file-lines"></i>
-                                    </div>
-                                    <h3 class="text-4xl font-bold mb-4">Guided Notes</h3>
-                                    <p class="text-gray-500 text-lg leading-relaxed mb-8">Access printable notes and independent learning resources.</p>
-                                    <div class="inline-flex items-center gap-3 font-semibold ${mode === 'discovery' ? 'text-purple-600' : 'text-blue-600'}">
-                                        Download File
-                                        <i class="fa-solid fa-arrow-right"></i>
-                                    </div>
-                                </a>
-                            ` : ''}
-                        </div>
+    const accent = mode === 'discovery' ? 'purple' : 'blue';
+    const body = document.getElementById('lesson-body');
+    body.innerHTML = `
+        <div class="fade-in space-y-16">
+            ${video || bili ? `
+            <section>
+                <div class="flex items-center gap-5 mb-8">
+                    <div class="icon-box bg-${accent}-100 text-${accent}-600"><i class="fa-solid fa-play"></i></div>
+                    <div>
+                        <h2 class="text-4xl font-bold">Lesson Video</h2>
+                        <p class="text-gray-500 text-lg">Full walkthrough and explanation.</p>
                     </div>
                 </div>
-            `;
-        }
-    </script>
+                <div class="overflow-hidden rounded-[2rem] shadow-2xl bg-black">
+                    ${video ? `<video controls class="w-full"><source src="${video}"></video>` : `<iframe class="video-iframe" src="${bili}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`}
+                </div>
+            </section>` : ''}
+
+            <div class="grid md:grid-cols-2 gap-10">
+                ${ppt ? `<a href="${ppt}" download class="resource-card border border-gray-200 rounded-[2rem] p-10">
+                    <div class="icon-box bg-orange-100 text-orange-600 mb-8"><i class="fa-solid fa-file-powerpoint"></i></div>
+                    <h3 class="text-3xl font-bold mb-4">Slides</h3>
+                    <p class="text-gray-500 mb-8">Classroom materials.</p>
+                    <span class="font-semibold text-${accent}-600 inline-flex items-center gap-2">Download <i class="fa-solid fa-arrow-right"></i></span>
+                </a>` : ''}
+                ${notes ? `<a href="${notes}" download class="resource-card border border-gray-200 rounded-[2rem] p-10">
+                    <div class="icon-box bg-green-100 text-green-600 mb-8"><i class="fa-solid fa-file-lines"></i></div>
+                    <h3 class="text-3xl font-bold mb-4">Notes</h3>
+                    <p class="text-gray-500 mb-8">Guided learning.</p>
+                    <span class="font-semibold text-${accent}-600 inline-flex items-center gap-2">Download <i class="fa-solid fa-arrow-right"></i></span>
+                </a>` : ''}
+            </div>
+        </div>`;
+
+    document.querySelector('#lesson-display > div:first-child p:last-child').textContent = description;
+}
+</script>
 </body>
 </html>
