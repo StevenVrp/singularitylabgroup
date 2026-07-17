@@ -138,6 +138,15 @@
         }
         .molecule-reveal { opacity: 0; transform: translateY(20px); animation: drift-in 0.8s ease forwards; }
         @keyframes drift-in { to { opacity: 1; transform: translateY(0); } }
+        #members {
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+                url('/Images/Team.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* 可选：视差效果 */
+        }
     </style>
 </head>
 
@@ -623,16 +632,7 @@
     <!-- Team Members 区域 -->
     <!-- Meet the Team -->
     <section id="members" class="py-24 bg-singularity-dark text-white">
-        <div class="absolute inset-0 -z-10">
-            <img 
-                src="/Images/Hero.png" 
-                alt="Singularity Lab"
-                class="w-full h-full object-cover"
-            >
-        </div>
-    
-        <!-- 暗色遮罩 -->
-        <div class="absolute inset-0 bg-black/70"></div>
+        
         <div class="container mx-auto px-6">
     
             <!-- Header -->
@@ -649,7 +649,7 @@
     
                 <!-- Bryce Lin -->
                 <div class="group text-center">
-                    <div class="relative w-40 h-40 mx-auto mb-6">
+                    <div class="relative w-40 h-40 mx-auto mb-6"> 
                         <img 
                             src="/Images/Team2.jpg" 
                             alt="Team Member"
