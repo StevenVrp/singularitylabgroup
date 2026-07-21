@@ -329,6 +329,7 @@
 
 
         ];
+        const MIN_LOADING_MS = 30000; // 强制最少显示 30 秒
 
         let loadedAssets = 0;
 
@@ -432,27 +433,29 @@
 
         async function preloadAssets() {
 
-            const promises = assets.map(src => {
-
-                // const isVideo =
-                //     src.endsWith(".mp4")
-                //     || src.endsWith(".mov")
-                //     || src.endsWith(".webm");
-
-                // if (isVideo) {
-
-                //     return preloadVideo(src)
-                //         .then(updateProgress)
-                //         .catch(updateProgress);
-                // }
-
-                return preloadImage(src)
+            const startTime = Date.now();
+        
+            // 1. 图片预加载
+            const assetPromises = assets.map(src =>
+                preloadImage(src)
                     .then(updateProgress)
-                    .catch(updateProgress);
-
-            });
-
-            await Promise.all(promises);
+                    .catch(updateProgress)
+            );
+        
+            // 2. 强制最少 30 秒
+            const minWait = new Promise(resolve =>
+                setTimeout(resolve, MIN_LOADING_MS)
+            );
+        
+            // 3. 两个都完成才继续
+            await Promise.all([...assetPromises, minWait]);
+        
+            // 4. 原有跳转逻辑（保留你原来的动画缓冲）
+            setTimeout(() => {
+                const params = new URLSearchParams(window.location.search);
+                const redirectTarget = params.get('redirect') || '/home/';
+                window.location.href = redirectTarget;
+            }, 1200);
         }
 
         preloadAssets();
