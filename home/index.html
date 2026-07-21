@@ -138,14 +138,22 @@
         }
         .molecule-reveal { opacity: 0; transform: translateY(20px); animation: drift-in 0.8s ease forwards; }
         @keyframes drift-in { to { opacity: 1; transform: translateY(0); } }
+        /* 默认：移动端 → 无背景图 */
         #members {
-            background: 
-                linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
-                url('/Images/team.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* 可选：视差效果 */
+            background-color: #0f172a; /* 你的 singularity-dark */
+        }
+        
+        /* 桌面端：再加背景图 + 遮罩 */
+        @media (min-width: 768px) {
+            #members {
+                background:
+                    linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+                    url('/Images/team.png');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }
         }
     </style>
 </head>
