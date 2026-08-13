@@ -1,1 +1,6 @@
+Is it magic or physical chemistry? In this experiment, we set up the Briggs–Rauscher reaction, a famous oscillating chemical clock, and sustained an incredible 24 full color transitions before the reactants depleted! 🧪✨
 
+Most demonstrations stop around 10 to 15 oscillations, but optimal temperature, continuous magnetic stirring, and fresh reagents kept this chemical feedback loop running far longer than expected.
+
+iframevideohere:
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=117020041484350&bvid=BV1DLGV6XEYf&cid=40504001448&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
