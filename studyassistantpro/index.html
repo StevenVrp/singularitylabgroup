@@ -66,14 +66,14 @@
         .header-content {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            justify-content: flex-end
             flex-wrap: wrap;
             gap: 1rem;
         }
 
         .app-title {
             display: flex;
-            align-items: center;
+            justify-content: flex-start
             gap: 0.75rem;
         }
 
@@ -1226,12 +1226,12 @@
                     <button id="graphBtn" class="btn btn-secondary">
                         <i class="fas fa-chart-line"></i> Stats
                     </button>
-                    <button id="remindersBtn" class="btn btn-secondary">
+                    <!-- <button id="remindersBtn" class="btn btn-secondary">
                         <i class="fas fa-bell"></i> Reminders
-                    </button>
-                    <button class="btn btn-secondary" onclick="window.location.replace('/studyassistantpro/game/')">
+                    </button> -->
+                    <!-- <button class="btn btn-secondary" onclick="window.location.replace('/studyassistantpro/game/')">
                         <i class="fas fa-gamepad"></i> Game
-                    </button>
+                    </button> -->
                     <button id="showTimerBtn" class="btn btn-secondary">
                         <i class="fas fa-clock"></i> Timer
                     </button>
@@ -1391,7 +1391,7 @@
         </div>
     </div>
 
-    <!-- Voice Control UI -->
+    <!-- <!-- Voice Control UI -->
     <div id="voiceControl" class="voice-control">
         <div id="voiceStatus" class="voice-status">
             <i class="fas fa-microphone"></i>
@@ -1408,15 +1408,11 @@
             <div class="wave-bar"></div>
         </div>
         <div id="voiceResponse" class="voice-response"></div>
-    </div>
+    </div> -->
     <footer>
         <div class="footer-links">
             <a href="/?redirect=/home/">Back to Singularity Lab</a>
             <a href="/studyassistantpro/about/">About This Project</a>
-            <a href="https://github.com/StevenVrp/">Creator</a>
-            <a href="/legal/#privacy-policy">Privacy Policy</a>
-            <a href="/legal/#terms-of-use">Terms of Service</a>
-            <a href="/?redirect=/home/#join">Join Us</a>
         </div>
         <div class="footer-copyright">
             <p><i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70 hover:opacity-100 transition-opacity"></i> 2026 Singularity Lab. All rights reserved.</p>
