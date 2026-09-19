@@ -826,133 +826,92 @@
                 </a>
             </div>
         </div>
-    </section>
-    <!-- Meet the Team -->
     <!-- ============================================================
-     Meet the Team — self-contained "nebula + constellation" bg
-     ⚠️ First delete these two rules from your <style> block,
-        otherwise #members keeps forcing background-color:#000
-        and url('/Images/team.png') on desktop:
+     Meet the Team — quiet "studio backdrop"
+     ⚠️ Delete these two rules from your <style> block first,
+        otherwise #members keeps painting background-color:#000
+        and url('/Images/team.png') behind this section:
             #members { background-color: #000000; }
-            @media (min-width: 768px) { #members { background: ... url('/Images/team.png') ... } }
+            @media (min-width: 768px) { #members { background: …url('/Images/team.png')… } }
      ============================================================ -->
-    
+
     <style>
-        /* --- animated nebula ------------------------------------- */
-        .team-nebula {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            mix-blend-mode: screen;
-            will-change: transform;
-        }
-        .team-nebula-1 {
-            inset: -14% auto auto -12%;
-            width: 46rem; height: 46rem;
-            background: radial-gradient(circle at 40% 40%, rgba(76,29,149,.85), rgba(76,29,149,0) 65%);
-            animation: teamDrift1 26s ease-in-out infinite alternate;
-        }
-        .team-nebula-2 {
-            inset: -10% -12% auto auto;
-            width: 40rem; height: 40rem;
-            background: radial-gradient(circle at 55% 45%, rgba(14,116,220,.75), rgba(14,116,220,0) 65%);
-            animation: teamDrift2 32s ease-in-out infinite alternate;
-        }
-        .team-nebula-3 {
-            inset: auto 18% -22% auto;
-            width: 44rem; height: 44rem;
-            background: radial-gradient(circle at 50% 50%, rgba(8,145,178,.65), rgba(8,145,178,0) 62%);
-            animation: teamDrift3 38s ease-in-out infinite alternate;
-        }
-        @keyframes teamDrift1 { from { transform: translate3d(0,0,0) scale(1); }    to { transform: translate3d(9%,6%,0) scale(1.16); } }
-        @keyframes teamDrift2 { from { transform: translate3d(0,0,0) scale(1.12); } to { transform: translate3d(-8%,8%,0) scale(.94); } }
-        @keyframes teamDrift3 { from { transform: translate3d(0,0,0) scale(.96); }  to { transform: translate3d(-7%,-7%,0) scale(1.14); } }
-    
-        /* --- soft starfield dots (pure CSS, no image) ------------- */
-        .team-stars {
-            background-image:
-                radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,255,255,.75), transparent 100%),
-                radial-gradient(1.5px 1.5px at 78% 14%, rgba(255,255,255,.55), transparent 100%),
-                radial-gradient(2px 2px   at 34% 68%, rgba(160,220,255,.65), transparent 100%),
-                radial-gradient(1.5px 1.5px at 62% 82%, rgba(255,255,255,.50), transparent 100%),
-                radial-gradient(2px 2px   at 88% 56%, rgba(200,230,255,.60), transparent 100%),
-                radial-gradient(1.5px 1.5px at 22% 90%, rgba(255,255,255,.40), transparent 100%),
-                radial-gradient(1.5px 1.5px at 52% 36%, rgba(255,255,255,.45), transparent 100%),
-                radial-gradient(1.5px 1.5px at 6%  58%, rgba(180,215,255,.55), transparent 100%);
-            background-size: 560px 560px;
-            background-repeat: repeat;
-            animation: teamTwinkle 9s ease-in-out infinite alternate;
-        }
-        @keyframes teamTwinkle { from { opacity: .45; } to { opacity: .95; } }
-    
-        /* --- ultra-faint grid ------------------------------------ */
-        .team-grid {
-            background-image:
-                linear-gradient(rgba(150,200,255,.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(150,200,255,.07) 1px, transparent 1px);
-            background-size: 60px 60px;
-            -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 20%, transparent 78%);
-                    mask-image: radial-gradient(ellipse at 50% 40%, #000 20%, transparent 78%);
+        /* --- static studio backdrop: soft top light + brushed sheen --- */
+        .team-studio {
+            background:
+                radial-gradient(90% 60% at 50% -10%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%),
+                linear-gradient(165deg, #15171d 0%, #0c0d11 55%, #101218 100%);
         }
     
-        @media (prefers-reduced-motion: reduce) {
-            .team-nebula, .team-stars { animation: none !important; }
-            .team-stars { opacity: .8; }
+        /* faint vertical rules — like a contact sheet */
+        .team-rules {
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(255,255,255,.045) 0 1px,
+                transparent 1px 12.5%
+            );
+            -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+                    mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+        }
+    
+        /* very light diagonal sheen */
+        .team-sheen {
+            background-image: repeating-linear-gradient(
+                115deg,
+                rgba(255,255,255,.022) 0 1px,
+                transparent 1px 7px
+            );
+        }
+    
+        /* fine grain so the flat gradient doesn't band */
+        .team-grain {
+            opacity: .12;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
     </style>
-
+    
     <section id="members" class="relative isolate py-24 text-white overflow-hidden">
-        <!-- base colour (deep space, not flat black) -->
-        <div class="absolute inset-0 -z-10 bg-[#05060f]"></div>
+        <!-- backdrop layers (static, no animation) -->
+        <div class="absolute inset-0 -z-10 team-studio"></div>
+        <div class="absolute inset-0 -z-10 team-rules pointer-events-none"></div>
+        <div class="absolute inset-0 -z-10 team-sheen pointer-events-none"></div>
+        <div class="absolute inset-0 -z-10 team-grain pointer-events-none"></div>
     
-        <!-- animated nebula clouds -->
-        <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-            <div class="team-nebula team-nebula-1"></div>
-            <div class="team-nebula team-nebula-2"></div>
-            <div class="team-nebula team-nebula-3"></div>
-        </div>
-    
-        <!-- starfield + grid -->
-        <div class="absolute inset-0 -z-10 team-stars pointer-events-none"></div>
-        <div class="absolute inset-0 -z-10 team-grid pointer-events-none"></div>
-    
-        <!-- constellation canvas -->
-        <canvas id="team-constellation" class="absolute inset-0 -z-10 pointer-events-none"></canvas>
-    
-        <!-- vignette so the text stays readable (no edge fade) -->
+        <!-- gentle corner vignette instead of black edge fades -->
         <div class="absolute inset-0 -z-10 pointer-events-none"
-             style="background: radial-gradient(ellipse at 50% 45%, transparent 30%, rgba(3,4,10,.75) 100%);"></div>
+             style="background: radial-gradient(120% 90% at 50% 40%, rgba(0,0,0,0) 45%, rgba(0,0,0,.45) 100%);"></div>
     
-        <!-- hairline separators instead of black fade blocks -->
-        <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"></div>
-        <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"></div>
+        <!-- hairline separators -->
+        <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent"></div>
     
         <div class="relative container mx-auto px-6">
     
             <!-- Header -->
             <div class="text-center mb-16">
-                <p class="text-sm uppercase tracking-widest text-white/50 mb-2">Team</p>
+                <p class="text-sm uppercase tracking-widest text-white/45 mb-2">Team</p>
                 <h2 class="text-4xl md:text-5xl font-bold">Meet the Team</h2>
             </div>
     
-            <!-- Group Leaders -->
+            <!-- Group Leaders (larger avatars) -->
             <div class="text-center mb-24">
                 <h3 class="text-2xl font-bold mb-10">Group Leaders</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-12 max-w-3xl mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-10 gap-y-14 max-w-3xl mx-auto">
                     <a href="/members/bryce-lin/" class="group flex flex-col items-center">
                         <img src="/Images/Team2.jpg" alt="Bryce Lin"
-                             class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Bryce Lin</span>
+                             class="w-36 h-36 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-[1.04] transition duration-500">
+                        <span class="mt-4 text-base font-semibold text-white/85 group-hover:text-white transition-colors">Bryce Lin</span>
                     </a>
                     <a href="/members/steven-hsieh/" class="group flex flex-col items-center">
                         <img src="/Images/StevenWorld.png" alt="Steven Hsieh"
-                             class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Steven Hsieh</span>
+                             class="w-36 h-36 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-[1.04] transition duration-500">
+                        <span class="mt-4 text-base font-semibold text-white/85 group-hover:text-white transition-colors">Steven Hsieh</span>
                     </a>
                     <a href="/members/charles-xu/" class="group flex flex-col items-center">
                         <img src="/Images/Team3.jpg" alt="Charles Xu"
-                             class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Charles Xu</span>
+                             class="w-36 h-36 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-[1.04] transition duration-500">
+                        <span class="mt-4 text-base font-semibold text-white/85 group-hover:text-white transition-colors">Charles Xu</span>
                     </a>
                 </div>
             </div>
@@ -963,13 +922,13 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-12 max-w-3xl mx-auto">
                     <a href="/members/steven-hsieh/" class="group flex flex-col items-center">
                         <img src="/Images/StevenWorld.png" alt="Steven Hsieh"
-                             class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Steven Hsieh</span>
+                             class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Steven Hsieh</span>
                     </a>
                     <a href="/members/taki-jiang/" class="group flex flex-col items-center">
                         <img src="/Images/Avatar10.png" alt="Taki Jiang"
-                             class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Taki Jiang</span>
+                             class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Taki Jiang</span>
                     </a>
                 </div>
             </div>
@@ -979,130 +938,58 @@
                 <h3 class="text-2xl font-bold mb-10">Contributors</h3>
                 <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-12 max-w-5xl mx-auto">
                     <a href="/members/sean/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar1.png" alt="Sean" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Sean</span>
+                        <img src="/Images/Avatar1.png" alt="Sean" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Sean</span>
                     </a>
                     <a href="/members/james/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar2.png" alt="James" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">James</span>
+                        <img src="/Images/Avatar2.png" alt="James" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">James</span>
                     </a>
                     <a href="/members/daniel/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar3.png" alt="Daniel" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Daniel</span>
+                        <img src="/Images/Avatar3.png" alt="Daniel" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Daniel</span>
                     </a>
                     <a href="/members/feliz/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar4.png" alt="Feliz" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Feliz</span>
+                        <img src="/Images/Avatar4.png" alt="Feliz" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Feliz</span>
                     </a>
                     <a href="/members/gary/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar5.png" alt="Gary" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Gary</span>
+                        <img src="/Images/Avatar5.png" alt="Gary" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Gary</span>
                     </a>
                     <a href="/members/william/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar6.png" alt="William" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">William</span>
+                        <img src="/Images/Avatar6.png" alt="William" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">William</span>
                     </a>
                     <a href="/members/john/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar7.png" alt="John" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">John</span>
+                        <img src="/Images/Avatar7.png" alt="John" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">John</span>
                     </a>
                     <a href="/members/juno/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar8.png" alt="Juno" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Juno</span>
+                        <img src="/Images/Avatar8.png" alt="Juno" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Juno</span>
                     </a>
                     <a href="/members/carlos/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar9.png" alt="Carlos" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Carlos</span>
+                        <img src="/Images/Avatar9.png" alt="Carlos" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Carlos</span>
                     </a>
                     <a href="/members/taki/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar10.png" alt="Taki" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Taki</span>
+                        <img src="/Images/Avatar10.png" alt="Taki" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Taki</span>
                     </a>
                     <a href="/members/nathan/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar11.png" alt="Nathan" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Nathan</span>
+                        <img src="/Images/Avatar11.png" alt="Nathan" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Nathan</span>
                     </a>
                     <a href="/members/michael/" class="group flex flex-col items-center">
-                        <img src="/Images/Avatar12.png" alt="Michael" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-white/50 group-hover:scale-105 transition duration-500">
-                        <span class="mt-4 text-sm font-medium text-white/80 group-hover:text-white transition-colors">Michael</span>
+                        <img src="/Images/Avatar12.png" alt="Michael" class="w-28 h-28 rounded-full object-cover ring-1 ring-white/15 group-hover:ring-white/45 group-hover:scale-105 transition duration-500">
+                        <span class="mt-4 text-sm font-medium text-white/75 group-hover:text-white transition-colors">Michael</span>
                     </a>
                 </div>
             </div>
     
         </div>
     </section>
-    
-    <script>
-    (function () {
-        const section = document.getElementById('members');
-        const canvas = document.getElementById('team-constellation');
-        if (!section || !canvas) return;
-    
-        const ctx = canvas.getContext('2d');
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let w = 0, h = 0, dpr = 1, nodes = [], raf = null, visible = true;
-    
-        function resize() {
-            dpr = Math.min(window.devicePixelRatio || 1, 2);
-            w = section.clientWidth; h = section.clientHeight;
-            canvas.width = w * dpr; canvas.height = h * dpr;
-            canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        }
-    
-        function seed() {
-            resize();
-            const count = Math.max(24, Math.min(70, Math.round((w * h) / 22000)));
-            nodes = Array.from({ length: count }, () => ({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                vx: (Math.random() - 0.5) * 0.16,
-                vy: (Math.random() - 0.5) * 0.16,
-                r: Math.random() * 1.6 + 0.6,
-                a: Math.random() * 0.4 + 0.25
-            }));
-        }
-    
-        function frame() {
-            ctx.clearRect(0, 0, w, h);
-            for (let i = 0; i < nodes.length; i++) {
-                const n = nodes[i];
-                n.x += n.vx; n.y += n.vy;
-                if (n.x < -20) n.x = w + 20; if (n.x > w + 20) n.x = -20;
-                if (n.y < -20) n.y = h + 20; if (n.y > h + 20) n.y = -20;
-    
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const m = nodes[j];
-                    const d = Math.hypot(n.x - m.x, n.y - m.y);
-                    if (d < 150) {
-                        ctx.strokeStyle = 'rgba(140,190,255,' + (0.13 * (1 - d / 150)).toFixed(3) + ')';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
-                    }
-                }
-                ctx.fillStyle = 'rgba(200,230,255,' + n.a.toFixed(2) + ')';
-                ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
-            }
-            raf = requestAnimationFrame(frame);
-        }
-    
-        function start() { if (!raf && !reduce && visible) raf = requestAnimationFrame(frame); }
-        function stop()  { if (raf) { cancelAnimationFrame(raf); raf = null; } }
-    
-        seed();
-        if (reduce) { frame(); stop(); } else { start(); }
-    
-        window.addEventListener('resize', () => { seed(); if (reduce) { frame(); stop(); } });
-        document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
-    
-        if ('IntersectionObserver' in window) {
-            new IntersectionObserver(function (entries) {
-                visible = entries[0].isIntersecting;
-                visible ? start() : stop();
-            }, { threshold: 0 }).observe(section);
-        }
-    })();
-    </script>
 
     <!-- Join Us 区域 -->
     <section id="join" class="py-20 bg-singularity-dark text-white">
