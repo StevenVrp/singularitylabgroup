@@ -269,44 +269,43 @@
         .hero-parallax      { transform: translate3d(calc(var(--mx) * -10px), calc(var(--my) * -10px), 0); transition: transform .6s cubic-bezier(.16,1,.3,1); }
         .hero-parallax-slow { transform: translate3d(calc(var(--mx) *  26px), calc(var(--my) *  26px), 0); transition: transform .9s cubic-bezier(.16,1,.3,1); }
 
-        /* ===================== LESSONS (dark, cool-toned) ===================== */
+        /* ===================== LESSONS (light) ===================== */
         #lessons {
             background:
-                radial-gradient(120% 80% at 50% -10%, #141b2b 0%, #0a0c12 52%, #07080b 100%),
-                #07080b;
+                radial-gradient(120% 80% at 50% -10%, #ffffff 0%, #eef3fb 55%, #e6ecf7 100%),
+                #eef3fb;
         }
         .lessons-grid-overlay {
             background-image:
-                linear-gradient(rgba(180,205,240,.22) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(180,205,240,.22) 1px, transparent 1px);
+                linear-gradient(rgba(0,102,204,.14) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,102,204,.14) 1px, transparent 1px);
             background-size: 56px 56px;
             -webkit-mask-image: radial-gradient(ellipse at 50% 25%, #000 10%, transparent 72%);
                     mask-image: radial-gradient(ellipse at 50% 25%, #000 10%, transparent 72%);
         }
         .lesson-card-blue {
-            background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
-            border: 1px solid rgba(255,255,255,.09);
-            box-shadow: 0 12px 40px -24px rgba(0,0,0,.95);
+            background: rgba(255,255,255,.75);
+            border: 1px solid rgba(0,102,204,.10);
+            box-shadow: 0 12px 40px -24px rgba(15,40,80,.35);
             transition: transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s ease, border-color .5s ease;
         }
         .lesson-card-blue:hover {
             transform: translateY(-8px);
-            border-color: rgba(255,255,255,.20);
-            box-shadow: 0 28px 60px -28px rgba(0,0,0,1), 0 0 40px -18px rgba(56,189,248,.30);
+            border-color: rgba(0,102,204,.30);
+            box-shadow: 0 28px 60px -28px rgba(15,40,80,.45), 0 0 40px -18px rgba(0,102,204,.25);
         }
         .lesson-card-blue .lesson-glow {
             opacity: 0;
-            background: radial-gradient(60% 60% at 50% 100%, rgba(56,189,248,.16), transparent 70%);
+            background: radial-gradient(60% 60% at 50% 100%, rgba(0,102,204,.12), transparent 70%);
             transition: opacity .5s ease;
         }
         .lesson-card-blue:hover .lesson-glow { opacity: 1; }
         .lesson-cta {
-            background: linear-gradient(90deg, #0a4f9e, #1f7fd4 60%, #2f9be0);
-            box-shadow: 0 18px 45px -20px rgba(31,127,212,.75);
+            background: linear-gradient(90deg, #0066cc, #1f7fd4 60%, #2f9be0);
+            box-shadow: 0 18px 45px -20px rgba(31,127,212,.85);
             transition: transform .35s ease, box-shadow .35s ease, filter .35s ease;
         }
         .lesson-cta:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 24px 60px -18px rgba(47,155,224,.8); filter: saturate(1.08); }
-
         /* ===================== NAVBAR ===================== */
         /* reliable scroll state (the CSS var fallback above can be empty) */
         #navbar.nav-scrolled {
@@ -511,30 +510,18 @@
                     research-backed lessons, visuals and tools, free for everyone.
                 </p>
 
-                <!-- CTAs -->
-                <div class="reveal d4 flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="#lessons"
-                       class="group inline-flex items-center justify-center gap-2 bg-white text-black px-8 py-4 rounded-full font-medium hover:shadow-[0_0_45px_rgba(255,255,255,.35)] transition-all">
-                        Explore Lessons
-                        <i class="fa fa-arrow-right text-sm transition-transform group-hover:translate-x-1"></i>
-                    </a>
-                    <a href="https://study.singularitylabgroup.org"
-                       class="btn-glass inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-medium text-white transition-all">
-                        Try Study Assistant <span class="pro-badge">Pro</span>
-                    </a>
-                </div>
 
                 <!-- quick stats -->
                 <div class="reveal d5 mt-14 flex flex-wrap justify-center gap-x-12 gap-y-6 text-white/45 text-[0.65rem] md:text-xs uppercase tracking-[0.25em]">
                     <div><span class="block text-2xl md:text-3xl font-semibold text-white tracking-normal">12+</span>Lessons</div>
-                    <div><span class="block text-2xl md:text-3xl font-semibold text-white tracking-normal">15+</span>Members</div>
+                    <div><span class="block text-2xl md:text-3xl font-semibold text-white tracking-normal">43</span>Members</div>
                     <div><span class="block text-2xl md:text-3xl font-semibold text-white tracking-normal">100%</span>Free</div>
                 </div>
             </div>
         </div>
 
         <!-- scroll cue -->
-        <a href="/home/#partners"
+        <a href="/home/#lessons"
            class="reveal d6 absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 text-white/50 hover:text-white transition">
             <span class="mouse"></span>
             <span class="text-[0.6rem] uppercase tracking-[0.3em]">Scroll</span>
@@ -586,90 +573,88 @@
     
         </div>
     </section>
-    <section id="lessons" class="relative py-24 text-white overflow-hidden">
+    <section id="lessons" class="relative py-24 text-singularity-gray overflow-hidden">
         <!-- cool ambience, kept subtle -->
-        <div class="absolute inset-0 lessons-grid-overlay opacity-[0.10] pointer-events-none"></div>
-        <div class="absolute -top-40 -left-24 w-[36rem] h-[36rem] rounded-full bg-blue-500/[0.10] blur-[130px] pointer-events-none"></div>
-        <div class="absolute -bottom-48 -right-24 w-[34rem] h-[34rem] rounded-full bg-sky-400/[0.07] blur-[140px] pointer-events-none"></div>
+        <div class="absolute inset-0 lessons-grid-overlay opacity-[0.35] pointer-events-none"></div>
+        <div class="absolute -top-40 -left-24 w-[36rem] h-[36rem] rounded-full bg-blue-400/[0.16] blur-[130px] pointer-events-none"></div>
+        <div class="absolute -bottom-48 -right-24 w-[34rem] h-[34rem] rounded-full bg-sky-300/[0.18] blur-[140px] pointer-events-none"></div>
         <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
         <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-black pointer-events-none"></div>
-
+    
         <div class="relative container mx-auto px-6">
             <!-- Header -->
             <div class="text-center mb-16">
-                <p class="text-sm uppercase tracking-widest text-sky-300/70 mb-2">
+                <p class="text-sm uppercase tracking-widest text-singularity-blue mb-2">
                     Singularity Lessons
                 </p>
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
-                    Science, <span class="bg-gradient-to-r from-white via-sky-100 to-sky-400 bg-clip-text text-transparent">Reimagined</span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-singularity-gray">
+                    Science, <span class="bg-gradient-to-r from-singularity-blue via-sky-500 to-cyan-400 bg-clip-text text-transparent">Reimagined</span>
                 </h2>
-                <p class="text-white/55 max-w-2xl mx-auto">
+                <p class="text-gray-500 max-w-2xl mx-auto">
                     Self-developed, research-backed, and visually engineered for the next generation of learners.
                 </p>
             </div>
-
+    
             <!-- Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-
+    
                 <!-- Lesson 1 -->
                 <div class="lesson-card-blue group relative rounded-3xl overflow-hidden backdrop-blur-sm">
                     <div class="h-64 overflow-hidden relative">
                         <img src="/Images/L1.png" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#08090c] via-transparent to-transparent"></div>
                         <div class="lesson-glow absolute inset-0 pointer-events-none"></div>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 bg-sky-400/10 border border-sky-300/20 text-sky-200/90 text-xs font-bold rounded-full">FREE</span>
+                            <span class="px-3 py-1 bg-singularity-blue/10 border border-singularity-blue/20 text-singularity-blue text-xs font-bold rounded-full">FREE</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2 text-white">Introduction to Periodic Table</h3>
-                        <p class="text-white/55 text-sm mb-4">Atomic structure, trends, and chemical intuition.</p>
-                        <a href="/lessons/" class="text-sm font-semibold text-sky-300 hover:text-white inline-flex items-center gap-2 transition-colors">
+                        <h3 class="text-xl font-bold mb-2 text-singularity-gray">Introduction to Periodic Table</h3>
+                        <p class="text-gray-500 text-sm mb-4">Atomic structure, trends, and chemical intuition.</p>
+                        <a href="/lessons/" class="text-sm font-semibold text-singularity-blue hover:text-black inline-flex items-center gap-2 transition-colors">
                             Start Learning <span class="transition-transform group-hover:translate-x-1">→</span>
                         </a>
                     </div>
                 </div>
-
+    
                 <!-- Lesson 2 -->
                 <div class="lesson-card-blue group relative rounded-3xl overflow-hidden backdrop-blur-sm">
                     <div class="h-64 overflow-hidden relative">
                         <img src="/Images/L2.png" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#08090c] via-transparent to-transparent"></div>
                         <div class="lesson-glow absolute inset-0 pointer-events-none"></div>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 bg-sky-400/10 border border-sky-300/20 text-sky-200/90 text-xs font-bold rounded-full">FREE</span>
+                            <span class="px-3 py-1 bg-singularity-blue/10 border border-singularity-blue/20 text-singularity-blue text-xs font-bold rounded-full">FREE</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2 text-white">Effective Nuclear Charge</h3>
-                        <p class="text-white/55 text-sm mb-4">Shielding, attraction, and quantum behavior.</p>
-                        <a href="/lessons/" class="text-sm font-semibold text-sky-300 hover:text-white inline-flex items-center gap-2 transition-colors">
+                        <h3 class="text-xl font-bold mb-2 text-singularity-gray">Effective Nuclear Charge</h3>
+                        <p class="text-gray-500 text-sm mb-4">Shielding, attraction, and quantum behavior.</p>
+                        <a href="/lessons/" class="text-sm font-semibold text-singularity-blue hover:text-black inline-flex items-center gap-2 transition-colors">
                             Start Learning <span class="transition-transform group-hover:translate-x-1">→</span>
                         </a>
                     </div>
                 </div>
-
+    
                 <!-- Easter Egg Lesson -->
-                <div class="lesson-card-blue group relative rounded-3xl overflow-hidden backdrop-blur-sm !bg-gradient-to-br !from-[#14161c] !to-[#08090c]">
+                <div class="lesson-card-blue group relative rounded-3xl overflow-hidden backdrop-blur-sm !bg-gradient-to-br !from-[#eef2f9] !to-[#e2e8f2]">
                     <div class="h-64 flex items-center justify-center relative">
-                        <i class="fas fa-ghost text-white/[0.08] text-6xl group-hover:scale-110 transition"></i>
+                        <i class="fas fa-ghost text-singularity-blue/20 text-6xl group-hover:scale-110 transition"></i>
                         <div class="lesson-glow absolute inset-0 pointer-events-none"></div>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 bg-white/[0.06] border border-white/10 text-white/55 text-xs font-bold rounded-full">COMING SOON</span>
+                            <span class="px-3 py-1 bg-singularity-gray/5 border border-singularity-gray/10 text-gray-500 text-xs font-bold rounded-full">COMING SOON</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2 text-white">There Is Nothing Here</h3>
-                        <p class="text-white/55 text-sm mb-4">We got distracted by quantum mechanics.</p>
+                        <h3 class="text-xl font-bold mb-2 text-singularity-gray">There Is Nothing Here</h3>
+                        <p class="text-gray-500 text-sm mb-4">We got distracted by quantum mechanics.</p>
                         <a href="https://creations.mtdv.me/articles/there-is-nothing-here"
                            target="_blank"
-                           class="text-sm font-semibold text-sky-300 hover:text-white inline-flex items-center gap-2 transition-colors">
+                           class="text-sm font-semibold text-singularity-blue hover:text-black inline-flex items-center gap-2 transition-colors">
                             Peek into the void <span class="transition-transform group-hover:translate-x-1">→</span>
                         </a>
                     </div>
                 </div>
             </div>
-
+    
             <!-- CTA -->
             <div class="text-center mt-20">
                 <a href="/lessons/"
