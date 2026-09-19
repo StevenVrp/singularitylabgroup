@@ -155,6 +155,214 @@
                 background-attachment: fixed;
             }
         }
+        /* ===================== HERO (new) ===================== */
+        #hero {
+            --mx: 0;
+            --my: 0;
+        }
+
+        /* slow Ken-Burns drift on the base photo */
+        .hero-media {
+            animation: heroPan 28s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+        @keyframes heroPan {
+            from { transform: scale(1.05) translate3d(0, 0, 0); }
+            to   { transform: scale(1.20) translate3d(-2.5%, -2%, 0); }
+        }
+
+        /* aurora light blobs */
+        .aurora {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            mix-blend-mode: screen;
+            will-change: transform, opacity;
+        }
+        .aurora-1 {
+            width: 48vw; height: 48vw; left: -10vw; top: -12vh;
+            background: radial-gradient(circle at 35% 35%, #0066cc 0%, rgba(0,102,204,0) 65%);
+            opacity: .65;
+            animation: float1 19s ease-in-out infinite alternate;
+        }
+        .aurora-2 {
+            width: 42vw; height: 42vw; right: -8vw; top: 2vh;
+            background: radial-gradient(circle at 60% 40%, #48dbfb 0%, rgba(72,219,251,0) 65%);
+            opacity: .45;
+            animation: float2 23s ease-in-out infinite alternate;
+        }
+        .aurora-3 {
+            width: 56vw; height: 56vw; left: 20vw; bottom: -26vh;
+            background: radial-gradient(circle at 50% 50%, #7c3aed 0%, rgba(124,58,237,0) 62%);
+            opacity: .38;
+            animation: float3 27s ease-in-out infinite alternate;
+        }
+        @keyframes float1 { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(7vw,5vh,0) scale(1.18); } }
+        @keyframes float2 { from { transform: translate3d(0,0,0) scale(1.1); } to { transform: translate3d(-8vw,7vh,0) scale(.92); } }
+        @keyframes float3 { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-6vw,-6vh,0) scale(1.15); } }
+
+        /* faint technical grid */
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(140,200,255,.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(140,200,255,.08) 1px, transparent 1px);
+            background-size: 64px 64px;
+            -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 35%, transparent 78%);
+                    mask-image: radial-gradient(ellipse at 50% 40%, #000 35%, transparent 78%);
+        }
+
+        /* film grain */
+        .hero-noise {
+            opacity: .18;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* entrance reveals */
+        .reveal { opacity: 0; transform: translateY(28px); animation: revealUp .95s cubic-bezier(.16,1,.3,1) forwards; }
+        @keyframes revealUp { to { opacity: 1; transform: none; } }
+        .d1 { animation-delay: .10s; } .d2 { animation-delay: .25s; } .d3 { animation-delay: .40s; }
+        .d4 { animation-delay: .55s; } .d5 { animation-delay: .70s; } .d6 { animation-delay: .85s; }
+        .d7 { animation-delay: 1.00s; }
+
+        /* shimmering gradient headline */
+        .hero-title-gradient {
+            background: linear-gradient(100deg, #ffffff 0%, #a9dcff 30%, #0066cc 48%, #ffffff 66%, #7fe7ff 100%);
+            background-size: 220% 100%;
+            -webkit-background-clip: text;  background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+            animation: shimmer 8s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: 220% 0; } }
+
+        /* glass CTA */
+        .btn-glass {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.28);
+            backdrop-filter: blur(12px);
+        }
+        .btn-glass:hover { background: rgba(255,255,255,.16); box-shadow: 0 0 40px rgba(120,200,255,.35); }
+
+        /* rotating word */
+        .rotator { transition: opacity .35s ease, transform .35s ease; }
+        .rotator.swap { opacity: 0; transform: translateY(10px); }
+
+        /* scroll cue */
+        .mouse {
+            width: 26px; height: 42px; border: 2px solid rgba(255,255,255,.55);
+            border-radius: 14px; position: relative;
+        }
+        .mouse::after {
+            content: ''; position: absolute; left: 50%; top: 8px;
+            width: 3px; height: 8px; border-radius: 2px; background: #fff;
+            transform: translateX(-50%);
+            animation: wheel 1.9s ease-in-out infinite;
+        }
+        @keyframes wheel {
+            0%   { opacity: 0; transform: translate(-50%, 0); }
+            30%  { opacity: 1; }
+            70%  { opacity: 0; transform: translate(-50%, 13px); }
+            100% { opacity: 0; transform: translate(-50%, 13px); }
+        }
+
+        /* mouse parallax layers */
+        .hero-parallax      { transform: translate3d(calc(var(--mx) * -10px), calc(var(--my) * -10px), 0); transition: transform .6s cubic-bezier(.16,1,.3,1); }
+        .hero-parallax-slow { transform: translate3d(calc(var(--mx) *  26px), calc(var(--my) *  26px), 0); transition: transform .9s cubic-bezier(.16,1,.3,1); }
+
+        /* ===================== LESSONS (dark, cool-toned) ===================== */
+        #lessons {
+            background:
+                radial-gradient(120% 80% at 50% -10%, #141b2b 0%, #0a0c12 52%, #07080b 100%),
+                #07080b;
+        }
+        .lessons-grid-overlay {
+            background-image:
+                linear-gradient(rgba(180,205,240,.22) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180,205,240,.22) 1px, transparent 1px);
+            background-size: 56px 56px;
+            -webkit-mask-image: radial-gradient(ellipse at 50% 25%, #000 10%, transparent 72%);
+                    mask-image: radial-gradient(ellipse at 50% 25%, #000 10%, transparent 72%);
+        }
+        .lesson-card-blue {
+            background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
+            border: 1px solid rgba(255,255,255,.09);
+            box-shadow: 0 12px 40px -24px rgba(0,0,0,.95);
+            transition: transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s ease, border-color .5s ease;
+        }
+        .lesson-card-blue:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,.20);
+            box-shadow: 0 28px 60px -28px rgba(0,0,0,1), 0 0 40px -18px rgba(56,189,248,.30);
+        }
+        .lesson-card-blue .lesson-glow {
+            opacity: 0;
+            background: radial-gradient(60% 60% at 50% 100%, rgba(56,189,248,.16), transparent 70%);
+            transition: opacity .5s ease;
+        }
+        .lesson-card-blue:hover .lesson-glow { opacity: 1; }
+        .lesson-cta {
+            background: linear-gradient(90deg, #0a4f9e, #1f7fd4 60%, #2f9be0);
+            box-shadow: 0 18px 45px -20px rgba(31,127,212,.75);
+            transition: transform .35s ease, box-shadow .35s ease, filter .35s ease;
+        }
+        .lesson-cta:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 24px 60px -18px rgba(47,155,224,.8); filter: saturate(1.08); }
+
+        /* ===================== NAVBAR ===================== */
+        /* reliable scroll state (the CSS var fallback above can be empty) */
+        #navbar.nav-scrolled {
+            padding-top: .55rem;
+            padding-bottom: .55rem;
+            background-color: rgba(0,0,0,.78);
+            box-shadow: 0 1px 0 rgba(255,255,255,.08), 0 10px 30px -18px rgba(0,0,0,.9);
+        }
+        #navbar.nav-scrolled .nav-scrim { opacity: 0; }
+        .nav-logo img { transition: height .3s ease, transform .3s ease; }
+        #navbar.nav-scrolled .nav-logo img { height: 2rem; }
+
+        /* animated underline */
+        .nav-underline { position: relative; }
+        .nav-underline::after {
+            content: '';
+            position: absolute; left: 0; right: 0; bottom: -6px; height: 1.5px;
+            background: currentColor; opacity: .85;
+            transform: scaleX(0); transform-origin: left center;
+            transition: transform .35s cubic-bezier(.16,1,.3,1);
+        }
+        .nav-underline:hover::after { transform: scaleX(1); }
+        #mobile-menu .nav-underline::after { bottom: 0; }
+
+        /* Pro pill in the desktop bar */
+        .nav-pill {
+            display: inline-flex; align-items: center;
+            padding: .30rem .95rem;
+            border: 1px solid rgba(255,255,255,.35);
+            border-radius: 9999px;
+            background: rgba(255,255,255,.07);
+            backdrop-filter: blur(8px);
+            transition: background .3s ease, box-shadow .3s ease, border-color .3s ease;
+        }
+        .nav-pill:hover {
+            background: rgba(255,255,255,.17);
+            border-color: rgba(255,255,255,.65);
+            box-shadow: 0 0 26px -6px rgba(140,210,255,.55);
+        }
+
+        /* mobile dropdown */
+        #mobile-menu { border-top: 1px solid rgba(255,255,255,.10); }
+        #mobile-menu:not(.hidden) { animation: menuIn .22s ease-out; }
+        @keyframes menuIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        /* respect reduced-motion users */
+        @media (prefers-reduced-motion: reduce) {
+            .hero-media, .aurora, .hero-title-gradient, .mouse::after, .reveal,
+            .animate-scroll, .animate-ping { animation: none !important; }
+            .reveal { opacity: 1; transform: none; }
+            .hero-parallax, .hero-parallax-slow { transform: none; }
+        }
+
     </style>
 </head>
 
@@ -212,10 +420,12 @@
     </script>
     <!-- 导航栏 -->
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4">
+        <!-- legibility scrim over the hero -->
+        <div class="nav-scrim pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/35 to-transparent transition-opacity duration-300"></div>
         <div class="container mx-auto px-6 flex items-center justify-between">
             <!-- Logo -->
             <div class="flex items-center">
-                <a href="/home/" class="text-2xl font-bold">
+                <a href="/home/" class="nav-logo text-2xl font-bold">
                     <!-- 白色Logo (默认显示) - 替换为您的实际JPG Logo -->
                     <img src="/Images/Logo1.png" alt="Singularity Lab Logo" class="logo-white h-10">
                     <!-- 黑色Logo (滚动后显示) - 替换为您的实际JPG Logo -->
@@ -224,84 +434,110 @@
             </div>
             
             <!-- 桌面端导航菜单 -->
-            <div class="hidden md:flex space-x-8">
-                <a href="/lessons/" class="nav-link text-white hover:text-gray-300 transition-colors">Lessons</a>
-                <a href="https://study.singularitylabgroup.org" class="nav-link text-white hover:text-gray-300 transition-colors">Study Assistant <span class="pro-badge">Pro</span></a>
-                <a href="/community/" class="nav-link text-white hover:text-gray-300 transition-colors">Community</a>
-                <a href="#members" class="nav-link text-white hover:text-gray-300 transition-colors">Meet the Team</a>
-                <a href="#join" class="nav-link text-white hover:text-gray-300 transition-colors">Join Us</a>
-                <a href="/legal/" class="nav-link text-white hover:text-gray-300 transition-colors">Legal</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/lessons/" class="nav-link nav-underline text-white hover:text-white transition-colors">Lessons</a>
+                <a href="https://study.singularitylabgroup.org" class="nav-pill text-white">Study Assistant <span class="pro-badge">Pro</span></a>
+                <a href="/community/" class="nav-link nav-underline text-white hover:text-white transition-colors">Community</a>
+                <a href="#members" class="nav-link nav-underline text-white hover:text-white transition-colors">Meet the Team</a>
+                <a href="#join" class="nav-link nav-underline text-white hover:text-white transition-colors">Join Us</a>
+                <a href="/legal/" class="nav-link nav-underline text-white hover:text-white transition-colors">Legal</a>
             </div>
             
             <!-- 用户图标 -->
             <div class="flex items-center space-x-6">
-                <a href="/login/" id="loginIcon" class="nav-link text-white hover:text-gray-300 transition-colors">
+                <a href="/login/" id="loginIcon" class="nav-link text-white hover:text-sky-300 transition-colors">
                     <i class="fa fa-user"></i>
                 </a>
                 <!-- 移动端菜单按钮 -->
-                <button id="mobile-menu-button" class="md:hidden nav-link text-white hover:text-gray-300 transition-colors">
+                <button id="mobile-menu-button" class="md:hidden nav-link text-white hover:text-sky-300 transition-colors">
                     <i class="fa fa-bars"></i>
                 </button>
             </div>
         </div>
         
         <!-- 移动端导航菜单 -->
-        <div id="mobile-menu" class="md:hidden hidden bg-white absolute top-full left-0 w-full shadow-lg">
+        <div id="mobile-menu" class="md:hidden hidden bg-black/90 backdrop-blur-xl absolute top-full left-0 w-full shadow-2xl">
             <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
-                <a href="/lessons/" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Lessons</a>
-                <a href="https://study.singularitylabgroup.org" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Study Assistant <span class="pro-badge">Pro</span></a>
-                <a href="/community/" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Community</a>
-                <a href="#members" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Meet the Team</a>
-                <a href="#join" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Join Us</a>
-                <a href="/legal/" class="text-singularity-gray hover:text-singularity-blue transition-colors py-2">Legal</a>
+                <a href="/lessons/" class="nav-underline text-white/85 hover:text-white transition-colors py-2">Lessons</a>
+                <a href="https://study.singularitylabgroup.org" class="nav-underline text-white/85 hover:text-white transition-colors py-2">Study Assistant <span class="pro-badge">Pro</span></a>
+                <a href="/community/" class="nav-underline text-white/85 hover:text-white transition-colors py-2">Community</a>
+                <a href="#members" class="nav-underline text-white/85 hover:text-white transition-colors py-2">Meet the Team</a>
+                <a href="#join" class="nav-underline text-white/85 hover:text-white transition-colors py-2">Join Us</a>
+                <a href="/legal/" class="nav-underline text-white/85 hover:text-white transition-colors py-2">Legal</a>
             </div>
         </div>
     </nav>
 
-    <section class="relative h-screen flex items-center justify-center overflow-hidden">
-        <!-- 视频背景 -->
-        <!-- <iframe 
-            class="absolute top-0 left-0 w-full h-full"
-            src="//player.bilibili.com/player.html?isOutside=true&aid=116921508829367&bvid=BV12kNY6nEjM&cid=39958874803&p=1"
-            scrolling="no"
-            border="0"
-            frameborder="no"
-            framespacing="0"
-            allowfullscreen="true">
-        </iframe> -->
-        <div class="absolute inset-0 -z-10">
-            <img 
-                src="/Images/Background.jpg" 
-                alt="Singularity Lab"
-                class="w-full h-full object-cover"
-            >
-        </div>
-    
-        <!-- 暗色遮罩 -->
-        <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-black"></div>
-    
-        <!-- 英雄内容 -->
-        <div class="relative z-10 text-left text-white px-6">
-            <p class="text-[clamp(2.2rem,5.5vw,3.5rem)] mb-10 max-w-3xl mx-auto font-light tracking-widest uppercase flex items-center justify-center gap-6">
-                <span>Endless</span>
-                <span class="font-bold">Discovery</span>
-            </p>
-        </div>
-        <!-- <div>
+    <section id="hero" class="relative h-screen min-h-[640px] flex items-center justify-center overflow-hidden">
+        <!-- 0. black base (kept as its own layer so -z-10 art stays visible) -->
+        <div class="absolute inset-0 -z-20 bg-black"></div>
 
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#lessons" class="bg-white text-singularity-dark px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors">
-                    Explore Lessons
-                </a>
-                <a href="#study-assistant" class="bg-transparent border border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white/10 transition-colors">
-                    Try Study Assistant Pro
-                </a>
+        <!-- 1. base photo, slow Ken-Burns drift -->
+        <div class="absolute inset-0 -z-10 overflow-hidden">
+            <img src="/Images/Background.jpg" alt="Singularity Lab"
+                 class="hero-media w-full h-full object-cover">
+        </div>
+
+        <!-- 2. aurora light blobs -->
+        <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none hero-parallax-slow">
+            <div class="aurora aurora-1"></div>
+            <div class="aurora aurora-2"></div>
+            <div class="aurora aurora-3"></div>
+        </div>
+
+        <!-- 3. faint technical grid -->
+        <div class="absolute inset-0 -z-10 hero-grid pointer-events-none"></div>
+
+        <!-- 4. drifting particle field -->
+        <canvas id="hero-particles" class="absolute inset-0 -z-10 pointer-events-none"></canvas>
+
+        <!-- 5. grain + vignette + blend into the next section -->
+        <div class="absolute inset-0 hero-noise pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/35 to-black/90 pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-black pointer-events-none"></div>
+
+        <!-- Hero content -->
+        <div class="relative z-10 w-full px-6 hero-parallax">
+            <div class="max-w-4xl mx-auto text-center text-white">
+                <!-- headline (original style, kept) -->
+                <p class="text-[clamp(2.2rem,5.5vw,3.5rem)] mb-10 max-w-3xl mx-auto font-light tracking-widest uppercase flex items-center justify-center gap-6">
+                    <span class="reveal d1">Endless</span>
+                    <span class="reveal d2 font-bold">Discovery</span>
+                </p>
+
+                <!-- tagline with rotating word -->
+                <p class="reveal d3 text-base md:text-xl text-white/70 max-w-2xl mx-auto mb-10">
+                    We make <span id="rotating-word" class="rotator font-semibold text-cyan-200">chemistry</span> click —
+                    research-backed lessons, visuals and tools, free for everyone.
+                </p>
+
+                <!-- CTAs -->
+                <div class="reveal d4 flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#lessons"
+                       class="group inline-flex items-center justify-center gap-2 bg-white text-black px-8 py-4 rounded-full font-medium hover:shadow-[0_0_45px_rgba(255,255,255,.35)] transition-all">
+                        Explore Lessons
+                        <i class="fa fa-arrow-right text-sm transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                    <a href="https://study.singularitylabgroup.org"
+                       class="btn-glass inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-medium text-white transition-all">
+                        Try Study Assistant <span class="pro-badge">Pro</span>
+                    </a>
+                </div>
+
+                <!-- quick stats -->
+                <div class="reveal d5 mt-14 flex flex-wrap justify-center gap-x-12 gap-y-6 text-white/45 text-[0.65rem] md:text-xs uppercase tracking-[0.25em]">
+                    <div><span class="block text-2xl md:text-3xl font-semibold text-white tracking-normal">12+</span>Lessons</div>
+                    <div><span class="block text-2xl md:text-3xl font-semibold text-white tracking-normal">15+</span>Members</div>
+                    <div><span class="block text-2xl md:text-3xl font-semibold text-white tracking-normal">100%</span>Free</div>
+                </div>
             </div>
-        </div> -->
-        
+        </div>
+
+        <!-- scroll cue -->
         <a href="/home/#partners"
-           class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white">
-            <i class="fa fa-chevron-down text-2xl"></i>
+           class="reveal d6 absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 text-white/50 hover:text-white transition">
+            <span class="mouse"></span>
+            <span class="text-[0.6rem] uppercase tracking-[0.3em]">Scroll</span>
         </a>
     </section>
 
@@ -350,82 +586,94 @@
     
         </div>
     </section>
-    <section id="lessons" class="py-24 bg-white">
-        <div class="container mx-auto px-6">
+    <section id="lessons" class="relative py-24 text-white overflow-hidden">
+        <!-- cool ambience, kept subtle -->
+        <div class="absolute inset-0 lessons-grid-overlay opacity-[0.10] pointer-events-none"></div>
+        <div class="absolute -top-40 -left-24 w-[36rem] h-[36rem] rounded-full bg-blue-500/[0.10] blur-[130px] pointer-events-none"></div>
+        <div class="absolute -bottom-48 -right-24 w-[34rem] h-[34rem] rounded-full bg-sky-400/[0.07] blur-[140px] pointer-events-none"></div>
+        <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-black pointer-events-none"></div>
+
+        <div class="relative container mx-auto px-6">
             <!-- Header -->
             <div class="text-center mb-16">
-                <p class="text-sm uppercase tracking-widest text-singularity-blue mb-2">
+                <p class="text-sm uppercase tracking-widest text-sky-300/70 mb-2">
                     Singularity Lessons
                 </p>
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">
-                    Science, Reimagined
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
+                    Science, <span class="bg-gradient-to-r from-white via-sky-100 to-sky-400 bg-clip-text text-transparent">Reimagined</span>
                 </h2>
-                <p class="text-gray-500 max-w-2xl mx-auto">
+                <p class="text-white/55 max-w-2xl mx-auto">
                     Self-developed, research-backed, and visually engineered for the next generation of learners.
                 </p>
             </div>
-    
+
             <!-- Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                
+
                 <!-- Lesson 1 -->
-                <div class="group relative bg-gray-50 rounded-3xl overflow-hidden shadow hover:shadow-2xl transition duration-500">
-                    <div class="h-64 overflow-hidden">
+                <div class="lesson-card-blue group relative rounded-3xl overflow-hidden backdrop-blur-sm">
+                    <div class="h-64 overflow-hidden relative">
                         <img src="/Images/L1.png" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#08090c] via-transparent to-transparent"></div>
+                        <div class="lesson-glow absolute inset-0 pointer-events-none"></div>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">FREE</span>
+                            <span class="px-3 py-1 bg-sky-400/10 border border-sky-300/20 text-sky-200/90 text-xs font-bold rounded-full">FREE</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">Introduction to Periodic Table</h3>
-                        <p class="text-gray-500 text-sm mb-4">Atomic structure, trends, and chemical intuition.</p>
-                        <a href="/lessons/" class="text-sm font-semibold text-singularity-blue hover:underline">
-                            Start Learning →
+                        <h3 class="text-xl font-bold mb-2 text-white">Introduction to Periodic Table</h3>
+                        <p class="text-white/55 text-sm mb-4">Atomic structure, trends, and chemical intuition.</p>
+                        <a href="/lessons/" class="text-sm font-semibold text-sky-300 hover:text-white inline-flex items-center gap-2 transition-colors">
+                            Start Learning <span class="transition-transform group-hover:translate-x-1">→</span>
                         </a>
                     </div>
                 </div>
-    
+
                 <!-- Lesson 2 -->
-                <div class="group relative bg-gray-50 rounded-3xl overflow-hidden shadow hover:shadow-2xl transition duration-500">
-                    <div class="h-64 overflow-hidden">
+                <div class="lesson-card-blue group relative rounded-3xl overflow-hidden backdrop-blur-sm">
+                    <div class="h-64 overflow-hidden relative">
                         <img src="/Images/L2.png" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#08090c] via-transparent to-transparent"></div>
+                        <div class="lesson-glow absolute inset-0 pointer-events-none"></div>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">FREE</span>
+                            <span class="px-3 py-1 bg-sky-400/10 border border-sky-300/20 text-sky-200/90 text-xs font-bold rounded-full">FREE</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">Effective Nuclear Charge</h3>
-                        <p class="text-gray-500 text-sm mb-4">Shielding, attraction, and quantum behavior.</p>
-                        <a href="/lessons/" class="text-sm font-semibold text-singularity-blue hover:underline">
-                            Start Learning →
+                        <h3 class="text-xl font-bold mb-2 text-white">Effective Nuclear Charge</h3>
+                        <p class="text-white/55 text-sm mb-4">Shielding, attraction, and quantum behavior.</p>
+                        <a href="/lessons/" class="text-sm font-semibold text-sky-300 hover:text-white inline-flex items-center gap-2 transition-colors">
+                            Start Learning <span class="transition-transform group-hover:translate-x-1">→</span>
                         </a>
                     </div>
                 </div>
-    
+
                 <!-- Easter Egg Lesson -->
-                <div class="group relative bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden shadow-xl">
-                    <div class="h-64 flex items-center justify-center">
-                        <i class="fas fa-ghost text-white/20 text-6xl group-hover:scale-110 transition"></i>
+                <div class="lesson-card-blue group relative rounded-3xl overflow-hidden backdrop-blur-sm !bg-gradient-to-br !from-[#14161c] !to-[#08090c]">
+                    <div class="h-64 flex items-center justify-center relative">
+                        <i class="fas fa-ghost text-white/[0.08] text-6xl group-hover:scale-110 transition"></i>
+                        <div class="lesson-glow absolute inset-0 pointer-events-none"></div>
                     </div>
-                    <div class="p-6 text-white">
+                    <div class="p-6">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="px-3 py-1 bg-white/10 text-white/70 text-xs font-bold rounded-full">COMING SOON</span>
+                            <span class="px-3 py-1 bg-white/[0.06] border border-white/10 text-white/55 text-xs font-bold rounded-full">COMING SOON</span>
                         </div>
-                        <h3 class="text-xl font-bold mb-2">There Is Nothing Here</h3>
-                        <p class="text-white/60 text-sm mb-4">We got distracted by quantum mechanics.</p>
+                        <h3 class="text-xl font-bold mb-2 text-white">There Is Nothing Here</h3>
+                        <p class="text-white/55 text-sm mb-4">We got distracted by quantum mechanics.</p>
                         <a href="https://creations.mtdv.me/articles/there-is-nothing-here"
                            target="_blank"
-                           class="text-sm font-semibold text-white/80 hover:text-white">
-                            Peek into the void →
+                           class="text-sm font-semibold text-sky-300 hover:text-white inline-flex items-center gap-2 transition-colors">
+                            Peek into the void <span class="transition-transform group-hover:translate-x-1">→</span>
                         </a>
                     </div>
                 </div>
             </div>
-    
+
             <!-- CTA -->
             <div class="text-center mt-20">
                 <a href="/lessons/"
-                   class="inline-flex items-center gap-2 px-8 py-4 bg-singularity-dark text-white rounded-full font-medium hover:bg-singularity-blue transition">
+                   class="lesson-cta inline-flex items-center gap-2 px-8 py-4 text-white rounded-full font-medium">
                     Browse Full Curriculum
                     <i class="fa fa-arrow-right"></i>
                 </a>
@@ -907,6 +1155,110 @@
             </div>
         </div>
     </footer>
+
+    <!-- Hero: particle field + rotating word + mouse parallax -->
+    <script>
+    (function () {
+        const hero = document.getElementById('hero');
+        const canvas = document.getElementById('hero-particles');
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ---------- drifting particle field ---------- */
+        if (canvas && hero) {
+            const ctx = canvas.getContext('2d');
+            let w = 0, h = 0, dpr = 1, dots = [], raf = null, visible = true;
+
+            function resize() {
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                w = hero.clientWidth; h = hero.clientHeight;
+                canvas.width = w * dpr; canvas.height = h * dpr;
+                canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+
+            function seed() {
+                resize();
+                const count = Math.max(28, Math.min(90, Math.round((w * h) / 16000)));
+                dots = Array.from({ length: count }, () => ({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.22,
+                    vy: (Math.random() - 0.5) * 0.22,
+                    r: Math.random() * 1.7 + 0.5,
+                    a: Math.random() * 0.45 + 0.2
+                }));
+            }
+
+            function frame() {
+                ctx.clearRect(0, 0, w, h);
+                for (let i = 0; i < dots.length; i++) {
+                    const d = dots[i];
+                    d.x += d.vx; d.y += d.vy;
+                    if (d.x < -20) d.x = w + 20; if (d.x > w + 20) d.x = -20;
+                    if (d.y < -20) d.y = h + 20; if (d.y > h + 20) d.y = -20;
+
+                    for (let j = i + 1; j < dots.length; j++) {
+                        const e = dots[j];
+                        const dx = d.x - e.x, dy = d.y - e.y;
+                        const dist = Math.hypot(dx, dy);
+                        if (dist < 130) {
+                            ctx.strokeStyle = 'rgba(150,210,255,' + (0.16 * (1 - dist / 130)).toFixed(3) + ')';
+                            ctx.lineWidth = 1;
+                            ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(e.x, e.y); ctx.stroke();
+                        }
+                    }
+                    ctx.fillStyle = 'rgba(190,230,255,' + d.a.toFixed(2) + ')';
+                    ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2); ctx.fill();
+                }
+                raf = requestAnimationFrame(frame);
+            }
+
+            function start() { if (!raf && !reduce && visible) raf = requestAnimationFrame(frame); }
+            function stop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+            seed();
+            if (reduce) { frame(); stop(); } else { start(); }
+
+            window.addEventListener('resize', () => { seed(); if (reduce) { frame(); stop(); } });
+            document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function (entries) {
+                    visible = entries[0].isIntersecting;
+                    visible ? start() : stop();
+                }, { threshold: 0 }).observe(hero);
+            }
+        }
+
+        /* ---------- rotating word ---------- */
+        const word = document.getElementById('rotating-word');
+        if (word && !reduce) {
+            const words = ['chemistry', 'physics', 'quantum mechanics', 'thermodynamics', 'the periodic table'];
+            let i = 0;
+            setInterval(function () {
+                word.classList.add('swap');
+                setTimeout(function () {
+                    i = (i + 1) % words.length;
+                    word.textContent = words[i];
+                    word.classList.remove('swap');
+                }, 350);
+            }, 2600);
+        }
+
+        /* ---------- mouse parallax ---------- */
+        if (hero && window.matchMedia('(hover: hover)').matches && !reduce) {
+            hero.addEventListener('mousemove', function (e) {
+                const r = hero.getBoundingClientRect();
+                hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+                hero.style.setProperty('--my', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+            });
+            hero.addEventListener('mouseleave', function () {
+                hero.style.setProperty('--mx', 0);
+                hero.style.setProperty('--my', 0);
+            });
+        }
+    })();
+    </script>
 
     <!-- JavaScript -->
     <script>
