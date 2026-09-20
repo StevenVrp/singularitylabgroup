@@ -41,141 +41,245 @@
                 font-weight: 700;
             }
         }
-        
+
         /* 全局样式（完全复制你的原始样式） */
         body { font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif; scroll-behavior: smooth; }
-        
-        /* 导航栏样式（完全复制你的原始样式） */
-        .nav-scrolled { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        /* 导航栏样式（原始逻辑保留，视觉升级） */
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 0 rgba(0,0,0,.05), 0 10px 30px -18px rgba(0,0,0,.35);
+        }
         .nav-scrolled .nav-link { color: #1a1a1a; }
         .nav-scrolled .logo-white { display: none; }
         .nav-scrolled .logo-black { display: block; }
-        
-        .avatar-upload { 
-            position: relative;
-            display: inline-block;
+
+        #navbar { transition: padding .3s ease, background-color .3s ease, box-shadow .3s ease; }
+        #navbar.nav-scrolled { padding-top: .55rem; padding-bottom: .55rem; }
+        .nav-logo img { transition: height .3s ease; }
+        #navbar.nav-scrolled .nav-logo img { height: 2rem; }
+
+        /* animated underline */
+        .nav-underline { position: relative; }
+        .nav-underline::after {
+            content: '';
+            position: absolute; left: 0; right: 0; bottom: -6px; height: 1.5px;
+            background: currentColor; opacity: .8;
+            transform: scaleX(0); transform-origin: left center;
+            transition: transform .35s cubic-bezier(.16,1,.3,1);
         }
-        
+        .nav-underline:hover::after { transform: scaleX(1); }
+        #mobile-menu .nav-underline::after { bottom: 0; }
+
+        /* Pro pill */
+        .nav-pill {
+            display: inline-flex; align-items: center;
+            padding: .30rem .95rem;
+            border: 1px solid rgba(0,0,0,.18);
+            border-radius: 9999px;
+            background: rgba(0,102,204,.06);
+            transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
+        }
+        .nav-pill:hover {
+            background: rgba(0,102,204,.12);
+            border-color: rgba(0,102,204,.45);
+            box-shadow: 0 0 24px -8px rgba(0,102,204,.55);
+        }
+
+        /* mobile dropdown */
+        #mobile-menu { border-top: 1px solid rgba(0,0,0,.06); }
+        #mobile-menu:not(.hidden) { animation: menuIn .22s ease-out; }
+        @keyframes menuIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        /* 头像 */
+        .avatar-upload { position: relative; display: inline-block; }
+        .avatar-ring {
+            padding: 4px;
+            background: linear-gradient(135deg, #ffffff, #cfe4fb 40%, #0066cc);
+            box-shadow: 0 14px 35px -16px rgba(0,102,204,.65);
+            transition: box-shadow .35s ease, transform .35s ease;
+        }
+        .avatar-ring:hover { transform: translateY(-2px); box-shadow: 0 20px 45px -16px rgba(0,102,204,.8); }
         .avatar-edit {
             position: absolute;
-            right: 0;
-            bottom: 0;
+            right: 6px;
+            bottom: 6px;
             background: white;
             border-radius: 9999px;
-            padding: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            padding: 9px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.22);
             cursor: pointer;
-            transition: background-color 0.25s ease;
+            transition: background-color 0.25s ease, transform 0.25s ease;
         }
-        
-        .avatar-edit:hover {
-            background-color: #f3f4f6;
-        }
+        .avatar-edit:hover { background-color: #eef4fd; transform: scale(1.06); }
+
         /* 表单输入样式 */
-        .form-input { width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 12px; font-size: 16px; transition: all 0.3s ease; }
-        .form-input:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1); }
-        
+        .form-input {
+            width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5;
+            border-radius: 12px; font-size: 16px;
+            background: #fbfcfe;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none; border-color: #0066cc; background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12);
+        }
+        .field-label { display:block; font-size: .8rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #6b7280; margin-bottom: .5rem; }
+
         .save-btn {
-            background: linear-gradient(90deg, #0066cc, #004499);
+            background: linear-gradient(90deg, #0066cc, #1f7fd4 60%, #2f9be0);
             color: white;
             padding: 14px 32px;
             border-radius: 12px;
             font-weight: 600;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+            transition: transform .3s ease, box-shadow 0.3s ease, filter .3s ease;
             border: none;
             cursor: pointer;
         }
-        
-        .save-btn:hover {
-            background: linear-gradient(90deg, #0052a3, #003b80);
-            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.2);
+        .save-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px -12px rgba(31,127,212,.75);
+            filter: saturate(1.08);
         }
+        .save-btn:disabled { opacity: .7; cursor: default; }
+
         /* 加载动画 */
         .loading-spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid #ffffff; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== page ambience (same language as the home page) ===== */
+        .page-bg {
+            background:
+                radial-gradient(120% 80% at 50% -10%, #ffffff 0%, #eef3fb 55%, #e6ecf7 100%),
+                #eef3fb;
+        }
+        .page-grid {
+            background-image:
+                linear-gradient(rgba(0,102,204,.10) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,102,204,.10) 1px, transparent 1px);
+            background-size: 56px 56px;
+            -webkit-mask-image: radial-gradient(ellipse at 50% 20%, #000 10%, transparent 75%);
+                    mask-image: radial-gradient(ellipse at 50% 20%, #000 10%, transparent 75%);
+        }
+        .glass-card {
+            background: rgba(255,255,255,.82);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(15,40,80,.07);
+            box-shadow: 0 30px 70px -40px rgba(15,40,80,.55), 0 2px 8px rgba(15,40,80,.05);
+        }
+        .divider-h { height: 1px; background: linear-gradient(90deg, transparent, rgba(15,40,80,.14), transparent); }
+
+        /* entrance reveals */
+        .reveal { opacity: 0; transform: translateY(26px); animation: revealUp .9s cubic-bezier(.16,1,.3,1) forwards; }
+        @keyframes revealUp { to { opacity: 1; transform: none; } }
+        .d1 { animation-delay: .06s; } .d2 { animation-delay: .18s; } .d3 { animation-delay: .30s; }
+        .d4 { animation-delay: .42s; } .d5 { animation-delay: .54s; } .d6 { animation-delay: .66s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { animation: none !important; opacity: 1; transform: none; }
+            #mobile-menu:not(.hidden) { animation: none; }
+        }
     </style>
 </head>
 <body class="bg-white text-singularity-gray">
-    <!-- 导航栏（完全复制你的原始顶栏） -->
-    <!-- 修改 welcome.html 的导航栏样式 -->
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 bg-white shadow-sm">
+    <!-- 导航栏（结构与 ID 完全保留，仅视觉升级） -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-4 bg-white/80 backdrop-blur-xl shadow-sm">
         <div class="container mx-auto px-6 flex items-center justify-between">
             <!-- Logo -->
             <div class="flex items-center">
-                <a href="/" class="text-2xl font-bold">
+                <a href="/" class="nav-logo text-2xl font-bold">
                     <img src="/Images/Logo2.png" alt="Singularity Lab Logo" class="h-10">
                 </a>
             </div>
-            
-            
+
             <!-- 桌面端导航菜单 -->
-            <div class="hidden md:flex space-x-8">
-                <a href="/lessons/" class="nav-link text-singularity-dark hover:text-gray-300 transition-colors">Lessons</a>
-                <a href="https://study.singularitylabgroup.org" class="nav-link text-singularity-dark hover:text-gray-300 transition-colors">Study Assistant <span class="pro-badge">Pro</span></a>
-                <a href="/community/" class="nav-link text-singularity-dark hover:text-gray-300 transition-colors">Community</a>
-                <a href="#members" class="nav-link text-singularity-dark hover:text-gray-300 transition-colors">Meet the Team</a>
-                <a href="#join" class="nav-link text-singularity-dark hover:text-gray-300 transition-colors">Join Us</a>
-                <a href="/legal/" class="nav-link text-singularity-dark hover:text-gray-300 transition-colors">Legal</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/lessons/" class="nav-link nav-underline text-singularity-dark hover:text-singularity-blue transition-colors">Lessons</a>
+                <a href="https://study.singularitylabgroup.org" class="nav-pill text-singularity-dark">Study Assistant <span class="pro-badge">Pro</span></a>
+                <a href="/community/" class="nav-link nav-underline text-singularity-dark hover:text-singularity-blue transition-colors">Community</a>
+                <a href="/?redirect=/home/#members" class="nav-link nav-underline text-singularity-dark hover:text-singularity-blue transition-colors">Meet the Team</a>
+                <a href="/?redirect=/home/#join" class="nav-link nav-underline text-singularity-dark hover:text-singularity-blue transition-colors">Join Us</a>
+                <a href="/legal/" class="nav-link nav-underline text-singularity-dark hover:text-singularity-blue transition-colors">Legal</a>
             </div>
-            
+
             <!-- 用户图标 -->
             <div class="flex items-center space-x-6">
-                <a href="/login/" id="loginIcon" class="nav-link text-singularity-dark hover:text-gray-300 transition-colors">
+                <a href="/login/" id="loginIcon" class="nav-link text-singularity-dark hover:text-singularity-blue transition-colors">
                     <i class="fa fa-user"></i>
                 </a>
                 <!-- 移动端菜单按钮 -->
-                <button id="mobile-menu-button" class="md:hidden nav-link text-singularity-dark hover:text-gray-300 transition-colors">
+                <button id="mobile-menu-button" class="md:hidden nav-link text-singularity-dark hover:text-singularity-blue transition-colors">
                     <i class="fa fa-bars"></i>
                 </button>
             </div>
         </div>
-        
+
         <!-- 移动端导航菜单 -->
-        <div id="mobile-menu" class="md:hidden hidden bg-white absolute top-full left-0 w-full shadow-lg">
+        <div id="mobile-menu" class="md:hidden hidden bg-white/95 backdrop-blur-xl absolute top-full left-0 w-full shadow-lg">
             <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
-                <a href="/lessons/" class="text-singularity-dark hover:text-singularity-blue transition-colors py-2">Lessons</a>
-                <a href="https://study.singularitylabgroup.org" class="text-singularity-dark hover:text-singularity-blue transition-colors py-2">Study Assistant <span class="pro-badge">Pro</span></a>
-                <a href="/community/" class="text-singularity-dark hover:text-singularity-blue transition-colors py-2">Community</a>
-                <a href="#members" class="text-singularity-dark hover:text-singularity-blue transition-colors py-2">Meet the Team</a>
-                <a href="#join" class="text-singularity-dark hover:text-singularity-blue transition-colors py-2">Join Us</a>
-                <a href="/legal/" class="text-singularity-dark hover:text-singularity-blue transition-colors py-2">Legal</a>
+                <a href="/lessons/" class="nav-underline text-singularity-dark hover:text-singularity-blue transition-colors py-2">Lessons</a>
+                <a href="https://study.singularitylabgroup.org" class="nav-underline text-singularity-dark hover:text-singularity-blue transition-colors py-2">Study Assistant <span class="pro-badge">Pro</span></a>
+                <a href="/community/" class="nav-underline text-singularity-dark hover:text-singularity-blue transition-colors py-2">Community</a>
+                <a href="/?redirect=/home/#members" class="nav-underline text-singularity-dark hover:text-singularity-blue transition-colors py-2">Meet the Team</a>
+                <a href="/?redirect=/home/#join" class="nav-underline text-singularity-dark hover:text-singularity-blue transition-colors py-2">Join Us</a>
+                <a href="/legal/" class="nav-underline text-singularity-dark hover:text-singularity-blue transition-colors py-2">Legal</a>
             </div>
         </div>
     </nav>
 
-    <!-- 主内容区域（简化布局，但保留你的品牌风格） -->
-    <section class="pt-32 pb-20 bg-singularity-light-gray min-h-screen">
-        <div class="container mx-auto px-6 max-w-2xl">
-            <div class="bg-white rounded-2xl shadow-lg p-8">
-                
+    <!-- 主内容区域 -->
+    <section class="relative pt-32 pb-20 min-h-screen overflow-hidden">
+        <!-- ambience -->
+        <div class="absolute inset-0 -z-10 page-bg"></div>
+        <div class="absolute inset-0 -z-10 page-grid opacity-40 pointer-events-none"></div>
+        <div class="absolute -top-40 -left-24 w-[36rem] h-[36rem] rounded-full bg-blue-400/[0.16] blur-[130px] pointer-events-none"></div>
+        <div class="absolute -bottom-48 -right-24 w-[34rem] h-[34rem] rounded-full bg-sky-300/[0.18] blur-[140px] pointer-events-none"></div>
+
+        <div class="relative container mx-auto px-6 max-w-2xl">
+
+            <!-- Page heading -->
+            <div class="reveal d1 text-center mb-8">
+                <p class="text-xs uppercase tracking-[0.28em] text-singularity-blue/70 mb-2">Account</p>
+                <h1 class="text-3xl md:text-4xl font-bold">Your Profile</h1>
+            </div>
+
+            <div class="reveal d2 glass-card rounded-3xl p-8 md:p-10">
+
                 <!-- 头像区域 -->
                 <div class="text-center mb-10">
                     <div class="avatar-upload mx-auto mb-6">
-                        <img id="avatar-preview" src="/Images/default-avatar.png" class="w-32 h-32 rounded-full border-4 border-white object-cover">
+                        <img id="avatar-preview" src="/Images/default-avatar.png"
+                             class="avatar-ring w-32 h-32 rounded-full border-4 border-white object-cover">
                         <label class="avatar-edit" for="avatar-upload">
                             <i class="fa fa-camera text-gray-700"></i>
                         </label>
                         <input type="file" id="avatar-upload" accept="image/*" class="hidden">
                     </div>
-                    <h1 id="user-name" class="text-3xl font-bold mb-2">Loading...</h1>
-                    <p id="user-email" class="text-gray-500"></p>
+                    <h2 id="user-name" class="text-2xl md:text-3xl font-bold mb-2">Loading...</h2>
+                    <p id="user-email" class="text-gray-500 text-sm"></p>
                 </div>
+
+                <div class="divider-h mb-8"></div>
 
                 <!-- 表单 -->
                 <form id="profile-form" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-gray-700 font-medium mb-2">First Name</label>
+                            <label class="field-label" for="first-name">First Name</label>
                             <input type="text" id="first-name" class="form-input">
                         </div>
                         <div>
-                            <label class="block text-gray-700 font-medium mb-2">Last Name</label>
+                            <label class="field-label" for="last-name">Last Name</label>
                             <input type="text" id="last-name" class="form-input">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-gray-700 font-medium mb-2">Gender</label>
+                        <label class="field-label" for="gender">Gender</label>
                         <select id="gender" class="form-input" onchange="toggleCustomGender()">
                             <option value="prefer_not_to_say">Prefer not to say</option>
                             <option value="male">Male</option>
@@ -191,7 +295,6 @@
                             >
                         </div>
                     </div>
-
 
                     <!-- 保存按钮 -->
                     <button type="submit" id="save-btn" class="save-btn w-full flex items-center justify-center">
@@ -213,7 +316,7 @@
         </div>
     </section>
 
-    <!-- 页脚（完全复制你的原始页脚） -->
+    <!-- 页脚（结构完全保留） -->
     <footer class="bg-black text-white py-12">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
@@ -225,7 +328,7 @@
                         <li><a href="https://study.singularitylabgroup.org" class="text-gray-400 hover:text-white transition-colors">Study Assistant Pro</a></li>
                     </ul>
                 </div>
-                
+
                 <!-- Community -->
                 <div>
                     <h4 class="text-lg font-bold mb-4">Community</h4>
@@ -235,7 +338,7 @@
                         <li><a href="/community/" class="text-gray-400 hover:text-white transition-colors">Articles</a></li>
                     </ul>
                 </div>
-                
+
                 <!-- About -->
                 <div>
                     <h4 class="text-lg font-bold mb-4">About</h4>
@@ -246,7 +349,7 @@
                         <li><a href="/?redirect=/home/#join" class="text-gray-400 hover:text-white transition-colors">Join Us</a></li>
                     </ul>
                 </div>
-                
+
                 <!-- Follow Us -->
                 <div>
                     <h4 class="text-lg font-bold mb-4">Follow Us</h4>
@@ -265,7 +368,7 @@
                     <a href="#" class="text-gray-400 hover:text-white transition-colors">English</a>
                 </div>
             </div>
-            
+
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-500 text-sm mb-4 md:mb-0"><i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70 hover:opacity-100 transition-opacity"></i> 2026 Singularity Lab. All rights reserved.</p>
                 <div class="flex space-x-6">
@@ -279,12 +382,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Supabase 配置
+        // Supabase 配置（未改动）
         const SUPABASE_URL = 'https://wtfmsmibjktgajegflwp.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 导航栏滚动效果（完全复制你的原始JS）
+        // 导航栏滚动效果（逻辑未改动）
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
@@ -294,7 +397,7 @@
             }
         });
 
-        // 移动端菜单切换（完全复制你的原始JS）
+        // 移动端菜单切换（逻辑未改动）
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         if (mobileMenuButton && mobileMenu) {
@@ -303,48 +406,48 @@
             });
         }
 
-        // 1. 检查登录状态（关闭页面后失效）
+        // 1. 检查登录状态（关闭页面后失效）—— 完全未改动
         document.addEventListener('DOMContentLoaded', async () => {
 
             const ONE_DAY = 24 * 60 * 60 * 1000;
-        
+
             const loginTime =
                 localStorage.getItem('login_time');
-        
+
             if (!loginTime) {
-        
+
                 window.location.href = '/login/';
-        
+
                 return;
             }
-        
+
             const expired =
                 Date.now() - parseInt(loginTime) > ONE_DAY;
-        
+
             if (expired) {
-        
+
                 await supabaseClient.auth.signOut();
-        
+
                 localStorage.removeItem('login_time');
-        
+
                 window.location.href = '/login/';
-        
+
                 return;
             }
-        
+
             const {
                 data: { session }
             } = await supabaseClient.auth.getSession();
-        
+
             if (!session) {
-        
+
                 localStorage.removeItem('login_time');
-        
+
                 window.location.href = '/login/';
-        
+
                 return;
             }
-        
+
             loadUser(session.user);
         });
 
@@ -352,45 +455,45 @@
             document.getElementById('user-email').textContent = user.email;
             const fullName = `${user.user_metadata?.first_name || ''} ${user.user_metadata?.last_name || ''}`.trim();
             document.getElementById('user-name').textContent = fullName || 'Welcome User';
-            
+
             // 填充基础信息
             document.getElementById('first-name').value = user.user_metadata?.first_name || '';
             document.getElementById('last-name').value = user.user_metadata?.last_name || '';
-            
+
             const gender =
                 user.user_metadata?.gender ||
                 'prefer_not_to_say';
-            
+
             const genderSelect =
                 document.getElementById('gender');
-            
+
             const customContainer =
                 document.getElementById('custom-gender-container');
-            
+
             const customInput =
                 document.getElementById('custom-gender');
-            
+
             const standardGenders = [
                 'male',
                 'female',
                 'prefer_not_to_say'
             ];
-            
+
             if (standardGenders.includes(gender)) {
-            
+
                 genderSelect.value = gender;
-            
+
                 customContainer.classList.add('hidden');
-            
+
             } else {
-            
+
                 genderSelect.value = 'others';
-            
+
                 customContainer.classList.remove('hidden');
-            
+
                 customInput.value = gender;
             }
-            
+
             // 头像显示
             if (user.user_metadata?.avatar_url) {
                 document.getElementById('avatar-preview').src = user.user_metadata.avatar_url;
@@ -400,43 +503,43 @@
         document.getElementById('avatar-upload').addEventListener('change', async (e) => {
 
             const file = e.target.files[0];
-        
+
             if (!file) return;
-        
+
             // Instant local preview
             const previewUrl = URL.createObjectURL(file);
             document.getElementById('avatar-preview').src = previewUrl;
-        
+
             if (!file.type.startsWith('image/')) {
-        
+
                 showMessage('Please upload a valid image.', 'error');
-        
+
                 return;
             }
-        
+
             if (file.size > 5 * 1024 * 1024) {
-        
+
                 showMessage('Image must be smaller than 5MB.', 'error');
-        
+
                 return;
             }
-        
+
             const {
                 data: { session }
             } = await supabaseClient.auth.getSession();
-        
+
             if (!session) {
-        
+
                 showMessage('Session expired.', 'error');
-        
+
                 return;
             }
-        
+
             const fileExt = file.name.split('.').pop();
-        
+
             const fileName =
                 `${session.user.id}-${Date.now()}.${fileExt}`;
-        
+
             const {
                 data,
                 error: uploadError
@@ -446,48 +549,48 @@
                     cacheControl: '3600',
                     upsert: false
                 });
-        
+
             if (uploadError) {
-        
+
                 console.error(uploadError);
-        
+
                 showMessage(
                     'Upload failed: ' + uploadError.message,
                     'error'
                 );
-        
+
                 return;
             }
-        
+
             const { data: urlData } =
                 supabaseClient.storage
                     .from('avatars')
                     .getPublicUrl(fileName);
-        
+
             const avatarUrl = urlData.publicUrl;
-        
+
             const { error: updateError } =
                 await supabaseClient.auth.updateUser({
                     data: {
                         avatar_url: avatarUrl
                     }
                 });
-        
+
             if (updateError) {
-        
+
                 console.error(updateError);
-        
+
                 showMessage(
                     'Failed to save avatar.',
                     'error'
                 );
-        
+
                 return;
             }
-        
+
             document.getElementById('avatar-preview').src =
                 avatarUrl;
-        
+
             showMessage(
                 'Avatar uploaded successfully!',
                 'success'
@@ -498,112 +601,112 @@
 
             const gender =
                 document.getElementById('gender').value;
-        
+
             const container =
                 document.getElementById('custom-gender-container');
-        
+
             const input =
                 document.getElementById('custom-gender');
-        
+
             if (gender === 'others') {
-        
+
                 container.classList.remove('hidden');
-        
+
                 input.required = true;
-        
+
             } else {
-        
+
                 container.classList.add('hidden');
-        
+
                 input.required = false;
-        
+
                 input.value = '';
             }
         }
-        
+
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
 
             e.preventDefault();
-        
+
             const saveBtn =
                 document.getElementById('save-btn');
-        
+
             const saveText =
                 document.getElementById('save-text');
-        
+
             const saveLoading =
                 document.getElementById('save-loading');
-        
+
             saveText.textContent = 'Saving...';
-        
+
             saveLoading.classList.remove('hidden');
-        
+
             saveBtn.disabled = true;
-        
+
             try {
-        
+
                 const {
                     data: { session }
                 } = await supabaseClient.auth.getSession();
-        
+
                 if (!session) {
-        
+
                     throw new Error(
                         'Session expired. Please login again.'
                     );
                 }
-        
+
                 const gender =
                     document.getElementById('gender').value;
-        
+
                 const customGender =
                     document.getElementById('custom-gender').value;
-        
+
                 const userData = {
-        
+
                     first_name:
                         document.getElementById('first-name').value,
-        
+
                     last_name:
                         document.getElementById('last-name').value,
-        
+
                     gender:
                         gender === 'others'
                         ? customGender
                         : gender,
-        
+
                     avatar_url:
                         document.getElementById('avatar-preview').src
                 };
-        
+
                 const { error } =
                     await supabaseClient.auth.updateUser({
                         data: userData
                     });
-        
+
                 if (error) {
-        
+
                     throw error;
                 }
-        
+
                 showMessage(
                     'Profile saved successfully!',
                     'success'
                 );
-        
+
             } catch (error) {
-        
+
                 showMessage(
                     error.message || 'Save failed.',
                     'error'
                 );
-        
+
             } finally {
-        
+
                 saveText.textContent = 'Save Changes';
-        
+
                 saveLoading.classList.add('hidden');
-        
+
                 saveBtn.disabled = false;
             }
         });
@@ -611,22 +714,23 @@
         document
         .getElementById('logout-btn')
         .addEventListener('click', async () => {
-        
+
             await supabaseClient.auth.signOut();
-        
+
             localStorage.removeItem('login_time');
-        
+
             window.location.href = '/';
         });
 
-        // 4. 密码发邮件
-        document
-        .getElementById('reset-password-btn')
-        .addEventListener('click', () => {
-        
-            window.location.href =
-                '/resetpassword/';
-        });
+        // 4. 密码发邮件（按钮不存在时静默跳过，避免 js 报错中断）
+        const resetPasswordBtn = document.getElementById('reset-password-btn');
+        if (resetPasswordBtn) {
+            resetPasswordBtn.addEventListener('click', () => {
+
+                window.location.href =
+                    '/resetpassword/';
+            });
+        }
 
         function showMessage(text, type) {
             const msg = document.getElementById('message');
