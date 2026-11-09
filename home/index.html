@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Singularity Lab</title>
+    <link rel="stylesheet" href="/home/activities.css">
+    <script defer src="/home/activities.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -427,7 +429,8 @@
             </div>
             
             <!-- 桌面端导航菜单 -->
-            <div class="hidden md:flex items-center space-x-8">
+            <div class="hidden lg:flex items-center space-x-5 xl:space-x-8">
+                <a href="#about" class="nav-link nav-underline text-white hover:text-white transition-colors">About</a>
                 <a href="/lessons/" class="nav-link nav-underline text-white hover:text-white transition-colors">Lessons</a>
                 <a href="https://study.singularitylabgroup.org" class="nav-pill text-white">Study Assistant <span class="pro-badge">Pro</span></a>
                 <a href="/community/" class="nav-link nav-underline text-white hover:text-white transition-colors">Community</a>
@@ -442,15 +445,16 @@
                     <i class="fa fa-user"></i>
                 </a>
                 <!-- 移动端菜单按钮 -->
-                <button id="mobile-menu-button" class="md:hidden nav-link text-white hover:text-sky-300 transition-colors">
+                <button id="mobile-menu-button" class="lg:hidden nav-link text-white hover:text-sky-300 transition-colors">
                     <i class="fa fa-bars"></i>
                 </button>
             </div>
         </div>
         
         <!-- 移动端导航菜单 -->
-        <div id="mobile-menu" class="md:hidden hidden bg-black/90 backdrop-blur-xl absolute top-full left-0 w-full shadow-2xl">
+        <div id="mobile-menu" class="lg:hidden hidden bg-black/90 backdrop-blur-xl absolute top-full left-0 w-full shadow-2xl">
             <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
+                <a href="#about" class="nav-underline text-white/85 hover:text-white transition-colors py-2">About</a>
                 <a href="/lessons/" class="nav-underline text-white/85 hover:text-white transition-colors py-2">Lessons</a>
                 <a href="https://study.singularitylabgroup.org" class="nav-underline text-white/85 hover:text-white transition-colors py-2">Study Assistant <span class="pro-badge">Pro</span></a>
                 <a href="/community/" class="nav-underline text-white/85 hover:text-white transition-colors py-2">Community</a>
@@ -515,11 +519,70 @@
         </div>
 
         <!-- scroll cue -->
-        <a href="/home/#lessons"
+        <a href="/home/#about"
            class="reveal d6 absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 text-white/50 hover:text-white transition">
             <span class="mouse"></span>
             <span class="text-[0.6rem] uppercase tracking-[0.3em]">Scroll</span>
         </a>
+    </section>
+
+
+    <section id="about" aria-labelledby="about-heading">
+      <div class="activity-layout">
+        <div class="activity-intro">
+          <h2 id="about-heading">About <br>Singularity Lab</h2>
+          <p>We’re a student-led service learning group. We teach each other science and mathematics, then share our lessons, videos and guided notes so other students can learn with us.</p>
+          <p>Our classroom sessions range from reading the periodic table to exploring the physics behind Einstein’s mass–energy equation.</p>
+          <a class="activities-link" href="/lessons/">Explore our lessons <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="activity-gallery" role="region" aria-label="Lab activities">
+          <figure>
+            <a class="activity-frame" id="activity-full" href="/Images/activities/dscf3628.webp" target="_blank" rel="noopener" aria-label="Open full activity image in a new tab">
+              <img id="activity-photo" src="/Images/activities/dscf3628.webp" alt="A presenter points to the periodic table on the classroom screen." loading="lazy">
+            </a>
+            <figcaption>
+              <div aria-live="polite"><span id="activity-count">01 / 15</span><strong id="activity-caption">Exploring the periodic table</strong></div>
+              <div class="gallery-controls"><button type="button" id="activity-prev" aria-label="Previous activity">←</button><button type="button" id="activity-next" aria-label="Next activity">→</button></div>
+            </figcaption>
+          </figure>
+          <div class="activity-strip" aria-label="Choose an activity image"><a class="activity-thumb" href="/Images/activities/dscf3628.webp" data-caption="Exploring the periodic table" data-alt="A presenter points to the periodic table on the classroom screen." aria-label="Exploring the periodic table"><img src="/Images/activities/dscf3628-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/1020537.webp" data-caption="Introducing the periodic table" data-alt="A student introduces the lesson with a slide and printed notes." aria-label="Introducing the periodic table"><img src="/Images/activities/1020537-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/dscf3627.webp" data-caption="At the whiteboard" data-alt="Two presenters stand beside the screen during a classroom session." aria-label="At the whiteboard"><img src="/Images/activities/dscf3627-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/dscf3630.webp" data-caption="A classroom discussion" data-alt="Students seated in groups follow the presentation at the front of the room." aria-label="A classroom discussion"><img src="/Images/activities/dscf3630-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/1020538.webp" data-caption="Presenting to classmates" data-alt="A presenter turns toward the audience during the introduction." aria-label="Presenting to classmates"><img src="/Images/activities/1020538-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/1020539.webp" data-caption="Sharing the explanation" data-alt="Two students take turns presenting beside the display." aria-label="Sharing the explanation"><img src="/Images/activities/1020539-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/1020540.webp" data-caption="Following the lesson notes" data-alt="A student reads from notes beside the projected lesson." aria-label="Following the lesson notes"><img src="/Images/activities/1020540-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/dscf3668.webp" data-caption="Discussing gravity" data-alt="Students point to a diagram on a slide about gravity." aria-label="Discussing gravity"><img src="/Images/activities/dscf3668-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/1020552.webp" data-caption="Working through a diagram" data-alt="A presenter gestures toward a diagram on the classroom display." aria-label="Working through a diagram"><img src="/Images/activities/1020552-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/1020553.webp" data-caption="Gathering around the display" data-alt="Classmates gather at the front of the room to look at the screen." aria-label="Gathering around the display"><img src="/Images/activities/1020553-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/dscf3634.webp" data-caption="Listening in" data-alt="Students listen from their seats during the session." aria-label="Listening in"><img src="/Images/activities/dscf3634-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/dscf3635.webp" data-caption="Learning together" data-alt="A wide view of the classroom shows students gathered around tables." aria-label="Learning together"><img src="/Images/activities/dscf3635-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/img_5040.webp" data-caption="At the activity table" data-alt="Cups, snacks and printed materials arranged on an activity table." aria-label="At the activity table"><img src="/Images/activities/img_5040-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/poster1.webp" data-caption="Armor Ballistics and Modern Weapons" data-alt="Lecture poster for Hudson and Raymond’s session on armor ballistics and modern weapons." aria-label="Armor Ballistics and Modern Weapons"><img src="/Images/activities/poster1-thumb.webp" alt="" width="90" height="62" loading="lazy"></a>
+<a class="activity-thumb" href="/Images/activities/poster2.webp" data-caption="The Mathematical Connection Between Mass and Energy" data-alt="Lecture poster inviting students to explore Einstein’s mass–energy equation using high-school algebra." aria-label="The Mathematical Connection Between Mass and Energy"><img src="/Images/activities/poster2-thumb.webp" alt="" width="90" height="62" loading="lazy"></a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="functionwars" aria-labelledby="game-heading">
+      <div class="game-feature">
+        <div class="game-copy">
+          <h2 id="game-heading">Function Wars</h2>
+          <p>Write a function and fire a shot along its graph. Try your equation in the sandbox, take on 50 puzzle missions, or challenge another pilot in a duel.</p>
+          <a class="game-launch" href="https://stevenvrp.github.io/FunctionWars/">Play Function Wars <span aria-hidden="true">↗</span></a>
+        </div>
+        <figure class="game-preview">
+          <div class="game-scene">
+            <svg viewBox="0 0 640 290" role="img" aria-label="A tank fires a shot along a parabola toward the opposing tank">
+              <path id="shot-arc" d="M 105 196 Q 320 -100 559 196" fill="none" stroke="#94f7e8" stroke-width="2" stroke-dasharray="5 6"/>
+              <image href="/Images/functionwars/tank-vector.svg" x="18" y="188" width="93" height="55"/>
+              <image href="/Images/functionwars/tank-bastion.svg" x="18" y="188" width="93" height="55" transform="translate(640 0) scale(-1 1)"/>
+              <circle id="game-shot" cx="326" cy="48" r="5" fill="#eaffbd"/>
+            </svg>
+          </div>
+          <figcaption><span>f(u) = u(1 − u/20)</span><button type="button" id="game-replay">Replay shot <span aria-hidden="true">↻</span></button></figcaption>
+        </figure>
+      </div>
     </section>
 
     <section id="partners" class="py-20 bg-singularity-dark text-white">
