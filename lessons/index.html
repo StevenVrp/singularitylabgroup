@@ -41,23 +41,23 @@
 
 <!-- NAV -->
 <nav class="glass-nav fixed top-0 left-0 w-full z-50 shadow-sm">
-    <div class="container mx-auto px-6 flex items-center justify-between h-16">
-        <img src="/Images/Logo2.png" class="h-10 cursor-pointer" onclick="showHome()">
-        <div class="flex items-center gap-3">
-            <button id="btn-standard" onclick="showCurriculum('standard')"
-                class="px-6 py-2.5 rounded-full font-semibold text-sm bg-singularity-blue text-white shadow">
+    <div class="container mx-auto px-3 sm:px-6 flex items-center justify-between h-16">
+        <a href="/home/" aria-label="Singularity Lab home"><img src="/Images/Logo2.png" alt="" class="h-9 sm:h-10"></a>
+        <div class="flex items-center gap-1 sm:gap-3">
+            <a id="btn-standard" href="#standard"
+                class="px-3 sm:px-6 py-2.5 rounded-full font-semibold text-sm bg-singularity-blue text-white shadow">
                 Standard
-            </button>
-            <button id="btn-discovery" onclick="showCurriculum('discovery')"
-                class="px-6 py-2.5 rounded-full font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+            </a>
+            <a id="btn-discovery" href="#discovery"
+                class="px-3 sm:px-6 py-2.5 rounded-full font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
                 Discovery
-            </button>
+            </a>
         </div>
     </div>
 </nav>
 
 <!-- APP -->
-<main id="app" class="pt-32"></main>
+<main id="app" class="pt-16"><p role="status" class="p-10">Loading lessons…</p></main>
 
 <!-- 页脚 -->
     <footer class="bg-black text-white py-12">
@@ -115,14 +115,13 @@
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-500 text-sm mb-4 md:mb-0"><i class="fa-solid fa-closed-captioning text-[0.8rem] opacity-70 hover:opacity-100 transition-opacity"></i> 2026 Singularity Lab. All rights reserved.</p>
                 <div class="flex space-x-6">
-                    <a href="#privacy-policy" class="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
-                    <a href="#terms-of-use" class="text-gray-500 hover:text-white text-sm transition-colors">Terms of Use</a>
-                    <a href="#license" class="text-gray-500 hover:text-white text-sm transition-colors">License</a>
+                    <a href="/legal/#privacy-policy" class="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="/legal/#terms-of-use" class="text-gray-500 hover:text-white text-sm transition-colors">Terms of Use</a>
+                    <a href="/legal/#license" class="text-gray-500 hover:text-white text-sm transition-colors">License</a>
                 </div>
             </div>
         </div>
     </footer>
-</body>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -131,19 +130,22 @@ const supabaseClient = window.supabase.createClient(
     'sb_publishable_ez5qG1v0pPIuvv7FF4x7ew_YuqM7dDJ'
 );
 
-let currentMode = 'standard';
+let revision = 0;
 
 /* ---------- Auth ---------- */
 document.addEventListener('DOMContentLoaded', async () => {
     const ONE_DAY = 24 * 60 * 60 * 1000;
     const loginTime = localStorage.getItem('login_time');
-    if (!loginTime || Date.now() - Number(loginTime) > ONE_DAY) {
+    const elapsed = Date.now() - Number(loginTime);
+    const loginURL = '/login/?next=' + encodeURIComponent('/lessons/' + location.hash);
+    if (!loginTime || !Number.isFinite(elapsed) || elapsed < 0 || elapsed >= ONE_DAY) {
         await supabaseClient.auth.signOut();
-        return location.href = '/login/';
+        return location.replace(loginURL);
     }
     const { data: { session } } = await supabaseClient.auth.getSession();
-    if (!session) return location.href = '/login/';
-    showCurriculum('standard');
+    if (!session) return location.replace(loginURL);
+    window.addEventListener('hashchange', renderRoute);
+    renderRoute();
 });
 
 /* ---------- Helpers ---------- */
@@ -157,44 +159,59 @@ async function detect(folder, exts) {
     }
     return null;
 }
-async function bilibiliSrc(folder) {
-    const r = await fetch(`/lessons/files/${folder}/description.txt`);
-    if (!r.ok) return null;
-    const t = await r.text();
-    const m = t.match(/iframevideohere:[\s\S]*?<iframe[^>]*src="([^"]+)"/i);
-    return m ? m[1] : null;
+function escapeText(value) {
+    return value.replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[char]);
 }
 
-/* ---------- Views ---------- */
-function showHome() {
-    document.getElementById('app').innerHTML = `
-        <div class="text-center py-32 fade-in">
-            <p class="uppercase tracking-[0.35em] text-gray-400 mb-6">Singularity Lessons</p>
-            <h1 class="text-6xl font-extrabold mb-6">Select a Curriculum</h1>
-            <p class="text-xl text-gray-500 max-w-2xl mx-auto">
-                Choose a learning path to begin exploring physics at depth.
-            </p>
-        </div>
-    `;
+async function renderRoute() {
+    const id = ++revision;
+    const [path, encodedFolder] = location.hash.slice(1).split('/');
+    const type = path === 'discovery' ? 'discovery' : 'standard';
+    const app = document.getElementById('app');
+    updateTabs(type);
+    app.setAttribute('aria-busy', 'true');
+    app.innerHTML = '<p role="status" class="p-10">Loading lessons…</p>';
+    try {
+        const file = type === 'discovery' ? 'discovery.json' : 'lessons.json';
+        const res = await fetch('/lessons/files/' + file);
+        if (!res.ok) throw new Error('Catalog unavailable');
+        const folders = await res.json();
+        if (id !== revision) return;
+        const folder = folders.find(name => encodeURIComponent(name) === encodedFolder);
+        if (folder) await loadLesson(folder, type, id);
+        else showCurriculum(type, folders);
+        if (id === revision) window.scrollTo(0, 0);
+    } catch {
+        if (id !== revision) return;
+        app.innerHTML = '<div class="p-10"><p role="alert">Could not load this learning path.</p><button class="underline mt-3" id="retry-catalog">Try again</button></div>';
+        document.getElementById('retry-catalog').addEventListener('click', renderRoute);
+    } finally {
+        if (id === revision) app.removeAttribute('aria-busy');
+    }
 }
 
-async function showCurriculum(type) {
-    currentMode = type;
-    const accent = type === 'discovery' ? 'purple' : 'blue';
-
+function updateTabs(type) {
+    for (const path of ['standard', 'discovery']) {
+        const link = document.getElementById('btn-' + path);
+        if (type === path) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+    }
     document.getElementById('btn-standard').className =
         type === 'standard'
-            ? 'px-6 py-2.5 rounded-full font-semibold text-sm bg-singularity-blue text-white shadow'
-            : 'px-6 py-2.5 rounded-full font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300 transition';
+            ? 'px-3 sm:px-6 py-2.5 rounded-full font-semibold text-sm bg-singularity-blue text-white shadow'
+            : 'px-3 sm:px-6 py-2.5 rounded-full font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300 transition';
 
     document.getElementById('btn-discovery').className =
         type === 'discovery'
-            ? 'px-6 py-2.5 rounded-full font-semibold text-sm bg-purple-600 text-white shadow'
-            : 'px-6 py-2.5 rounded-full font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300 transition';
+            ? 'px-3 sm:px-6 py-2.5 rounded-full font-semibold text-sm bg-purple-600 text-white shadow'
+            : 'px-3 sm:px-6 py-2.5 rounded-full font-semibold text-sm bg-gray-200 text-gray-700 hover:bg-gray-300 transition';
+}
 
-    const res = await fetch(`/lessons/files/${type === 'standard' ? 'lessons.json' : 'discovery.json'}`);
-    const lessons = await res.json();
-
+function showCurriculum(type, lessons) {
+    const accent = type === 'discovery' ? 'purple' : 'blue';
+    document.title = (type === 'discovery' ? 'Discovery' : 'Standard') + ' lessons · Singularity Lab';
     document.getElementById('app').innerHTML = `
         <section class="relative h-[420px] bg-black overflow-hidden">
             <img src="/Images/Background.jpg" class="absolute inset-0 w-full h-full object-cover opacity-45">
@@ -210,64 +227,53 @@ async function showCurriculum(type) {
             </div>
         </section>
 
-        <section class="px-10 md:px-20 py-20 bg-white">
+        <section class="px-4 md:px-20 py-12 md:py-20 bg-white">
             <div class="max-w-4xl mx-auto relative">
                 <div class="timeline-line bg-${accent}-500"></div>
 
                 ${lessons.map((folder, i) => `
-                    <div onclick="loadLesson('${folder}', '${type}')"
-                        class="relative flex items-start gap-8 mb-14 cursor-pointer group">
+                    <a href="#${type}/${encodeURIComponent(folder)}"
+                        class="relative flex items-start gap-3 sm:gap-8 mb-6 group">
                         <div class="lesson-node border-${accent}-500 group-hover:bg-${accent}-500 shrink-0"></div>
-                        <div class="bg-white rounded-[2rem] p-8 border border-gray-200 group-hover:shadow-xl transition w-full">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h2 class="text-2xl font-extrabold mb-2 group-hover:text-${accent}-600 transition">
-                                        ${folder.replaceAll('_', ' ')}
-                                    </h2>
-                                    <p class="text-gray-500 text-lg leading-relaxed">
-                                        ${type === 'discovery' ? 'Exploratory module' : 'Core curriculum module'}
-                                    </p>
-                                </div>
-                                <span class="text-${accent}-500 text-sm font-semibold ml-6 shrink-0">
-                                    Module ${i + 1}
-                                </span>
-                            </div>
+                        <div class="bg-white rounded-2xl p-5 sm:p-8 border border-gray-200 group-hover:shadow-lg transition min-w-0 flex-1">
+                            <span class="text-${accent}-600 text-sm font-semibold">Module ${i + 1}</span>
+                            <h2 class="text-xl sm:text-2xl font-bold mt-1 break-words group-hover:text-${accent}-600 transition">
+                                ${escapeText(folder.replace(/^NEW_/, '').replaceAll('_', ' '))}
+                            </h2>
                         </div>
-                    </div>
+                    </a>
                 `).join('')}
             </div>
         </section>
     `;
 }
 
-async function loadLesson(folder, type) {
+async function loadLesson(folder, type, id) {
     const accent = type === 'discovery' ? 'purple' : 'blue';
-    const [image, video, ppt, notes, bili] = await Promise.all([
+    const [image, video, ppt, notes, details] = await Promise.all([
         detect(folder, ['png','jpg','jpeg']),
         detect(folder, ['mp4','mov']),
-        detect(folder, ['ppt','pptx']),
-        detect(folder, ['doc','docx']),
-        bilibiliSrc(folder)
+        detect(folder, ['pptx','ppt']),
+        detect(folder, ['docx','doc']),
+        fetch(`/lessons/files/${folder}/description.txt`)
+            .then(response => response.ok ? response.text() : '').catch(() => '')
     ]);
-
-    let description = 'No description available.';
-    try {
-        const r = await fetch(`/lessons/files/${folder}/description.txt`);
-        if (r.ok) {
-            description = (await r.text()).split('iframevideohere:')[0].trim();
-        }
-    } catch {}
-
+    if (id !== revision) return;
+    const description = details.split(/iframevideohere:/i)[0].trim();
+    const source = details.match(/iframevideohere:[\s\S]*?<iframe[^>]*src="([^"]+)"/i)?.[1];
+    const bili = source && /^(https:)?\/\/player\.bilibili\.com\//i.test(source) ? escapeText(source) : '';
+    document.title = folder.replace(/^NEW_/, '').replaceAll('_', ' ') + ' · Singularity Lab';
     document.getElementById('app').innerHTML = `
-        <section class="relative h-[460px] bg-black overflow-hidden rounded-[2rem] mb-20 fade-in">
-            <img src="/Images/Background.jpg" class="absolute inset-0 w-full h-full object-cover opacity-50">
+        <section class="relative bg-black overflow-hidden mb-12 fade-in">
+            <img src="${image || '/Images/Background.jpg'}" alt="" class="absolute inset-0 w-full h-full object-cover opacity-40">
             <div class="hero-gradient absolute inset-0"></div>
-            <div class="relative z-10 flex flex-col justify-end h-full px-10 md:px-20 pb-16 text-white">
+            <div class="relative z-10 flex flex-col items-start justify-end min-h-[360px] px-6 md:px-20 py-12 text-white">
+                <a href="#${type}" class="mb-10 underline underline-offset-4">← All ${type} lessons</a>
                 <p class="uppercase tracking-[0.35em] text-${accent}-200 text-sm mb-4">
                     ${type === 'discovery' ? 'Discovery Module' : 'Standard Curriculum'}
                 </p>
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">${folder.replaceAll('_', ' ')}</h1>
-                <p class="text-xl text-${accent}-100 max-w-3xl leading-relaxed">${description}</p>
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">${escapeText(folder.replace(/^NEW_/, '').replaceAll('_', ' '))}</h1>
+                <p class="text-xl text-${accent}-100 max-w-3xl leading-relaxed">${escapeText(description)}</p>
             </div>
         </section>
 
@@ -284,11 +290,11 @@ async function loadLesson(folder, type) {
             </div>
             <div class="overflow-hidden rounded-[2rem] shadow-2xl bg-black">
                 ${video ? `<video controls class="w-full"><source src="${video}"></video>` :
-                  `<iframe class="video-iframe" src="${bili}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`}
+                  `<iframe title="Lesson video" class="video-iframe" src="${bili}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`}
             </div>
         </section>` : ''}
 
-        <section class="px-10 md:px-20 pb-20 fade-in">
+        ${ppt || notes ? `<section class="px-10 md:px-20 pb-20 fade-in">
             <h2 class="text-4xl font-extrabold mb-12">Learning Resources</h2>
             <div class="grid md:grid-cols-2 gap-10">
                 ${ppt ? `
@@ -314,11 +320,10 @@ async function loadLesson(folder, type) {
                     </span>
                 </a>` : ''}
             </div>
-        </section>
+        </section>` : ''}
     `;
 }
 
-showHome();
 </script>
 
 </body>

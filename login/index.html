@@ -594,6 +594,17 @@
         // SESSION VALIDATION
         // =========================================
 
+        function destinationAfterLogin() {
+            const next = new URLSearchParams(location.search).get('next');
+            try {
+                const url = new URL(next || '/welcome/', location.origin);
+                if (url.origin === location.origin && url.pathname === '/lessons/') {
+                    return '/lessons/' + url.hash;
+                }
+            } catch { /* Fall back to the profile for malformed links. */ }
+            return '/welcome/';
+        }
+
         async function validateExistingSession() {
 
             const loginTime =
@@ -618,7 +629,7 @@
 
             if (data.session) {
 
-                window.location.href = '/welcome/';
+                window.location.href = destinationAfterLogin();
             }
         }
 
@@ -771,8 +782,7 @@
 
                     setTimeout(() => {
 
-                        window.location.href =
-                            '/welcome/';
+                        window.location.href = destinationAfterLogin();
 
                     }, 1200);
 
