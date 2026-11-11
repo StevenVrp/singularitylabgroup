@@ -1,0 +1,25 @@
+const paths = {
+ atom:'<ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-28 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(32 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(92 12 12)"/><circle cx="12" cy="12" r="1" fill="currentColor"/>',
+ panel:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/>', search:'<circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/>',
+ flask:'<path d="M9 3h6m-5 0v7L4 19q-1 2 2 2h12q3 0 2-2l-6-9V3M7 15h10"/>',
+ book:'<path d="M12 5v15m0-14Q7 3 3 5v14q5-2 9 1 5-3 9-1V5q-5-2-9 1Z"/>',
+ note:'<rect x="5" y="3" width="15" height="18" rx="2"/><path d="M9 3v18m3-12h5m-5 4h4M3 8h4M3 15h4"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2m0-14-2 2M7 17l-2 2"/>',
+ moon:'<path d="M20 15a9 9 0 0 1-11-11A9 9 0 1 0 20 15Z"/>',chev:'<path d="m9 6 6 6-6 6"/>',down:'<path d="m6 9 6 6 6-6"/>',close:'<path d="m6 6 12 12M6 18 18 6"/>',check:'<path d="m4 13 5 5L20 6"/>',
+ star:'<path d="m12 2 3 6.5 7 1-5 5 1.2 7L12 18l-6.2 3.5 1.2-7-5-5 7-1Z"/>',pin:'<path d="M6 4h12v17l-6-4-6 4Z"/>',orbit:'<circle cx="12" cy="12" r="3.5"/><ellipse cx="12" cy="12" rx="11" ry="4.5" transform="rotate(-35 12 12)"/>',vector:'<path d="m4 20 15-15m-7 0h7v7M4 11v9h9"/>',
+ motion:'<path d="M2 18Q11 -5 21 17m-6 1 6 0 0-6"/>',force:'<path d="m3 19 7-12 10 12Zm10-7 6-7m-4 0h4v4"/>',
+ energy:'<path d="m13 2-9 12h7l-1 8 10-14h-8Z"/>',drop:'<path d="M12 2Q2 14 6 19a8 8 0 0 0 12-1Q21 14 12 2Zm-4 13q0 3 3 3"/>',
+ wave:'<path d="M2 12q3-11 6 0t6 0 6 0h2"/>',thermo:'<path d="M9 14V5a3 3 0 0 1 6 0v9a5 5 0 1 1-6 0Zm3-7v10"/><circle cx="12" cy="17.5" r="1.5"/>',
+ field:'<path d="M2 5q10 8 20 0M2 19q10-8 20 0M2 12h20m-5-3 3 3-3 3"/>',
+ circuit:'<path d="M2 12h4l1-4 3 8 3-8 3 8 2-4h4"/>',magnet:'<path d="M4 5v9a8 8 0 0 0 16 0V5h-5v9a3 3 0 0 1-6 0V5Zm0 5h5m6 0h5"/>',
+ prism:'<path d="m12 3 9 16H3Z M1 12l8-1 14-3M9 11l14 3"/>',
+ play:'<path d="m8 4 12 8-12 8Z" fill="currentColor" stroke="none"/>',pause:'<path d="M8 5v14m8-14v14" stroke-width="3.5"/>',step:'<path d="m5 5 10 7-10 7Z"/><path d="M19 5v14"/>',
+ reset:'<path d="M4 10a8 8 0 1 1 0 5m0-11v6h6"/>',expand:'<path d="M3 9V3h6m6 0h6v6m0 6v6h-6m-6 0H3v-6"/>',
+ sliders:'<path d="M3 6h5m5 0h8M3 18h10m5 0h3M3 12h10m5 0h3"/><circle cx="10" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="15" cy="18" r="2"/>',
+ data:'<path d="M3 4v16h18M5 16l4-6 4 3 7-8"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/>',
+ download:'<path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/>',cube:'<path d="m12 2 9 5v10l-9 5-9-5V7Zm-9 5 9 5 9-5m-9 5v10"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',minus:'<path d="M5 12h14"/>',layers:'<path d="m12 3 10 6-10 6-10-6Zm-9 11 9 5 9-5m-17 5 8 4 8-4"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',link:'<path d="m9 14 6-6m-3-3 2-2a5 5 0 0 1 7 7l-3 3m-5 6-2 2a5 5 0 0 1-7-7l3-3"/>', info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-11v2"/>',
+ pencil:'<path d="m4 20 5-1L21 7l-4-4L5 15Zm10-14 4 4"/>', save:'<path d="M4 3h13l4 4v14H3V3Zm3 0v7h9V3M7 21v-7h10v7"/>', compass:'<circle cx="12" cy="12" r="9"/><path d="m16 7-3 7-5 3 3-8Z"/>'
+};
+export const icon=(name,size=18)=>'<svg aria-hidden="true" width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">'+(paths[name]||paths.atom)+'</svg>';

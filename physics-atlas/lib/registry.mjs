@@ -1,0 +1,14 @@
+import {labs as cycles} from './cycles.mjs';
+import {labs as charges} from './charges.mjs';
+import {labs as magnetic} from './magnetic.mjs';
+import {labs as magnetpass} from './magnetpass.mjs';
+import {labs as machines} from './machines.mjs';
+import {labs as modern} from './modern.mjs';
+import {labs as optical} from './optical.mjs';
+import {labs as mechanics} from './mechanics.mjs';
+import {labs as em} from './em.mjs';
+import {labs as radiation} from './radiation.mjs';
+import {labs as expansion} from './expansion.mjs';
+import {labs as further} from './further.mjs';
+import {labs as network} from './network.mjs';
+export const labs=[...mechanics,...em,...radiation,...expansion,...further,...network,...optical,...modern,...machines,...magnetpass,...magnetic,...cycles,...charges].sort((a,b)=>a.module-b.module);
